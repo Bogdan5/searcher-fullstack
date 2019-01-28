@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+require('custom-env').env();
 
 const bodyParser = require('body-parser');
 
@@ -8,16 +9,17 @@ const app = express();
 app.use(
   bodyParser.urlencoded({
     extended: false,
-  })
+  }),
 );
 app.use(bodyParser.json());
 // DB Config
-const db = process.env.mongoURI;
+const db = process.env.MONGODB_URI;
+console.log(db);
 // Connect to MongoDB
 mongoose
   .connect(
     db,
-    { useNewUrlParser: true }
+    { useNewUrlParser: true },
   )
   .then(() => console.log('MongoDB successfully connected'))
   .catch(err => console.log(err));
