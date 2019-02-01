@@ -83,7 +83,7 @@ router.post('/login', (req, res) => {
               success: true,
               token: `Bearer  + ${token}`,
             });
-          }
+          },
         );
       } else {
         return res
