@@ -257,3 +257,126 @@ class App extends Component {
        this.setState({ listCards: copy });
      }
    }
+
+   render() {
+    const {
+      inputVisibility, menuVisible, active, listCards,
+      menuTop, menuLeft, cardSelected, data,
+    } = this.state;
+    // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
+    const propertiesObj = { // properties object passed to ComponentEnhancer
+      fromButton: this.fromButton, // a handler is added to buttons in order to pass data
+      // from DumbButton chid to the App parent
+      active, // in element buttons, true greyed out
+      keywordButtonClicked: this.state, // what element button is clicked
+    };
+    const ButtonWithHandler = ComponentEnhancer(DumbButton, propertiesObj);
+    // adds a click handler to all components of the DropDownMenu
+    const propertiesMenu = { fromMenu: this.menuClickHandler };
+    const MenuElementWithHandler = ComponentEnhancer(MenuOption, propertiesMenu);
+
+    return (
+      <div className='App' ref={this.appRef}>
+        {/* the header with the description on the app */}
+        <Header title='Data display - Search and sort' />
+        { /* includes description and operator buttons */ }
+        {/* <Keyboard leftSection='Boolean operators' classProp=''>
+          <ButtonWithHandler name='AND' />
+          <ButtonWithHandler name='OR' />
+          <ButtonWithHandler name='NOT' />
+        </Keyboard> */}
+        {/* the card that constructs conditional buttons */}
+        <Keyboard
+          leftSection='Search keyword' classProp=' keyboardSearchKeyword'
+          icon=''
+        >
+          <ButtonGroup>
+            <ButtonWithHandler name='INCLUDES' />
+            <ButtonWithHandler name='STARTS WITH' />
+            <ButtonWithHandler name='ENDS WITH' />
+          </ButtonGroup>
+          <input // the keyword used to search
+            type='text' onChange={this.textHandler}
+            placeholder='Type keyword' ref={this.textInput}
+          />
+          <div className={inputVisibility}>in position</div>
+          <input // by default, any match would satisfy condition, regardless of position
+            type='text' className={`positionInput ${inputVisibility}`}
+            onChange={this.positionHandler}
+          />
+          <ButtonWithHandler name='SUBMIT' visibility={inputVisibility} />
+          <ButtonWithHandler name='CANCEL' />
+        </Keyboard>
+        {/* includes the query structure */}
+        {listCards.map((el, index) => {
+          const iconsArray = (listCards.length === index + 1) ? ['+', '-'] : ['-'];
+          const iconsElements = (
+            <div>
+              {iconsArray.map((item, ind) => {
+                const ident = `${el.id}-${ind}`;
+                return (
+                  <Icon
+                    type={item} fromIcon={this.iconClicked}
+                    keyboardNo={el.id} key={ident}
+                  />
+                );
+              })}
+            </div>
+          );
+          const typeContent = (
+            <div>
+              <SelectButton card={el.id} fromSelect={this.selectCard}>Select</SelectButton>
+              <br />
+              <ColumnSelector
+                className='selector' onChange={this.setColumnSelect}
+                card={el.id}
+              >
+                <option value='colAll'>Selects fields</option>
+                <option value='colAll'>All fields</option>
+                <option value='col1'>Column 1</option>
+                <option value='col2'>Column 2</option>
+                <option value='col3'>Column 3</option>
+              </ColumnSelector>
+            </div>
+          );
+          return (
+            <Keyboard
+              key={el.id} leftSection={typeContent}
+              classProp='' rightSection={iconsElements}
+              cardSelected={cardSelected} id={el.id}
+            >
+              <ConditionButtonFormatter fromFormatter={this.fromFormat}>
+                {el.listElements.map((elem) => {
+                  const copy = React.cloneElement(elem, { card: el.id });
+                  return copy;
+                })}
+              </ConditionButtonFormatter>
+            </Keyboard>
+          );
+        })}
+        {/* buttons for sorting the data */}
+        <Sorter>
+          {Object.keys(data[0]).map(el => (
+            <div className='sorterClass'>
+              <div>{el}</div>
+              <SortButton fromSortButton={this.sorter} />
+            </div>
+          ))}
+        </Sorter>
+        {/* data displayed as resulted from search and sort operations */}
+        <DataDisplay dataLoad={this.state} />
+        <DropDownMenu
+          menuVisible={menuVisible} mouseOutMenu={this.menuHide}
+          style={{ top: menuTop, left: menuLeft }}
+        >
+          <MenuElementWithHandler name='NOT' />
+          <MenuElementWithHandler name='AND' />
+          <MenuElementWithHandler name='OR' />
+          <MenuElementWithHandler name='DELETE' />
+        </DropDownMenu>
+      </div>
+    );
+  }
+}
+
+export default App;
