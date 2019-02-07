@@ -15,3 +15,17 @@ const ConditionButtonFormatter = (props) => {
   //   const left = formatterConditionButton.current.offsetLeft;
   //   fromFormatter(top, left);
   //   console.log('formatter clicked');
+    // };
+    return (
+      <div
+        className='formatterClass' ref={formatterConditionButton}
+        role='presentation'
+      >
+        {children}
+      </div>
+    );
+  };
+  
+  // ConditionButtonFormatter.propTypes = { structure: PropTypes.shape };
+  
+  export default ConditionButtonFormatter;
