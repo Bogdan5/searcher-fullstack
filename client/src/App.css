@@ -1,0 +1,170 @@
+body {
+  font-family: Roboto Condensed, sans-serif;
+  background-color: white; }
+
+.App {
+  width: 90%;
+  margin: 0 auto;
+  position: relative; }
+
+.dumbButtonClass {
+  padding: 5px 7px;
+  font-size: 12px;
+  border: none;
+  border-radius: 4px;
+  font-family: inherit;
+  margin-right: 10px;
+  height: 40px;
+  min-width: 60px; }
+
+.active {
+  color: white;
+  background-color: #410b40;
+  cursor: pointer; }
+
+.inactive {
+  color: black;
+  background-color: #c4bcc6; }
+
+.headerClass {
+  text-align: center;
+  font-size: 25px;
+  padding: 20px; }
+
+.keyboardGeneric {
+  display: flex;
+  flex-direction: row;
+  font-size: 15px; }
+  .keyboardGeneric > div {
+    border: 1px solid #0e3b31;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    padding: 15px; }
+    .keyboardGeneric > div:first-child {
+      width: 20%; }
+    .keyboardGeneric > div:nth-child(2) {
+      width: 75%;
+      display: flex;
+      flex-direction: row; }
+      .keyboardGeneric > div:nth-child(2) > * {
+        margin: 0 10px; }
+  .keyboardGeneric > section {
+    width: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; }
+
+.selectedKeyboard {
+  background-color: rgba(182, 181, 181, 0.671); }
+
+.leftSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+  .leftSection > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; }
+
+.keyboardSearchKeyword input {
+  height: 20px;
+  background-color: #e5b6ee;
+  border: 1px solid #410b40;
+  border-radius: 2px; }
+
+.icon {
+  width: 25px;
+  height: 25px;
+  border: 2px solid #1e0322;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  font-size: 30px;
+  cursor: pointer; }
+  .icon:hover, .icon:active {
+    background-color: grey; }
+
+.buttonGroup > button {
+  min-width: 120px;
+  display: block;
+  margin: 5px 0; }
+
+.formatterClass {
+  min-height: 100px; }
+
+.positionInput {
+  width: 40px; }
+
+.hidden {
+  visibility: hidden; }
+
+.visible {
+  visibility: visible; }
+
+.dropDownMenu {
+  position: absolute;
+  transition: height 600ms ease-in-out;
+  min-height: 120px;
+  width: 200px;
+  background-color: silver;
+  color: #100211;
+  display: none; }
+  .dropDownMenu:hover {
+    border: 2px solid red; }
+
+.menuOption {
+  transition: height 0 ease-in-out;
+  height: 30px;
+  border: 1px solid black; }
+  .menuOption:hover {
+    background-color: grey;
+    color: white; }
+
+.deployedMenu {
+  height: 120px; }
+
+.deployedMenuCard {
+  height: 30px; }
+
+.retracted {
+  height: 0; }
+
+.z-visible {
+  display: block; }
+
+.z-invisible {
+  display: none; }
+
+.ConditionButton {
+  padding: 3px 10px;
+  border: 1px solid black;
+  border-radius: 2px;
+  min-width: 20px;
+  display: inline-block;
+  margin: 2px 4px; }
+  .ConditionButton > span:nth-child(even) {
+    background-color: aqua;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 0 5px; }
+  .ConditionButton > * {
+    display: inline-block;
+    padding: 0 5px; }
+
+.selector {
+  min-width: 140px;
+  height: 30px;
+  background-color: #59c4cc;
+  border: 1px solid #441010;
+  border-radius: 2px 0;
+  font-size: 14px; }
+
+.sortButton > div {
+  display: inline-block; }
