@@ -13,6 +13,7 @@ import MenuOption from './components/MenuOption';
 import Icon from './components/Icon';
 import SelectButton from './components/SelectButton';
 import ColumnSelector from './components/ColumnSelector';
+import UploadWindow from './components/UploadWindow';
 
 import './App.css';
 import SortButton from './components/SortButton';
@@ -264,7 +265,7 @@ class App extends Component {
    render() {
     const {
       inputVisibility, menuVisible, active, listCards,
-      menuTop, menuLeft, cardSelected, data,
+      menuTop, menuLeft, cardSelected, data, uploadWindowVisible,
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -378,6 +379,13 @@ class App extends Component {
           <MenuElementWithHandler name='OR' />
           <MenuElementWithHandler name='DELETE' />
         </DropDownMenu>
+        <UploadWindow classInput={this.state.uploadWindowVisible}>
+          <div onClick={this.openUploadWindow}>X</div>
+          <form action="/uploadfile" enctype="multipart/form-data" method="POST"> 
+            <input type="file" name="myFile" />
+            <input type="submit" value="Upload a file"/>
+          </form>
+        </UploadWindow>
       </div>
     );
   }
