@@ -230,6 +230,7 @@ body{
 }
 
 .popWindow{
+  z-index: -5;
   height: calc( 100vh - 50px );
   width: 90vw;
   background-color: antiquewhite;
