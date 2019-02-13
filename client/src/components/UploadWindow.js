@@ -5,6 +5,9 @@ const UploadWindow = (props) => {
   return (
     <div className='popWindow'>
       <div>X</div>
+      <form>
+        <button>Select file</button>
+      </form>
     </div>
   );
 }
