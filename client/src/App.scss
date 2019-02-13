@@ -233,4 +233,7 @@ body{
   height: calc( 100vh - 50px );
   width: 90vw;
   background-color: antiquewhite;
+  &>div:first-child{
+    
+  }
 }
