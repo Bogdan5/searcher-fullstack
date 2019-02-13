@@ -230,7 +230,6 @@ body{
 }
 
 .popWindow{
-  z-index: -5;
   height: calc( 100vh - 50px );
   width: 90vw;
   background-color: antiquewhite;
@@ -239,4 +238,12 @@ body{
     display: flex;
     flex-direction: row-reverse;
   }
+}
+
+.invisible{
+  z-index: -5;
+}
+
+.visible{
+  z-index: 5;
 }

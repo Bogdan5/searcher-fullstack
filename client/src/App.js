@@ -43,6 +43,7 @@ class App extends Component {
         column2: 23,
         column3: 20,
       }],
+      uploadWindowVisible: false,
     };
   }
 
@@ -258,6 +259,8 @@ class App extends Component {
      }
    }
 
+   openUploadWindow = () => this.setState({uploadWindowVisible: !this.state.uploadWindowVisible});
+
    render() {
     const {
       inputVisibility, menuVisible, active, listCards,
@@ -277,6 +280,7 @@ class App extends Component {
 
     return (
       <div className='App' ref={this.appRef}>
+        <button onClick={this.openUploadWindow}>Upload files</button>
         {/* the header with the description on the app */}
         <Header title='Data display - Search and sort' />
         { /* includes description and operator buttons */ }
