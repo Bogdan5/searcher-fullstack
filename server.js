@@ -5,7 +5,8 @@ require('custom-env').env();
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const users = require('./routes/api/users');
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
+const multer = require('multer');
 
 const app = express();
 // Bodyparser middleware
@@ -14,7 +15,10 @@ app.use(
     extended: false,
   }),
 );
-app.use(fileUpload());
+app.use(multer({
+  dest: './uploads'
+}));
+// app.use(fileUpload());
 app.use(bodyParser.json());
 // DB Config
 const db = process.env.MONGODB_URI;
