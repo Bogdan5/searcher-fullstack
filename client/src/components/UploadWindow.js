@@ -6,7 +6,7 @@ const UploadWindow = (props) => {
   return (
     <div className={`popWindow ${classInput ? 'visible' : 'invisible'}`}>
       {children}
-      <form action="/uploadfile" encType="multipart/form-data" method="POST"> 
+      <form action="/upload" encType="multipart/form-data" method="POST"> 
         <input type="file" name="myFile" />
         <input type="submit" value="Upload a file"/>
       </form>

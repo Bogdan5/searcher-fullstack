@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
 require('custom-env').env();
 
 const bodyParser = require('body-parser');
@@ -15,9 +16,7 @@ app.use(
     extended: false,
   }),
 );
-app.use(multer({
-  dest: './uploads'
-}));
+app.use(multer({ dest: './uploads' }).any());
 // app.use(fileUpload());
 app.use(bodyParser.json());
 // DB Config
