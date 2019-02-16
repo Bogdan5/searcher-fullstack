@@ -9,6 +9,7 @@ const UploadWindow = (props) => {
         {children}
         <form action="/upload" encType="multipart/form-data" method="POST"> 
           <input type="file" name="myFile" />
+          <br/>
           <input type="submit" value="Upload a file"/>
         </form>
       </div>

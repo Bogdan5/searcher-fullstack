@@ -32,7 +32,8 @@ body{
 
 .bodyContainer{
   position: relative;
-  border: 1px solid pink;
+  background-color: white;
+  height: 100vh;
 }
 
 .App{
@@ -238,12 +239,10 @@ body{
 }
 
 .backgroundPopWindow{
-  background-color:yellow;
-  opacity: 0.3;
+  background-color:rgba(240, 240, 234, 0.7);
   position: absolute;
   top: 0;
   left: 0;
-  border: 1px solid green;
   height: 100vh;
   width: 100vw;
 }
@@ -253,12 +252,14 @@ body{
   margin-left: 25vw;
   height: 50vh;
   width: 50vw;
-  background-color: antiquewhite;
+  background-color: white;
   &>div:first-child{
     width: 90%;
     display: flex;
     flex-direction: row-reverse;
   }
+  padding: 10px;;
+  border-radius: 3px;
 }
 
 .invisible{
