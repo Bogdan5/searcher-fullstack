@@ -29,11 +29,16 @@ body{
   background-color: white;
 }
 
+.bodyContainer{
+  position: relative;
+}
+
 .App{
   width: 90%;
   margin: 0 auto;
   position: relative;
   background-color: aquamarine;
+  border: 1px solid red;
 }
 
 .dumbButtonClass{
@@ -230,12 +235,19 @@ body{
 .sorterClass{
 }
 
+.backgroundPopWindow{
+  background-color: white;
+  opacity: 0.3;
+  position: absolute;
+  border: 1px solid green;
+}
+
 .popWindow{
   position: absolute;
   top: 25px;
-  left: 5vw;
+  left: 25px;
   height: calc( 100vh - 50px );
-  width: 90vw;
+  width: calc(100vw - 50px);
   background-color: antiquewhite;
   &>div:first-child{
     width: 90%;
