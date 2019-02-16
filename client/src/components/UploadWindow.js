@@ -4,8 +4,8 @@ import '../App.css';
 const UploadWindow = (props) => {
   const { classInput, children } = props;
   return (
-    <div className='backgroundPopWindow'>
-      <div className={`popWindow ${classInput ? 'visible' : 'invisible'}`}>
+    <div className={`backgroundPopWindow ${classInput ? 'visible' : 'invisible'}`}>
+      <div className='popWindow'>
         {children}
         <form action="/upload" encType="multipart/form-data" method="POST"> 
           <input type="file" name="myFile" />

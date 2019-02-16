@@ -27,16 +27,18 @@ $greyed-out: rgb(196, 188, 198);
 body{
   font-family: Roboto Condensed, sans-serif;
   background-color: white;
+  box-sizing: border-box;
 }
 
 .bodyContainer{
   position: relative;
+  border: 1px solid pink;
 }
 
 .App{
   width: 90%;
   margin: 0 auto;
-  position: relative;
+  // position: relative;
   background-color: aquamarine;
   border: 1px solid red;
 }
@@ -236,18 +238,21 @@ body{
 }
 
 .backgroundPopWindow{
-  background-color: white;
+  background-color:yellow;
   opacity: 0.3;
   position: absolute;
+  top: 0;
+  left: 0;
   border: 1px solid green;
+  height: 100vh;
+  width: 100vw;
 }
 
 .popWindow{
-  position: absolute;
-  top: 25px;
-  left: 25px;
-  height: calc( 100vh - 50px );
-  width: calc(100vw - 50px);
+  margin-top: 25vh;
+  margin-left: 25vw;
+  height: 50vh;
+  width: 50vw;
   background-color: antiquewhite;
   &>div:first-child{
     width: 90%;
