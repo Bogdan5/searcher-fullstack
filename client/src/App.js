@@ -382,7 +382,10 @@ class App extends Component {
           </DropDownMenu>
         </div>
         <UploadWindow classInput={this.state.uploadWindowVisible}>
-          <div onClick={this.openUploadWindow}>X</div>
+          <div className='popHeader'>
+            <div></div>
+            <div onClick={this.openUploadWindow}>X</div>
+          </div>
         </UploadWindow>
       </div>
     );
