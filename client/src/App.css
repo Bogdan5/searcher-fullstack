@@ -86,7 +86,9 @@ body {
   width: 25px;
   height: 25px;
   border: 2px solid #1e0322;
-  border-radius: 50%;
+  line-height: 25px;
+  display: flex;
+  align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
