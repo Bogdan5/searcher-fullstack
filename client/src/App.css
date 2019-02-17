@@ -189,19 +189,16 @@ body {
   height: 50vh;
   width: 50vw;
   background-color: white;
-  padding: 10px;
+  padding: 20px;
   border-radius: 3px; }
   .popWindow > div:first-child {
     width: 90%;
     display: flex;
-    flex-direction: row;
-    border: 1px solid red; }
+    flex-direction: row-reverse; }
     .popWindow > div:first-child > div:first-child {
-      width: 90%; }
-    .popWindow > div:first-child > div:last-child {
       width: 10%;
-      border: 1px solid green; }
-      .popWindow > div:first-child > div:last-child:hover {
+      text-align: center; }
+      .popWindow > div:first-child > div:first-child:hover {
         background-color: red;
         color: white; }
 

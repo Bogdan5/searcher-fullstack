@@ -383,7 +383,6 @@ class App extends Component {
         </div>
         <UploadWindow classInput={this.state.uploadWindowVisible}>
           <div className='popHeader'>
-            <div></div>
             <div onClick={this.openUploadWindow}>X</div>
           </div>
         </UploadWindow>
