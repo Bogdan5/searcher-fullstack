@@ -238,6 +238,7 @@ body{
 .sorterClass{
 }
 
+// background of the pop window
 .backgroundPopWindow{
   background-color:rgba(240, 240, 234, 0.7);
   position: absolute;
@@ -247,6 +248,7 @@ body{
   width: 100vw;
 }
 
+// center of window that becomes visible when navbar buttons are pressed
 .popWindow{
   margin-top: 25vh;
   margin-left: 25vw;
@@ -270,6 +272,7 @@ body{
   border-radius: 3px;
 }
 
+// classes that are added to make windows visible or not
 .invisible{
   z-index: -5;
 }
@@ -278,6 +281,7 @@ body{
   z-index: 5;
 }
 
+// navigation bar
 .navBar{
   height: 50px;
   display: flex;
