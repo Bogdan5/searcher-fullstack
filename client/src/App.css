@@ -214,4 +214,5 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  align-items: center; }
+  align-items: center;
+  background-color: #0e3b31; }

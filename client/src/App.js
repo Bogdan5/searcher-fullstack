@@ -282,11 +282,11 @@ class App extends Component {
 
     return (
       <div className='bodyContainer'>
+        <NavBar>
+          <button onClick={this.openUploadWindow}>Upload files</button>
+          <button onClick={this.openUploadWindow}>Upload files</button>
+        </NavBar>
         <div className='App' ref={this.appRef}>
-          <NavBar>
-            <button onClick={this.openUploadWindow}>Upload files</button>
-            <button onClick={this.openUploadWindow}>Upload files</button>
-          </NavBar>
           {/* the header with the description on the app */}
           <Header title='Data display - Search and sort' />
           { /* includes description and operator buttons */ }
