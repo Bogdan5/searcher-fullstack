@@ -120,12 +120,10 @@ body{
   height: 25px;
   border: 2px solid rgb(30, 3, 34);
   line-height: 25px;
-  display: flex;
-  align-items: center;
-  // border-radius: 50%;
+  border-radius: 50%;
   @include center-both-ways;
-  font-weight: 800;
-  font-size: 30px;
+  font-weight: 900;
+  font-size: 25px;
   cursor: pointer;
   &:hover, &:active{
     background-color: grey;

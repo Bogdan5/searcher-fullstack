@@ -14,6 +14,7 @@ import Icon from './components/Icon';
 import SelectButton from './components/SelectButton';
 import ColumnSelector from './components/ColumnSelector';
 import UploadWindow from './components/UploadWindow';
+import NavBar from './components/NavBar';
 
 import './App.css';
 import SortButton from './components/SortButton';
@@ -282,7 +283,7 @@ class App extends Component {
     return (
       <div className='bodyContainer'>
         <div className='App' ref={this.appRef}>
-          <button onClick={this.openUploadWindow}>Upload files</button>
+
           {/* the header with the description on the app */}
           <Header title='Data display - Search and sort' />
           { /* includes description and operator buttons */ }
