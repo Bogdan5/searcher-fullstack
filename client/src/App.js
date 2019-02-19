@@ -238,7 +238,10 @@ class App extends Component {
        case 'CANCEL':
          this.setState({ currentOperation: [] });
          break;
-       default:
+       case 'Sign up':
+       case 'Sign in':
+       case 'Upload file':
+         default:
      }
    };
  
@@ -283,6 +286,9 @@ class App extends Component {
     return (
       <div className='bodyContainer'>
         <NavBar>
+          <ButtonWithHandler name='Upload files' />
+          <ButtonWithHandler name='Sign in' />
+          <ButtonWithHandler name='Sign up' />
           <button onClick={this.openUploadWindow}>Upload files</button>
           <button onClick={this.openUploadWindow}>Upload files</button>
         </NavBar>
