@@ -45,7 +45,7 @@ class App extends Component {
         column2: 23,
         column3: 20,
       }],
-      uploadWindowVisible: false,
+      windowVisible: false,
     };
   }
 
@@ -239,9 +239,19 @@ class App extends Component {
          this.setState({ currentOperation: [] });
          break;
        case 'Sign up':
+         this.setState({ windowVisible: 'Sign up'});
+         break;
        case 'Sign in':
+        this.setState({ windowVisible: 'Sign in'});
+        break;
        case 'Upload file':
-         default:
+         this.setState({ windowVisible: 'Upload file'});
+         break;
+       default:
+
+       if (this.state.windowVisible) {
+         this.openWindow();
+       }
      }
    };
  
@@ -264,7 +274,9 @@ class App extends Component {
      }
    }
 
-   openUploadWindow = () => this.setState({uploadWindowVisible: !this.state.uploadWindowVisible});
+   openWindow = () => {
+    this.setState({windowVisible: !this.state.uploadWindowVisible});
+   }
 
    render() {
     const {
