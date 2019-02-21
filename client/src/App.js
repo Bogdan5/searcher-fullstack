@@ -378,6 +378,7 @@ class App extends Component {
               >
                 <ConditionButtonFormatter fromFormatter={this.fromFormat}>
                   {el.listElements.map((elem) => {
+                    // extends the functionality of the element with 
                     const copy = React.cloneElement(elem, { card: el.id });
                     return copy;
                   })}

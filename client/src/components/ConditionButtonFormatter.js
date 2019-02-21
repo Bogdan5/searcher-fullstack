@@ -6,7 +6,7 @@ import React from 'react';
 // import ConditionButton from './ConditionButton';
 import '../App.css';
 
-// the area where queries are dislayed as they are constructed
+// the area where queries buttons are dislayed as they are constructed
 const ConditionButtonFormatter = (props) => {
   const { children } = props;
   const formatterConditionButton = React.createRef();
