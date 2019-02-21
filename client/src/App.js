@@ -274,14 +274,10 @@ class App extends Component {
      }
    }
 
-   openWindow = () => {
-    this.setState({windowVisible: !this.state.uploadWindowVisible});
-   }
-
    render() {
     const {
       inputVisibility, menuVisible, active, listCards,
-      menuTop, menuLeft, cardSelected, data, uploadWindowVisible,
+      menuTop, menuLeft, cardSelected, data, windowVisible,
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -403,7 +399,7 @@ class App extends Component {
             <MenuElementWithHandler name='DELETE' />
           </DropDownMenu>
         </div>
-        <UploadWindow classInput={this.state.uploadWindowVisible}>
+        <UploadWindow classInput={windowVisible}>
           <div className='popHeader'>
             <div onClick={this.openUploadWindow}>X</div>
           </div>
