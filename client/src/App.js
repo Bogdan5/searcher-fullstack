@@ -293,6 +293,7 @@ class App extends Component {
 
     return (
       <div className='bodyContainer'>
+        {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
           <ButtonWithHandler name='Upload files' />
           <ButtonWithHandler name='Sign in' />
@@ -300,6 +301,7 @@ class App extends Component {
           <button onClick={this.openUploadWindow}>Upload files</button>
           <button onClick={this.openUploadWindow}>Upload files</button>
         </NavBar>
+        {/* main application */}
         <div className='App' ref={this.appRef}>
           {/* the header with the description on the app */}
           <Header title='Data display - Search and sort' />
@@ -331,9 +333,13 @@ class App extends Component {
             <ButtonWithHandler name='SUBMIT' visibility={inputVisibility} />
             <ButtonWithHandler name='CANCEL' />
           </Keyboard>
-          {/* includes the query structure */}
+          {/* an array of cards with the result of Keyword input - includes the
+          search structure based on which the uploaded data will be sorted and displayed*/}
           {listCards.map((el, index) => {
+            // this variable determines the kinds of icons are placed on the right of these cards
+            // if the card is the last one, only the '-' one, two ('+' and '-') for the rest
             const iconsArray = (listCards.length === index + 1) ? ['+', '-'] : ['-'];
+            // this function adds each button to the left of each card based on the array in iconsArray
             const iconsElements = (
               <div>
                 {iconsArray.map((item, ind) => {
@@ -347,6 +353,7 @@ class App extends Component {
                 })}
               </div>
             );
+            // the left component of the card - determines whether card used or what columns are displayed
             const typeContent = (
               <div>
                 <SelectButton card={el.id} fromSelect={this.selectCard}>Select</SelectButton>
