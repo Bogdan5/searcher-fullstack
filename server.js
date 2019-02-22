@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const fs = require('fs');
 require('custom-env').env();
 
 const bodyParser = require('body-parser');
@@ -8,8 +9,31 @@ const passport = require('passport');
 const users = require('./routes/api/users');
 // const fileUpload = require('express-fileupload');
 const multer = require('multer');
+const csv = require('fast-csv');
 
+const Router = express.Router;
+const upload = multer({ dest: 'tmp/csv/' });
 const app = express();
+const router = new Router();
+const server = http.createServer(app);
+const port = 9000;
+
+router.post('/', upload.single('file'), function (req, res) {
+});
+
+app.use('/upload-csv', router);
+
+function startServer() {
+  server.listen(port, function () {
+    console.log('Express server listening on ', port);
+  });
+}
+
+setImmediate(startServer);
+
+
+
+
 // Bodyparser middleware
 app.use(
   bodyParser.urlencoded({
