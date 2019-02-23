@@ -18,12 +18,17 @@ const router = new Router();
 const server = http.createServer(app);
 const port = 9000;
 
-router.post('/', upload.single('file'), function (req, res) {
+router.post('/upload', upload.single('file'), function (req, res) {
   const fileRows = [];
 
   // open uploaded file
   csv.fromPath(req.file.path)
     .on("data", function (data) {
+      if (fileRows.length === 1) {
+        const header = fileRows[0];
+        const headerArray = header.split(',');
+        const trimmed = headerArray.map(el => el.trim());
+      }
       fileRows.push(data); // push each row
     })
     .on("end", function () {
