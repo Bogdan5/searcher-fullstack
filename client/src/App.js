@@ -274,6 +274,10 @@ class App extends Component {
      }
    }
 
+   openUploadWindow = () => {
+      this.setState({ windowVisible: true });
+   }
+
    render() {
     const {
       inputVisibility, menuVisible, active, listCards,
@@ -295,9 +299,9 @@ class App extends Component {
       <div className='bodyContainer'>
         {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
-          <ButtonWithHandler name='Upload files' />
+          {/* <ButtonWithHandler name='Upload files' />
           <ButtonWithHandler name='Sign in' />
-          <ButtonWithHandler name='Sign up' />
+          <ButtonWithHandler name='Sign up' /> */}
           <button onClick={this.openUploadWindow}>Upload files</button>
           <button onClick={this.openUploadWindow}>Upload files</button>
         </NavBar>
