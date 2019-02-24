@@ -8,7 +8,7 @@ const UploadWindow = (props) => {
       <div className='popWindow'>
         {children}
         <br/>
-        <form action="/upload" encType="multipart/form-data" method="POST"> 
+        <form action="/upload-csv" encType="multipart/form-data" method="POST"> 
           <input type="file" name="myFile" />
           <br/>
           <br/>

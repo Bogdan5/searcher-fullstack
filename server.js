@@ -17,19 +17,20 @@ const upload = multer({ dest: 'tmp/csv/' });
 const app = express();
 const router = new Router();
 const server = http.createServer(app);
-const port = 9000;
+const port = 5000;
 
-router.post('/upload', upload.single('file'), function (req, res) {
+router.post('/', upload.single('myFile'), function (req, res) {
+  console.log('start post');
   const fileRows = [];
 
   // open uploaded file
   csv.fromPath(req.file.path)
     .on("data", function (data) {
-      if (fileRows.length === 1) {
-        const header = fileRows[0];
-        const headerArray = header.split(',');
-        const trimmed = headerArray.map(el => el.trim());
-      }
+      // if (fileRows.length === 1) {
+      //   const header = fileRows[0];
+      //   const headerArray = header.split(',');
+      //   const trimmed = headerArray.map(el => el.trim());
+      // }
       fileRows.push(data); // push each row
     })
     .on("end", function () {
