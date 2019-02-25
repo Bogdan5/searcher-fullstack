@@ -275,7 +275,11 @@ class App extends Component {
    }
 
    openUploadWindow = () => {
-      this.setState({ windowVisible: true });
+    this.setState({ windowVisible: true });
+ }
+
+   closeUploadWindow = () => {
+      this.setState({ windowVisible: false });
    }
 
    render() {
@@ -295,6 +299,9 @@ class App extends Component {
     const propertiesMenu = { fromMenu: this.menuClickHandler };
     const MenuElementWithHandler = ComponentEnhancer(MenuOption, propertiesMenu);
 
+    // adds handler to the navbar buttons
+    const NavBarButtons = ComponentEnhancer(DumbButton, )
+
     return (
       <div className='bodyContainer'>
         {/* navigation bar with upload, sign up, and sign in buttons */}
@@ -302,8 +309,8 @@ class App extends Component {
           {/* <ButtonWithHandler name='Upload files' />
           <ButtonWithHandler name='Sign in' />
           <ButtonWithHandler name='Sign up' /> */}
-          <button onClick={this.openUploadWindow}>Upload files</button>
-          <button onClick={this.openUploadWindow}>Upload files</button>
+          {/* <button onClick={this.openUploadWindow}>Upload files</button>
+          <button onClick={this.openUploadWindow}>Upload files</button> */}
         </NavBar>
         {/* main application */}
         <div className='App' ref={this.appRef}>
@@ -413,7 +420,7 @@ class App extends Component {
         </div>
         <UploadWindow classInput={windowVisible}>
           <div className='popHeader'>
-            <div onClick={this.openUploadWindow}>X</div>
+            <div onClick={this.toggleUploadWindow}>X</div>
           </div>
         </UploadWindow>
       </div>
