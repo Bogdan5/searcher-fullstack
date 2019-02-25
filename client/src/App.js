@@ -15,6 +15,7 @@ import SelectButton from './components/SelectButton';
 import ColumnSelector from './components/ColumnSelector';
 import UploadWindow from './components/UploadWindow';
 import NavBar from './components/NavBar';
+import ComponentChildAdder from './components/ComponentChildAdder';
 
 import './App.css';
 import SortButton from './components/SortButton';
@@ -325,7 +326,7 @@ class App extends Component {
         <div onClick={this.closeUploadWindow}>X</div>
       </div>
     );
-    const PopupWindowEnhanced = ComponentChildAdder();
+    const PopupWindowEnhanced = ComponentChildAdder(UploadWindow, closingButton, 0);
 
     return (
       <div className='bodyContainer'>
@@ -443,9 +444,21 @@ class App extends Component {
             <MenuElementWithHandler name='DELETE' />
           </DropDownMenu>
         </div>
-        <UploadWindow classInput={windowVisible}>
-
-        </UploadWindow>
+        <PopupWindowEnhanced classInput={windowVisible}>
+          {
+            (() => {
+              switch (this.state.windowKind) {
+                case 'upload':
+                  return (
+                    
+                  )
+                case 'signup':
+                case 'signin':
+                default:
+              }
+            })()
+          }
+        </PopupWindowEnhanced>
       </div>
     );
   }
