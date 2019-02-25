@@ -46,6 +46,7 @@ class App extends Component {
         column3: 20,
       }],
       windowVisible: false,
+      windowKind: false,
     };
   }
 
@@ -283,7 +284,18 @@ class App extends Component {
    }
 
    navbarClickHandler = (name) => {
-     console.log('navbar clicked ', name);
+     switch (name) {
+      case 'Upload files':
+        this.setState({ windowKind: 'upload'});
+        break;
+      case 'Sign up':
+        this.setState({ windowKind: 'signup'});
+        break;
+      case 'Sign in':
+        this.setState({ windowKind: 'signin'});
+        break;
+      default:
+     }
    }
 
    render() {
@@ -306,6 +318,14 @@ class App extends Component {
     // adds handler to the navbar buttons
     const navbarProps = { fromButton: this.navbarClickHandler };
     const NavbarButtons = ComponentEnhancer(DumbButton, navbarProps);
+
+    // adds a closing button to all the pop-up windows (upload, signup, and signin)
+    const closingButton = (
+      <div className='popHeader'>
+        <div onClick={this.closeUploadWindow}>X</div>
+      </div>
+    );
+    const PopupWindowEnhanced = ComponentChildAdder();
 
     return (
       <div className='bodyContainer'>
@@ -424,9 +444,7 @@ class App extends Component {
           </DropDownMenu>
         </div>
         <UploadWindow classInput={windowVisible}>
-          <div className='popHeader'>
-            <div onClick={this.toggleUploadWindow}>X</div>
-          </div>
+
         </UploadWindow>
       </div>
     );
