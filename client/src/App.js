@@ -282,6 +282,10 @@ class App extends Component {
       this.setState({ windowVisible: false });
    }
 
+   navbarClickHandler = (name) => {
+     console.log('navbar clicked ', name);
+   }
+
    render() {
     const {
       inputVisibility, menuVisible, active, listCards,
@@ -300,15 +304,16 @@ class App extends Component {
     const MenuElementWithHandler = ComponentEnhancer(MenuOption, propertiesMenu);
 
     // adds handler to the navbar buttons
-    const NavBarButtons = ComponentEnhancer(DumbButton, )
+    const navbarProps = { fromButton: this.navbarClickHandler };
+    const NavbarButtons = ComponentEnhancer(DumbButton, navbarProps);
 
     return (
       <div className='bodyContainer'>
         {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
-          {/* <ButtonWithHandler name='Upload files' />
-          <ButtonWithHandler name='Sign in' />
-          <ButtonWithHandler name='Sign up' /> */}
+          <NavbarButtons name='Upload files' />
+          <NavbarButtons name='Sign in' />
+          <NavbarButtons name='Sign up' />
           {/* <button onClick={this.openUploadWindow}>Upload files</button>
           <button onClick={this.openUploadWindow}>Upload files</button> */}
         </NavBar>
