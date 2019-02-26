@@ -19,6 +19,7 @@ import ComponentChildAdder from './components/ComponentChildAdder';
 
 import './App.css';
 import SortButton from './components/SortButton';
+import BackgroundPopWindow from './components/BackgroundPopWindow';
 
 class App extends Component {
   constructor(props) {
@@ -444,21 +445,11 @@ class App extends Component {
             <MenuElementWithHandler name='DELETE' />
           </DropDownMenu>
         </div>
-        <PopupWindowEnhanced classInput={windowVisible}>
-          {
-            (() => {
-              switch (this.state.windowKind) {
-                case 'upload':
-                  return (
-                    
-                  )
-                case 'signup':
-                case 'signin':
-                default:
-              }
-            })()
-          }
-        </PopupWindowEnhanced>
+        <BackgroundPopWindow classInput={windowVisible}>
+          <PopupWindowEnhanced>
+
+          </PopupWindowEnhanced>
+        </BackgroundPopWindow>
       </div>
     );
   }
