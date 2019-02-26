@@ -303,7 +303,7 @@ class App extends Component {
    render() {
     const {
       inputVisibility, menuVisible, active, listCards,
-      menuTop, menuLeft, cardSelected, data, windowVisible,
+      menuTop, menuLeft, cardSelected, data, windowVisible, windowKind
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -447,7 +447,24 @@ class App extends Component {
         </div>
         <BackgroundPopWindow classInput={windowVisible}>
           <PopupWindowEnhanced>
-
+            {(() => {
+              switch (windowKind) {
+                case 'upload':
+                  return (
+                    <div>
+                      <br/>
+                      <form action="/upload-csv" encType="multipart/form-data" method="POST"> 
+                        <input type="file" name="myFile" />
+                        <br/>
+                        <br/>
+                        <input type="submit" value="Upload a file"/>
+                      </form>
+                    </div>
+                  );
+                default:
+                  
+              }
+            })}
           </PopupWindowEnhanced>
         </BackgroundPopWindow>
       </div>
