@@ -461,6 +461,18 @@ class App extends Component {
                       </form>
                     </div>
                   );
+                case 'signup':
+                  return (
+                    <div>
+
+                    </div>
+                  );
+                case 'signin':
+                  return (
+                    <div>
+                      
+                    </div>
+                  );
                 default:
                   
               }
