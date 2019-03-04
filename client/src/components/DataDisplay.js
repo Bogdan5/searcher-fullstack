@@ -7,8 +7,8 @@ const DataDisplay = (props) => {
   return (<div className='dataDisplay'>{data}</div>);
 };
 
-DataDisplay.propTypes = {
-  data: PropTypes.object.isRequired
-};
+// DataDisplay.propTypes = {
+//   data: PropTypes.object.isRequired
+// };
 
 export default DataDisplay;

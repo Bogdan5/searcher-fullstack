@@ -242,13 +242,13 @@ class App extends Component {
          this.setState({ currentOperation: [] });
          break;
        case 'Sign up':
-         this.setState({ windowVisible: 'Sign up'});
+         this.setState({ windowKind: 'Sign up'});
          break;
        case 'Sign in':
-        this.setState({ windowVisible: 'Sign in'});
+        this.setState({ windowKind: 'Sign in'});
         break;
        case 'Upload file':
-         this.setState({ windowVisible: 'Upload file'});
+         this.setState({ windowKind: 'Upload file'});
          break;
        default:
 

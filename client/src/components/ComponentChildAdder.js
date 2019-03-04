@@ -1,11 +1,14 @@
 import React from 'react';
 
 const ComponentChildAdder = (WrappedComponent, addedElement, position) => (props) => {
+  console.log('Wrapped Component', WrappedComponent);
   const { children } = props;
-  children.splice(position, addedElement);
+  const childrenArray = React.Children.toArray(children);
+  childrenArray.splice(position, addedElement);
+  console.log('childrenArray', childrenArray);
   return (
     <WrappedComponent>
-      {children}
+      {childrenArray}
     </WrappedComponent>
   );
 }

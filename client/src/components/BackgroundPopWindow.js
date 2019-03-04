@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import '../App.css';
 
 const BackgroundPopWindow = (props) => {
-  const {classInput, children} = this.props;
+  const {classInput, children} = props;
   return (
     <div  className={`backgroundPopWindow ${classInput ? 'visible' : 'invisible'}`}>
       {children}
@@ -11,8 +11,8 @@ const BackgroundPopWindow = (props) => {
   )
 }
 
-BackgroundPopWindow.propTypes = {
-  classInput: PropTypes.string.isRequired
-};
+// BackgroundPopWindow.propTypes = {
+//   classInput: PropTypes.string.isRequired
+// };
 
 export default BackgroundPopWindow;
