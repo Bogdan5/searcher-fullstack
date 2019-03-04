@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../App.css';
 
 const Icon = (props) => {
@@ -13,6 +14,11 @@ const Icon = (props) => {
       {type}
     </div>
   );
+};
+
+Icon.propTypes = {
+  fromIcon: PropTypes.func.isRequired,
+  keyboardNo: PropTypes.number.isRequired
 };
 
 export default Icon;

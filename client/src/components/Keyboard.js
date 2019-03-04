@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import '../App.css';
 
 // this component includes a description on the left and to the right a set of\
@@ -17,6 +17,12 @@ const Keyboard = (props) => {
   );
 };
 
-// Keyboard.propTypes = { typeContent: PropTypes.string.isRequired };
+Keyboard.propTypes = {
+  typeContent: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  cardSelected: PropTypes.number.isRequired,
+  leftSection: PropTypes.string.isRequired,
+  rightSection: PropTypes.element
+};
 
 export default Keyboard;

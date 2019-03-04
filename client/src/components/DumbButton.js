@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../App.css';
 
 // basic button pressed to construct queries
@@ -16,6 +17,10 @@ const DumbButton = (props) => {
       {name}
     </button>
   );
+};
+
+DumbButton.propTypes = {
+  name: PropTypes.string.isRequired
 };
 
 export default DumbButton;
