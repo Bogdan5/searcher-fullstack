@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../App.css';
 
 // basic button pressed to construct queries
@@ -20,5 +21,11 @@ const ConditionButton = (props) => {
     </div>
   );
 };
+
+ConditionButton.propTypes = {
+  id: PropTypes.number.isRequired,
+  fromConditional: PropTypes.func.isRequired,
+  card: PropTypes.number.isRequired
+}
 
 export default ConditionButton;
