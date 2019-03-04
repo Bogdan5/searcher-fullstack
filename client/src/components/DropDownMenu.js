@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../App.css';
 
 // this component includes a set of buttons
@@ -16,6 +17,12 @@ const DropDownMenu = (props) => {
       {children}
     </div>
   );
+};
+
+DropDownMenu.propTypes = {
+  menuVisible: PropTypes.bool.isRequired,
+  mouseOutMenu: PropTypes.func.isRequired,
+  style: PropTypes.object.isRequired
 };
 
 export default DropDownMenu;
