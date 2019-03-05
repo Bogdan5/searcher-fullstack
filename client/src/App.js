@@ -288,14 +288,14 @@ class App extends Component {
    navbarClickHandler = (name) => {
      switch (name) {
       case 'Upload files':
-        this.setState({ windowKind: 'upload'});
+        this.setState({ windowKind: 'upload', windowVisible: true });
         console.log('Upload clicked', this.state.windowKind);
         break;
       case 'Sign up':
-        this.setState({ windowKind: 'signup'});
+        this.setState({ windowKind: 'signup', windowVisible: true });
         break;
       case 'Sign in':
-        this.setState({ windowKind: 'signin'});
+        this.setState({ windowKind: 'signin', windowVisible: true });
         break;
       default:
      }
@@ -451,6 +451,7 @@ class App extends Component {
             <MenuElementWithHandler name='DELETE' />
           </DropDownMenu>
         </div>
+        {console.log('windowVisible', windowVisible)}
         <BackgroundPopWindow classInput={windowVisible}>
           <PopupWindowEnhanced classInput={windowVisible}>
             {(() => {
