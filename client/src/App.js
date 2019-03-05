@@ -48,7 +48,7 @@ class App extends Component {
         column3: 20,
       }],
       windowVisible: false,
-      windowKind: false,
+      windowKind: 'upload',
     };
   }
 
@@ -289,6 +289,7 @@ class App extends Component {
      switch (name) {
       case 'Upload files':
         this.setState({ windowKind: 'upload'});
+        console.log('Upload clicked', this.state.windowKind);
         break;
       case 'Sign up':
         this.setState({ windowKind: 'signup'});
@@ -299,6 +300,10 @@ class App extends Component {
       default:
      }
    }
+
+   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+   /////////////////////////////////////RENDER///////////////////////////////////////////////////////////////
+   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
    render() {
     const {
@@ -352,7 +357,8 @@ class App extends Component {
           {/* the card that constructs conditional buttons */}
           <Keyboard
             leftSection='Search keyword' classProp=' keyboardSearchKeyword'
-            icon=''
+            icon='' typeContent=''
+            id={0} cardSelected={0}
           >
             <ButtonGroup>
               <ButtonWithHandler name='INCLUDES' />
@@ -446,7 +452,7 @@ class App extends Component {
           </DropDownMenu>
         </div>
         <BackgroundPopWindow classInput={windowVisible}>
-          <PopupWindowEnhanced>
+          <PopupWindowEnhanced classInput={windowVisible}>
             {(() => {
               switch (windowKind) {
                 case 'upload':
@@ -476,7 +482,7 @@ class App extends Component {
                 default:
                   
               }
-            })}
+            })()}
           </PopupWindowEnhanced>
         </BackgroundPopWindow>
       </div>

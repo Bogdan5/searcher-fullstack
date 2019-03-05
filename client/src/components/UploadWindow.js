@@ -15,7 +15,7 @@ const UploadWindow = (props) => {
 }
 
 UploadWindow.propTypes = {
-  classInput: PropTypes.string.isRequired
+  classInput: PropTypes.bool.isRequired
 };
 
 export default UploadWindow;

@@ -11,8 +11,8 @@ const BackgroundPopWindow = (props) => {
   )
 }
 
-// BackgroundPopWindow.propTypes = {
-//   classInput: PropTypes.string.isRequired
-// };
+BackgroundPopWindow.propTypes = {
+  classInput: PropTypes.bool.isRequired
+};
 
 export default BackgroundPopWindow;
