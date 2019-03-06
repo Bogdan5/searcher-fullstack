@@ -17,7 +17,13 @@ const upload = multer({ dest: 'tmp/csv/' });
 const app = express();
 const router = new Router();
 const server = http.createServer(app);
-const port = 5000;
+const port = process.env.PORT || 5000;
+
+// Body parser middleware
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
+app.get('/', (req, res) => res.send('Hello World'));
 
 router.post('/', upload.single('myFile'), function (req, res) {
   console.log('start post');
