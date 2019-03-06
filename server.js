@@ -3,18 +3,22 @@ const mongoose = require('mongoose');
 const path = require('path');
 const fs = require('fs');
 require('custom-env').env();
-
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const users = require('./routes/api/users');
-// const fileUpload = require('express-fileupload');
 const multer = require('multer');
 const csv = require('fast-csv');
 const http = require('http');
 
+const users = require('./routes/api/users');
+const uploadCSV = require('./routes/api/upload-csv');
+// const fileUpload = require('express-fileupload');
+
+
 const Router = express.Router;
 const upload = multer({ dest: 'tmp/csv/' });
+
 const app = express();
+
 const router = new Router();
 const server = http.createServer(app);
 const port = process.env.PORT || 5000;
@@ -46,7 +50,9 @@ router.post('/', upload.single('myFile'), function (req, res) {
     })
 });
 
-app.use('/upload-csv', router);
+// Use routes
+app.use('/api/users', users);
+app.use('/api/upload-csv', uploadCSV);
 
 // Start server
 function startServer() {
