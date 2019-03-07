@@ -1,9 +1,9 @@
 const express = require('express');
-
-const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('custom-env').env();
+
+const router = express.Router();
 
 // Load input validation
 const validateRegisterInput = require('../../validation/register');
