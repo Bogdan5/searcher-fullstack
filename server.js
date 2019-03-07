@@ -6,7 +6,6 @@ require('custom-env').env();
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const multer = require('multer');
-const csv = require('fast-csv');
 const http = require('http');
 
 const users = require('./routes/api/users');
@@ -27,9 +26,13 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+// Passport middleware
+app.use(passport.initialize());
+
+// Passport Config
+require('./config/passport')(passport);
+
 app.get('/', (req, res) => res.send('Hello World'));
-
-
 
 // Use routes
 app.use('/api/users', users);

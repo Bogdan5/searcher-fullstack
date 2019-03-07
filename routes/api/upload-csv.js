@@ -1,12 +1,17 @@
+const express = require('express');
+const fs = require('fs');
+const csv = require('fast-csv');
+
 const router = express.Router();
 
 // Load User model
 const User = require('../../models/User');
 
 // @route POST api/upload-csv
-// @desc Register user
+// @desc Upload file
 // @access Public
-router.post('/', upload.single('myFile'), function (req, res) {
+router.post('/', passport.authenticate('jwt', { session: false }),
+  upload.single('myFile'), function (req, res) {
   console.log('start post');
   const fileRows = [];
 
