@@ -498,7 +498,22 @@ class App extends Component {
                 case 'signin':
                   return (
                     <div>
-                      
+                      <form onSubmit={this.onSignIn}>
+                        <div>Email</div>
+                        <input
+                          type='text' placeholder='Email address'
+                          name='email' value={this.state.name}
+                          onChange={this.onChange}
+                        />
+                        <div>Password</div>
+                        <input
+                          type='password' placeholder='Password'
+                          name='password' value={this.state.password}
+                          onChange={this.onChange}
+                        />
+                        <div>Confirm password</div>
+                        <input type="submit" className="btn btn-info btn-block mt-4" />
+                      </form>
                     </div>
                   );
                 default:
