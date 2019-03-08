@@ -302,6 +302,34 @@ class App extends Component {
      }
    }
 
+   onChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+   onSignIn = (e) => {
+    e.preventDefault();
+    const user = {
+      email: this.state.email,
+      password: this.state.password
+    }
+    console.log(user);
+   }
+
+   onSubmit(e) {
+    e.preventDefault();
+    const newUser = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      password2: this.state.password2
+    }
+    axios.post('/api/users/register', newUser)
+      .then(res => console.log(res.data))
+      .catch(err => this.setState({ errors: err.response.data }))
+  }
+  
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
    /////////////////////////////////////RENDER///////////////////////////////////////////////////////////////
    /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -511,7 +539,6 @@ class App extends Component {
                           name='password' value={this.state.password}
                           onChange={this.onChange}
                         />
-                        <div>Confirm password</div>
                         <input type="submit" className="btn btn-info btn-block mt-4" />
                       </form>
                     </div>
