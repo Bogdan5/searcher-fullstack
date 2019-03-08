@@ -18,10 +18,10 @@ const Keyboard = (props) => {
 };
 
 Keyboard.propTypes = {
-  typeContent: PropTypes.string.isRequired,
+  // typeContent: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   cardSelected: PropTypes.number.isRequired,
-  leftSection: PropTypes.string.isRequired,
+  // leftSection: PropTypes.string.isRequired,
   // rightSection: PropTypes.element
 };
 

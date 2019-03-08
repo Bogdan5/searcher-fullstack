@@ -1,8 +1,11 @@
 const express = require('express');
 const fs = require('fs');
 const csv = require('fast-csv');
+const multer = require('multer');
 
 const router = express.Router();
+const passport = require('passport');
+const upload = multer({ dest: 'tmp/csv/' });
 
 // Load User model
 const User = require('../../models/User');

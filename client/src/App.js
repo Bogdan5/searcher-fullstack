@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Keyboard from './components/Keyboard';
 import ButtonGroup from './components/ButtonGroup';
 import DataDisplay from './components/DataDisplay';
@@ -49,6 +50,7 @@ class App extends Component {
       }],
       windowVisible: false,
       windowKind: 'upload',
+      name: '',
     };
   }
 
@@ -175,7 +177,7 @@ class App extends Component {
        keyword, keywordButtonClicked, cardSelected,
        position, idConditional, listCards,
      } = this.state;
-     const { listOperations } = listCards[cardSelected];
+    //  const { listOperations } = listCards[cardSelected];
  
      // function that determines whether the keyword matches the data at the required position
      const include = (word, posit) => (data) => {
@@ -302,10 +304,11 @@ class App extends Component {
      }
    }
 
-   onChange = (e) => {
+   handleInputChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
     });
+    console.log('input ', e.target.value);
   }
 
    onSignIn = (e) => {
@@ -329,7 +332,7 @@ class App extends Component {
       .then(res => console.log(res.data))
       .catch(err => this.setState({ errors: err.response.data }))
   }
-  
+
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
    /////////////////////////////////////RENDER///////////////////////////////////////////////////////////////
    /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -480,7 +483,6 @@ class App extends Component {
             <MenuElementWithHandler name='DELETE' />
           </DropDownMenu>
         </div>
-        {console.log('windowVisible', windowVisible)}
         <BackgroundPopWindow classInput={windowVisible}>
           <PopupWindowEnhanced classInput={windowVisible}>
             {(() => {
@@ -505,19 +507,19 @@ class App extends Component {
                         <input
                           type='text' placeholder='Email address'
                           name='email' value={this.state.name}
-                          onChange={this.onChange}
+                          onChange={this.handleInputChange}
                         />
                         <div>Password</div>
                         <input
                           type='password' placeholder='Password'
                           name='password' value={this.state.password}
-                          onChange={this.onChange}
+                          onChange={this.handleInputChange}
                         />
                         <div>Confirm password</div>
                         <input
                           type='password' placeholder='Password'
                           name='password2' value={this.state.password}
-                          onChange={this.onChange}
+                          onChange={this.handleInputChange}
                         />
                         <input type="submit" className="btn btn-info btn-block mt-4" />
                       </form>

@@ -5,7 +5,6 @@ const fs = require('fs');
 require('custom-env').env();
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const multer = require('multer');
 const http = require('http');
 
 const users = require('./routes/api/users');
@@ -14,7 +13,6 @@ const uploadCSV = require('./routes/api/upload-csv');
 
 
 const Router = express.Router;
-const upload = multer({ dest: 'tmp/csv/' });
 
 const app = express();
 

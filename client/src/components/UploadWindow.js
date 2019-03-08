@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import '../App.css';
 
 const UploadWindow = (props) => {
@@ -15,7 +15,7 @@ const UploadWindow = (props) => {
 }
 
 UploadWindow.propTypes = {
-  classInput: PropTypes.bool.isRequired
+  // classInput: PropTypes.bool.isRequired
 };
 
 export default UploadWindow;
