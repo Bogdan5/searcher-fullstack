@@ -298,6 +298,7 @@ class App extends Component {
         this.setState({ windowKind: 'signin', windowVisible: true });
         break;
       default:
+
      }
    }
 
@@ -471,7 +472,27 @@ class App extends Component {
                 case 'signup':
                   return (
                     <div>
-
+                      <form noValidate onSubmit={this.onSubmit}>
+                        <div>Email</div>
+                        <input
+                          type='text' placeholder='Email address'
+                          name='email' value={this.state.name}
+                          onChange={this.onChange}
+                        />
+                        <div>Password</div>
+                        <input
+                          type='password' placeholder='Password'
+                          name='password' value={this.state.password}
+                          onChange={this.onChange}
+                        />
+                        <div>Confirm password</div>
+                        <input
+                          type='password' placeholder='Password'
+                          name='password2' value={this.state.password}
+                          onChange={this.onChange}
+                        />
+                        <input type="submit" className="btn btn-info btn-block mt-4" />
+                      </form>
                     </div>
                   );
                 case 'signin':
