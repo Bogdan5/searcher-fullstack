@@ -17,6 +17,7 @@ import ColumnSelector from './components/ColumnSelector';
 import UploadWindow from './components/UploadWindow';
 import NavBar from './components/NavBar';
 import ComponentChildAdder from './components/ComponentChildAdder';
+import Register from './components/Register.js';
 
 import './App.css';
 import SortButton from './components/SortButton';
@@ -50,7 +51,7 @@ class App extends Component {
       }],
       windowVisible: false,
       windowKind: 'upload',
-      name: '',
+      email: '',
     };
   }
 
@@ -306,9 +307,10 @@ class App extends Component {
 
    handleInputChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      // [e.target.name]: e.target.value
+      email: e.target.value
     });
-    console.log('input ', e.target.value);
+    console.log('input ', e.target.name);
   }
 
    onSignIn = (e) => {
@@ -501,29 +503,7 @@ class App extends Component {
                   );
                 case 'signup':
                   return (
-                    <div>
-                      <form noValidate onSubmit={this.onSubmit}>
-                        <div>Email</div>
-                        <input
-                          type='text' placeholder='Email address'
-                          name='email' value={this.state.name}
-                          onChange={this.handleInputChange}
-                        />
-                        <div>Password</div>
-                        <input
-                          type='password' placeholder='Password'
-                          name='password' value={this.state.password}
-                          onChange={this.handleInputChange}
-                        />
-                        <div>Confirm password</div>
-                        <input
-                          type='password' placeholder='Password'
-                          name='password2' value={this.state.password}
-                          onChange={this.handleInputChange}
-                        />
-                        <input type="submit" className="btn btn-info btn-block mt-4" />
-                      </form>
-                    </div>
+                    <Register/>
                   );
                 case 'signin':
                   return (
@@ -532,7 +512,7 @@ class App extends Component {
                         <div>Email</div>
                         <input
                           type='text' placeholder='Email address'
-                          name='email' value={this.state.name}
+                          name='email' value={this.state.email}
                           onChange={this.onChange}
                         />
                         <div>Password</div>

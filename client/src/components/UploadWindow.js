@@ -4,6 +4,7 @@ import '../App.css';
 
 const UploadWindow = (props) => {
   const { classInput, children } = props;
+  console.log('render UploadWindow');
   return (
     <div className={`backgroundPopWindow ${classInput ? 'visible' : 'invisible'}`}>
       <div className='popWindow'>
