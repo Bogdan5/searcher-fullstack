@@ -31,6 +31,7 @@ class Register extends Component {
   }
 
   render() {
+    console.log('Register rendered');
     return (
       <div>
         <form noValidate onSubmit={this.onSubmit}>

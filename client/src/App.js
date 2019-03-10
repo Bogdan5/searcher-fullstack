@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Switch, NavLink, Route } from 'react-router-dom'; 
+
 import Keyboard from './components/Keyboard';
 import ButtonGroup from './components/ButtonGroup';
 import DataDisplay from './components/DataDisplay';
@@ -18,10 +20,12 @@ import UploadWindow from './components/UploadWindow';
 import NavBar from './components/NavBar';
 import ComponentChildAdder from './components/ComponentChildAdder';
 import Register from './components/Register.js';
-
-import './App.css';
+import SignIn from './components/SignIn.js';
 import SortButton from './components/SortButton';
 import BackgroundPopWindow from './components/BackgroundPopWindow';
+
+import './App.css';
+
 
 class App extends Component {
   constructor(props) {
@@ -305,26 +309,9 @@ class App extends Component {
      }
    }
 
-   handleInputChange = (e) => {
-    this.setState({
-      // [e.target.name]: e.target.value
-      email: e.target.value
-    });
-    console.log('input ', e.target.name);
-  }
-
-   onSignIn = (e) => {
-    e.preventDefault();
-    const user = {
-      email: this.state.email,
-      password: this.state.password
-    }
-    console.log(user);
-   }
-
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-   /////////////////////////////////////RENDER///////////////////////////////////////////////////////////////
-   /////////////////////////////////////////////////////////////////////////////////////////////////////////
+   /////////////////////////////////////////RENDER////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
    render() {
     const {
@@ -359,9 +346,9 @@ class App extends Component {
       <div className='bodyContainer'>
         {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
-          <NavbarButtons name='Upload files' />
-          <NavbarButtons name='Sign in' />
-          <NavbarButtons name='Sign up' />
+          <NavLink to='/api/upload-csv' onClick={this.openUploadWindow}>Upload files</NavLink>
+          <NavLink to='/api/users/signin' onClick={this.openUploadWindow}>Sign in</NavLink>
+          <NavLink to='/api/users/signup' onClick={this.openUploadWindow}>Sign up</NavLink>
           {/* <button onClick={this.openUploadWindow}>Upload files</button>
           <button onClick={this.openUploadWindow}>Upload files</button> */}
         </NavBar>
@@ -473,50 +460,13 @@ class App extends Component {
           </DropDownMenu>
         </div>
         <BackgroundPopWindow classInput={windowVisible}>
-          <PopupWindowEnhanced classInput={windowVisible}>
-            {(() => {
-              switch (windowKind) {
-                case 'upload':
-                  return (
-                    <div>
-                      <br/>
-                      <form action="/upload-csv" encType="multipart/form-data" method="POST"> 
-                        <input type="file" name="myFile" />
-                        <br/>
-                        <br/>
-                        <input type="submit" value="Upload a file"/>
-                      </form>
-                    </div>
-                  );
-                case 'signup':
-                  return (
-                    <Register/>
-                  );
-                case 'signin':
-                  return (
-                    <div>
-                      <form onSubmit={this.onSignIn}>
-                        <div>Email</div>
-                        <input
-                          type='text' placeholder='Email address'
-                          name='email' value={this.state.email}
-                          onChange={this.onChange}
-                        />
-                        <div>Password</div>
-                        <input
-                          type='password' placeholder='Password'
-                          name='password' value={this.state.password}
-                          onChange={this.onChange}
-                        />
-                        <input type="submit" className="btn btn-info btn-block mt-4" />
-                      </form>
-                    </div>
-                  );
-                default:
-                  
-              }
-            })()}
-          </PopupWindowEnhanced>
+          <UploadWindow classInput={windowVisible}>
+            <NavLink to='/' onClick={this.closeUploadWindow} >X</NavLink>
+            <Switch>
+              <Route path='/api/users/signup' component={Register} />
+              <Route path='/api/users/signin' component={SignIn} />
+            </Switch>
+          </UploadWindow>
         </BackgroundPopWindow>
       </div>
     );

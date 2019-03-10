@@ -43,7 +43,7 @@ class SignIn extends Component {
             name='password' value={this.state.password}
             onChange={this.onChange}
           />
-          <input type="submit" className="btn btn-info btn-block mt-4" />
+          <input type="submit" />
         </form>
       </div>      
     );
