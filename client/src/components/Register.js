@@ -6,11 +6,14 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
+      nameUser: '',
       email: '',
       password: '',
       password2: '',
+      errors: '',
     }
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   handleInputChange = (e) => {
@@ -20,7 +23,7 @@ class Register extends Component {
   onSubmit(e) {
     e.preventDefault();
     const newUser = {
-      name: this.state.name,
+      nameUser: this.state.nameUser,
       email: this.state.email,
       password: this.state.password,
       password2: this.state.password2
@@ -31,10 +34,15 @@ class Register extends Component {
   }
 
   render() {
-    console.log('Register rendered');
     return (
       <div>
         <form noValidate onSubmit={this.onSubmit}>
+          <div>Name</div>
+          <input
+            type='text' placeholder='Name'
+            name='nameUser' value={this.state.nameUser}
+            onChange={this.handleInputChange}
+          />         
           <div>Email</div>
           <input
             type='text' placeholder='Email address'
@@ -50,7 +58,7 @@ class Register extends Component {
           <div>Confirm password</div>
           <input
             type='password' placeholder='Password'
-            name='password2' value={this.state.password}
+            name='password2' value={this.state.password2}
             onChange={this.handleInputChange}
           />
           <input type="submit" />

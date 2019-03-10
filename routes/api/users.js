@@ -16,13 +16,17 @@ const User = require('../../models/User');
 // @desc Register user
 // @access Public
 router.post('/register', (req, res) => {
+  console.log('Register route fired');
   // Form validation
   const { errors, isValid } = validateRegisterInput(req.body);
   // Check validation
   if (!isValid) {
+    console.log('is not valid');
     return res.status(400).json(errors);
   }
+  console.log('validation passed');
   User.findOne({ email: req.body.email }).then((user) => {
+    console.log('Mongo search fired: ', user);
     if (user) {
       return res.status(400).json({ email: 'Email already exists' });
     }

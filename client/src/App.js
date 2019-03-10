@@ -461,7 +461,9 @@ class App extends Component {
         </div>
         <BackgroundPopWindow classInput={windowVisible}>
           <UploadWindow classInput={windowVisible}>
-            <NavLink to='/' onClick={this.closeUploadWindow} >X</NavLink>
+            <div className='popHeader'>
+              <NavLink to='/' onClick={this.closeUploadWindow} >X</NavLink>
+            </div>
             <Switch>
               <Route path='/api/users/signup' component={Register} />
               <Route path='/api/users/signin' component={SignIn} />
