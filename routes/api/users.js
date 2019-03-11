@@ -35,6 +35,7 @@ router.post('/register', (req, res) => {
       email: req.body.email,
       password: req.body.password,
     });
+    console.log('new user: ', newUser);
     // Hash password before saving in database
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(newUser.password, salt, (error, hash) => {

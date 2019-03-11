@@ -24,6 +24,16 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+// connect database
+const db = process.env.MONGODB_URI;
+mongoose
+  .connect(
+    db,
+    { useNewUrlParser: true },
+  )
+  .then(() => console.log('MongoDB successfully connected'))
+  .catch(err => console.log(err));
+
 // Passport middleware
 app.use(passport.initialize());
 
