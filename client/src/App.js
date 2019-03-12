@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Switch, NavLink, Route } from 'react-router-dom'; 
+// import axios from 'axios';
+import { Switch, NavLink, Route, Redirect } from 'react-router-dom'; 
 
 import Keyboard from './components/Keyboard';
 import ButtonGroup from './components/ButtonGroup';
