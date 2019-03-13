@@ -56,6 +56,7 @@ class App extends Component {
       windowVisible: false,
       windowKind: 'upload',
       email: '',
+      registered: false,
     };
   }
 
@@ -309,6 +310,10 @@ class App extends Component {
      }
    }
 
+   registered = () => {
+     this.setState({ registed: true });
+   }
+
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
    /////////////////////////////////////////RENDER////////////////////////////////////////////////////////////
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -316,7 +321,7 @@ class App extends Component {
    render() {
     const {
       inputVisibility, menuVisible, active, listCards,
-      menuTop, menuLeft, cardSelected, data, windowVisible, windowKind
+      menuTop, menuLeft, cardSelected, data, windowVisible, registered
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -465,7 +470,8 @@ class App extends Component {
               <NavLink to='/' onClick={this.closeUploadWindow} >X</NavLink>
             </div>
             <Switch>
-              <Route path='/api/users/signup' component={Register} />
+              <Route path='/api/users/signup' render={() => (registered?
+                <Redirect to='/' /> : <Register registered={this.registered} />)} />
               <Route path='/api/users/signin' component={SignIn} />
             </Switch>
           </UploadWindow>

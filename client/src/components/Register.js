@@ -29,7 +29,10 @@ class Register extends Component {
       password2: this.state.password2
     }
     axios.post('/api/users/register', newUser)
-      .then(res => console.log(res.data))
+      .then(res => {
+        console.log(res.data);
+        this.props.registered();
+      })
       .catch(err => this.setState({ errors: err.response.data }))
   }
 
