@@ -311,7 +311,7 @@ class App extends Component {
    }
 
    registered = () => {
-     this.setState({ registed: true });
+     this.setState({ windowVisible: false , registered: true });
    }
 
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -470,7 +470,7 @@ class App extends Component {
               <NavLink to='/' onClick={this.closeUploadWindow} >X</NavLink>
             </div>
             <Switch>
-              <Route path='/api/users/signup' render={() => (registered?
+              <Route path='/api/users/signup' render={() => (registered ?
                 <Redirect to='/' /> : <Register registered={this.registered} />)} />
               <Route path='/api/users/signin' component={SignIn} />
             </Switch>

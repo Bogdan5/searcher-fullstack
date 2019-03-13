@@ -25,7 +25,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // connect database
-const db = process.env.MONGODB_URI;
+// const db = process.env.MONGODB_URI;
+const db = "mongodb://localhost:27017/MyDb";
 mongoose
   .connect(
     db,

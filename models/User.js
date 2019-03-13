@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 // Create Schema
 const UserSchema = new Schema({
-  name: {
+  nameUser: {
     type: String,
     required: true,
   },
