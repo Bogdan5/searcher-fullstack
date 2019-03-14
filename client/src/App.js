@@ -57,6 +57,8 @@ class App extends Component {
       windowKind: 'upload',
       email: '',
       registered: false,
+      signedIn: false,
+      uploaded: false,
     };
   }
 
@@ -311,7 +313,11 @@ class App extends Component {
    }
 
    registered = () => {
-     this.setState({ windowVisible: false , registered: true });
+     this.setState({ registered: true, signedIn: true });
+   }
+
+   signedIn = () => {
+     this.setState({ signedIn: true });
    }
 
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -320,8 +326,8 @@ class App extends Component {
 
    render() {
     const {
-      inputVisibility, menuVisible, active, listCards,
-      menuTop, menuLeft, cardSelected, data, windowVisible, registered
+      inputVisibility, menuVisible, active, listCards, menuTop, menuLeft,
+      cardSelected, data, windowVisible, registered, uploaded, signedIn,
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -471,8 +477,12 @@ class App extends Component {
             </div>
             <Switch>
               <Route path='/api/users/signup' render={() => (registered ?
-                <Redirect to='/' /> : <Register registered={this.registered} />)} />
-              <Route path='/api/users/signin' component={SignIn} />
+                <Redirect to='/api/upload-csv' /> : <Register registered={this.registered} />)} />
+              <Route path='/api/users/signin' render={() => (signedIn ?
+                <Redirect to='/api/upload-csv' /> : <SignIn signedIn={this.signedIn} />)} />
+              <Route path='/' render={() => (uploaded ?
+              <Redirect to='/' /> : <Upload /> 
+              )} />
             </Switch>
           </UploadWindow>
         </BackgroundPopWindow>
