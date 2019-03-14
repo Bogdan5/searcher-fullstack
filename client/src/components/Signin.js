@@ -10,21 +10,32 @@ class SignIn extends Component {
       password: '',
       errors: {},
     }
+
+    console.log(this.state);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.onSignIn = this.onSignIn.bind(this);
   }
 
   handleInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onSubmit(e) {
+  onSignIn(e) {
     e.preventDefault();
+    console.log('state.email: ', this);
     const user = {
       email: this.state.email,
       password: this.state.password
     };
+    console.log('before axios in signin');
     axios.post('/api/users/signin', user)
-      .then(res => console.log(res.data))
-      .catch(err => this.setState({ errors: err.response.data }))
+      .then(res => {
+        // this.props.history.push('/');
+        this.props.signedIn();
+
+        console.log('history: ', this.props.history)
+      })
+      .catch(err => this.setState({ errors: err.response.data }));
   }
 
   render() {
@@ -35,13 +46,13 @@ class SignIn extends Component {
           <input
             type='text' placeholder='Email address'
             name='email' value={this.state.email}
-            onChange={this.onChange}
+            onChange={this.handleInputChange}
           />
           <div>Password</div>
           <input
             type='password' placeholder='Password'
             name='password' value={this.state.password}
-            onChange={this.onChange}
+            onChange={this.handleInputChange}
           />
           <input type="submit" />
         </form>

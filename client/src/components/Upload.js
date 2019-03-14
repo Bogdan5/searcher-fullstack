@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import '../App.css';
 
 class Upload extends Component {
   constructor(props) {
@@ -9,9 +9,11 @@ class Upload extends Component {
     }
   }
 
-  onSubmit = (e) => {
+  uploadCSV = (e) => {
     e.preventDefault();
-    
+    console.log('uploadCSV clicked');
+
+    this.props.uploaded();
   } 
 
   render() {
@@ -19,7 +21,7 @@ class Upload extends Component {
       <div>
         <br/>
         <form action="/upload-csv" encType="multipart/form-data" method="POST"
-        noValidate onSubmit={this.onSubmit}> 
+        noValidate onSubmit={this.uploadCSV}> 
           <input type="file" name="myFile" />
           <br/>
           <br/>

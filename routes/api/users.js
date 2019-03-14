@@ -46,10 +46,10 @@ router.post('/register', (req, res) => {
   });
 });
 
-// @route POST api/users/login
+// @route POST api/users/signin
 // @desc Login user and return JWT token
 // @access Public
-router.post('/login', (req, res) => {
+router.post('/signin', (req, res) => {
   // Form validation
   const { errors, isValid } = validateLoginInput(req.body);
   // Check validation

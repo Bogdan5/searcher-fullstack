@@ -23,6 +23,7 @@ import Register from './components/Register.js';
 import SignIn from './components/SignIn.js';
 import SortButton from './components/SortButton';
 import BackgroundPopWindow from './components/BackgroundPopWindow';
+import Upload from './components/Upload';
 
 import './App.css';
 
@@ -318,6 +319,11 @@ class App extends Component {
 
    signedIn = () => {
      this.setState({ signedIn: true });
+     console.log('signed in clicked');
+   }
+
+   uploaded = () => {
+     this.setState({ uploaded: true, windowVisible: false });
    }
 
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -480,9 +486,8 @@ class App extends Component {
                 <Redirect to='/api/upload-csv' /> : <Register registered={this.registered} />)} />
               <Route path='/api/users/signin' render={() => (signedIn ?
                 <Redirect to='/api/upload-csv' /> : <SignIn signedIn={this.signedIn} />)} />
-              <Route path='/' render={() => (uploaded ?
-              <Redirect to='/' /> : <Upload /> 
-              )} />
+              <Route path='/api/upload-csv' render={() => (uploaded ? <Redirect to='/' /> : 
+                <Upload uploaded={this.uploaded} />)} />
             </Switch>
           </UploadWindow>
         </BackgroundPopWindow>
