@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import '../App.css';
 
 class Upload extends Component {
@@ -12,9 +13,7 @@ class Upload extends Component {
   }
 
   uploadCSV = (e) => {
-    // e.preventDefault();
-    console.log('uploadCSV clicked');
-
+    e.preventDefault();
     this.props.uploaded();
   } 
 
@@ -22,7 +21,7 @@ class Upload extends Component {
     return (
       <div>
         <br/>
-        <form action="/upload-csv" encType="multipart/form-data" method="POST"
+        <form action="/api/upload-csv" encType="multipart/form-data" method="POST"
         noValidate onSubmit={this.uploadCSV}> 
           <input type="file" name="myFile" />
           <br/>
