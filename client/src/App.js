@@ -319,7 +319,6 @@ class App extends Component {
 
    signedIn = () => {
      this.setState({ signedIn: true });
-     console.log('signed in clicked');
    }
 
    uploaded = () => {
@@ -348,16 +347,16 @@ class App extends Component {
     const MenuElementWithHandler = ComponentEnhancer(MenuOption, propertiesMenu);
 
     // adds handler to the navbar buttons
-    const navbarProps = { fromButton: this.navbarClickHandler };
-    const NavbarButtons = ComponentEnhancer(DumbButton, navbarProps);
+    // const navbarProps = { fromButton: this.navbarClickHandler };
+    // const NavbarButtons = ComponentEnhancer(DumbButton, navbarProps);
 
     // adds a closing button to all the pop-up windows (upload, signup, and signin)
-    const closingButton = (
-      <div className='popHeader'>
-        <div onClick={this.closeUploadWindow}>X</div>
-      </div>
-    );
-    const PopupWindowEnhanced = ComponentChildAdder(UploadWindow, closingButton, 0);
+    // const closingButton = (
+    //   <div className='popHeader'>
+    //     <div onClick={this.closeUploadWindow}>X</div>
+    //   </div>
+    // );
+    // const PopupWindowEnhanced = ComponentChildAdder(UploadWindow, closingButton, 0);
 
     return (
       <div className='bodyContainer'>

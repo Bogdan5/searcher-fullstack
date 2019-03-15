@@ -7,10 +7,12 @@ class Upload extends Component {
     this.state = {
       upload: true,
     }
+
+    this.uploadCSV = this.uploadCSV.bind(this);
   }
 
   uploadCSV = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     console.log('uploadCSV clicked');
 
     this.props.uploaded();

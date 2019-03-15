@@ -20,20 +20,15 @@ class SignIn extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onSignIn(e) {
+  onSignIn = (e) => {
     e.preventDefault();
-    console.log('state.email: ', this);
     const user = {
       email: this.state.email,
       password: this.state.password
     };
-    console.log('before axios in signin');
     axios.post('/api/users/signin', user)
       .then(res => {
-        // this.props.history.push('/');
         this.props.signedIn();
-
-        console.log('history: ', this.props.history)
       })
       .catch(err => this.setState({ errors: err.response.data }));
   }

@@ -1,11 +1,15 @@
 const express = require('express');
 const fs = require('fs');
-const csv = require('fast-csv');
-const multer = require('multer');
+// const csv = require('fast-csv');
+// const multer = require('multer');
 
 const router = express.Router();
-const passport = require('passport');
-const upload = multer({ dest: 'tmp/csv/' });
+// const passport = require('passport');
+// const upload = multer({ dest: 'tmp/csv/' });
+
+const upload = require("express-fileupload");
+const csvtojson = require("csvtojson");
+let csvData = 'test';
 
 // Load User model
 const User = require('../../models/User');
@@ -33,6 +37,18 @@ router.post('/', passport.authenticate('jwt', { session: false }),
       fs.unlinkSync(req.file.path);   // remove temp file
       //process "fileRows" and respond
     })
+});
+
+router.post("/", (req, res) => {
+  /** convert req buffer into csv string , 
+  *   "csvfile" is the name of my file given at name attribute in input tag */
+    csvData = req.files.myFile.data.toString('utf8');
+    return csvtojson().fromString(csvData).then(json => 
+      { 
+        console.log('csvData', csvData);
+        return res.status(201).json({csv:csvData, json:json})
+      }
+    );
 });
 
 module.exports = router;
