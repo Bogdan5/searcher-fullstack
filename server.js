@@ -6,6 +6,7 @@ require('custom-env').env();
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const http = require('http');
+const morgan = require('morgan');
 
 const users = require('./routes/api/users');
 const uploadCSV = require('./routes/api/upload-csv');
@@ -23,6 +24,7 @@ const port = process.env.PORT || 5000;
 // Body parser middleware
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(morgan('dev'));
 
 // connect database
 // const db = process.env.MONGODB_URI;

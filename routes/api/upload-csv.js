@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const csv = require('fast-csv');
 const multer = require('multer');
+const path = require('path');
 
 const router = express.Router();
 // const passport = require('passport');
@@ -19,7 +20,7 @@ const User = require('../../models/User');
 // @access Public
 // , passport.authenticate('jwt', { session: false })
 router.post('/',
-  upload.single('myFile'), function (req, res) {
+  upload.single('file'), function (req, res) {
   console.log('start post');
   const fileRows = [];
 
@@ -37,7 +38,9 @@ router.post('/',
       console.log(fileRows)
       fs.unlinkSync(req.file.path);   // remove temp file
       //process "fileRows" and respond
+      return res.sendStatus(200).end();
     })
+    .on('error', (err) => res.sendStatus(404).end('Error in file upload: ', err));
 });
 
 // router.post('/', upload.any(), (req, res) => {
@@ -51,6 +54,54 @@ router.post('/',
 //         return res.status(201).json({csv:csvData, json:json})
 //       }
 //     );
+// });
+
+// const storage = multer.diskStorage({
+//   destination: "./uploads/",
+//   filename: function(req, file, cb){
+//      cb(null,"CSV-" + Date.now() + path.extname(file.originalname));
+//   }
+// });
+
+// const upload = multer({
+//   storage: storage,
+//   limits:{fileSize: 1000},
+// }).single("myFile");
+
+// router.post("/upload", upload(req, res, (err) => {
+//      console.log("Request ---", req.body);
+//      console.log("Request file ---", req.file); //Here you get file.
+//      /*Now do where ever you want to do*/
+//      if(!err)
+//         return res.send(200).end();
+//   })
+// );
+
+// function (req, file, callback) {
+//   fs.mkdir('./uploads', function(err) {
+//     if(err) {
+//         console.log(err.stack)
+//     } else {
+//         callback(null, './uploads');
+//     }
+// })
+// }
+// var storage =   multer.diskStorage({
+//   destination: '/uploads',
+//   filename: function (req, file, callback) {
+//     callback(null, file.fieldname + '-' + Date.now());
+//   }
+// });
+
+// router.post('/',function(req,res){
+//   var upload = multer({ storage : storage}).single('file');
+//   upload(req,res,function(err) {
+//       if(err) {
+//         return res.end("Error uploading file.");
+//       }
+//       console.log(req);
+//       res.end("File is uploaded");
+//   });
 // });
 
 module.exports = router;
