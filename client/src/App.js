@@ -324,11 +324,19 @@ class App extends Component {
 
   signedIn = () => {
     this.setState({ signedIn: true });
-   }
+  }
 
   uploaded = () => {
     this.setState({ uploaded: true, windowVisible: false });
-   }
+  }
+
+  openSignInNav = () => {
+    this.setState({ uploaded: false });
+  }
+
+  openSignUpNav = () => {
+    this.setState({ uploaded: false });
+  }
 
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
    /////////////////////////////////////////RENDER////////////////////////////////////////////////////////////
@@ -367,9 +375,9 @@ class App extends Component {
       <div className='bodyContainer'>
         {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
-          <NavLink to='/api/upload-csv' onClick={this.uploadClicked}>Upload files</NavLink>
-          <NavLink to='/api/users/signin' onClick={this.openUploadWindow}>Sign in</NavLink>
-          <NavLink to='/api/users/signup' onClick={this.openUploadWindow}>Sign up</NavLink>
+          <NavLink to='/api/upload-csv' onClick={this.uploadClicked}>Upload files without signing in</NavLink>
+          <NavLink to='/api/users/signin' onClick={this.openSignInNav}>Sign in</NavLink>
+          <NavLink to='/api/users/signup' onClick={this.openSignUpNav}>Sign up</NavLink>
           {/* <button onClick={this.openUploadWindow}>Upload files</button>
           <button onClick={this.openUploadWindow}>Upload files</button> */}
         </NavBar>
@@ -460,16 +468,10 @@ class App extends Component {
             );
           })}
           {/* buttons for sorting the data */}
-          <Sorter>
-            {Object.keys(data[0]).map(el => (
-              <div className='sorterClass'>
-                <div>{el}</div>
-                <SortButton fromSortButton={this.sorter} />
-              </div>
-            ))}
-          </Sorter>
+          <Route render={() => (
+            uploaded ? <DataDisplay /> : <Redirect to='/' />
+          )} />
           {/* data displayed as resulted from search and sort operations */}
-          <DataDisplay />
           <DropDownMenu
             menuVisible={menuVisible} mouseOutMenu={this.menuHide}
             style={{ top: menuTop, left: menuLeft }}
