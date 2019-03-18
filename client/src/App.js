@@ -296,33 +296,38 @@ class App extends Component {
       this.setState({ windowVisible: false });
    }
 
-   navbarClickHandler = (name) => {
-     switch (name) {
-      case 'Upload files':
-        this.setState({ windowKind: 'upload', windowVisible: true });
-        console.log('Upload clicked', this.state.windowKind);
-        break;
-      case 'Sign up':
-        this.setState({ windowKind: 'signup', windowVisible: true });
-        break;
-      case 'Sign in':
-        this.setState({ windowKind: 'signin', windowVisible: true });
-        break;
-      default:
+  //  navbarClickHandler = (name) => {
+  //    switch (name) {
+  //     case 'Upload files':
+  //       this.setState({ windowKind: 'upload', windowVisible: true });
+  //       console.log('Upload clicked', this.state.windowKind);
+  //       break;
+  //     case 'Sign up':
+  //       this.setState({ windowKind: 'signup', windowVisible: true });
+  //       break;
+  //     case 'Sign in':
+  //       this.setState({ windowKind: 'signin', windowVisible: true });
+  //       break;
+  //     default:
 
-     }
+  //    }
+  //  }
+
+  uploadClicked = () => {
+    this.setState({ uploaded: false });
+    this.openUploadWindow();
+  }
+
+  registered = () => {
+    this.setState({ registered: true, signedIn: true });
+  }
+
+  signedIn = () => {
+    this.setState({ signedIn: true });
    }
 
-   registered = () => {
-     this.setState({ registered: true, signedIn: true });
-   }
-
-   signedIn = () => {
-     this.setState({ signedIn: true });
-   }
-
-   uploaded = () => {
-     this.setState({ uploaded: true, windowVisible: false });
+  uploaded = () => {
+    this.setState({ uploaded: true, windowVisible: false });
    }
 
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -362,7 +367,7 @@ class App extends Component {
       <div className='bodyContainer'>
         {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
-          <NavLink to='/api/upload-csv' onClick={this.openUploadWindow}>Upload files</NavLink>
+          <NavLink to='/api/upload-csv' onClick={this.uploadClicked}>Upload files</NavLink>
           <NavLink to='/api/users/signin' onClick={this.openUploadWindow}>Sign in</NavLink>
           <NavLink to='/api/users/signup' onClick={this.openUploadWindow}>Sign up</NavLink>
           {/* <button onClick={this.openUploadWindow}>Upload files</button>
@@ -464,7 +469,7 @@ class App extends Component {
             ))}
           </Sorter>
           {/* data displayed as resulted from search and sort operations */}
-          <DataDisplay dataLoad={this.state} />
+          <DataDisplay />
           <DropDownMenu
             menuVisible={menuVisible} mouseOutMenu={this.menuHide}
             style={{ top: menuTop, left: menuLeft }}

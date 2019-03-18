@@ -21,7 +21,7 @@ class Upload extends Component {
   uploadCSV = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('myFile',this.state.file);
+    formData.append('file',this.state.file);
     const config = {
         headers: {
             'content-type': 'multipart/form-data'
