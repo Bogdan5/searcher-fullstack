@@ -27,11 +27,10 @@ router.post('/',
   // open uploaded file
   csv.fromPath(req.file.path)
     .on("data", function (data) {
-      // if (fileRows.length === 1) {
-      //   const header = fileRows[0];
-      //   const headerArray = header.split(',');
-      //   const trimmed = headerArray.map(el => el.trim());
-      // }
+      if (fileRows.length === 1) {
+        const header = fileRows[0];
+
+      }
       fileRows.push(data); // push each row
     })
     .on("end", function () {

@@ -1,6 +1,18 @@
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
+
+//Create fileSchema
+const fileSchema = new Schema({
+  header: {
+    type: String,
+    default: ''
+  },
+  data: {
+    any: [[]] 
+  }
+})
+
 // Create Schema
 const UserSchema = new Schema({
   nameUser: {
@@ -19,6 +31,11 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  anonymous: {
+    type: Boolean,
+    default: true,
+  },
+  files: [fileSchema]
 });
 const User = mongoose.model('users', UserSchema);
 module.exports = User;

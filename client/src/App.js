@@ -468,7 +468,7 @@ class App extends Component {
             );
           })}
           {/* buttons for sorting the data */}
-          <Route render={() => (
+          <Route path='/api/upload-csv' render={() => (
             uploaded ? <DataDisplay /> : <Redirect to='/' />
           )} />
           {/* data displayed as resulted from search and sort operations */}
