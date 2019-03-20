@@ -5,7 +5,7 @@ const multer = require('multer');
 const path = require('path');
 
 const router = express.Router();
-// const passport = require('passport');
+const passport = require('passport');
 const upload = multer({ dest: 'tmp/csv/' });
 
 // const upload = require("express-fileupload");
@@ -18,29 +18,39 @@ const User = require('../../models/User');
 // @route POST api/upload-csv
 // @desc Upload file
 // @access Public
-// , passport.authenticate('jwt', { session: false })
-router.post('/',
-  upload.single('file'), function (req, res) {
-  console.log('start post');
-  const fileRows = [];
-
-  // open uploaded file
-  csv.fromPath(req.file.path)
-    .on("data", function (data) {
-      if (fileRows.length === 1) {
-        const header = fileRows[0];
-
-      }
-      fileRows.push(data); // push each row
-    })
-    .on("end", function () {
-      console.log(fileRows)
-      fs.unlinkSync(req.file.path);   // remove temp file
-      //process "fileRows" and respond
-      return res.sendStatus(200).end();
-    })
-    .on('error', (err) => res.sendStatus(404).end('Error in file upload: ', err));
+router.post('/', function (req, res, next) {
+  passport.authenticate('jwt', { session: false }, function (err, user, next){
+  if (err) { console.log('error is', err); }
+  if (user) {console.log('user is', user)}
+  console.log('here', req.user);
+})(req, res, next),
+  function(req, res) {
+    console.log('auth');
+  }
 });
+
+  // upload.single('file'), function (req, res) {
+  // console.log('start post - req.file is: ',req.file);
+  // const fileRows = [];
+
+  // // open uploaded file
+  // csv.fromPath(req.file.path)
+  //   .on("data", function (data) {
+  //     fileRows.push(data); // push each row
+  //   })
+  //   .on("end", function () {
+  //     let header = [];
+  //     fs.unlinkSync(req.file.path);   // remove temp file
+  //     //process "fileRows" and respond
+  //     if (req.body.firstRowHeader) {
+  //       header = fileRows.shift();
+  //     }
+  //     console.log('req.body is: ', req.body);
+  //     return res.sendStatus(200).end();
+  //   })
+  //   .on('error', (err) => res.sendStatus(404).end('Error in file upload: ', err));
+// }
+// );
 
 // router.post('/', upload.any(), (req, res) => {
 //   console.log('start myFile: ', req.files.myFile);

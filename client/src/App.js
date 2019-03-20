@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import axios from 'axios';
-import { Switch, NavLink, Route, Redirect } from 'react-router-dom'; 
+import { Switch, NavLink, Route, Redirect } from 'react-router-dom';
 
 import Keyboard from './components/Keyboard';
 import ButtonGroup from './components/ButtonGroup';
@@ -313,15 +313,17 @@ class App extends Component {
   //    }
   //  }
 
-  uploadClicked = () => {
+  uploadClickedNav = () => {
     this.setState({ uploaded: false });
     this.openUploadWindow();
   }
 
+  // called when 'Sign up' is clicked in Register component
   registered = () => {
     this.setState({ registered: true, signedIn: true });
   }
 
+  // called when 'Sign in' is clicked in SignIn component
   signedIn = () => {
     this.setState({ signedIn: true });
   }
@@ -330,8 +332,9 @@ class App extends Component {
     this.setState({ uploaded: true, windowVisible: false });
   }
 
+  // after click on 'Sign in' button in the Navbar opens the 
   openSignInNav = () => {
-    this.setState({ uploaded: false });
+    this.setState({ uploaded: false, windowVisible: true });
   }
 
   openSignUpNav = () => {
@@ -375,7 +378,7 @@ class App extends Component {
       <div className='bodyContainer'>
         {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
-          <NavLink to='/api/upload-csv' onClick={this.uploadClicked}>Upload files without signing in</NavLink>
+          <NavLink to='/api/upload-csv' onClick={this.uploadClickedNav}>Upload files without signing in</NavLink>
           <NavLink to='/api/users/signin' onClick={this.openSignInNav}>Sign in</NavLink>
           <NavLink to='/api/users/signup' onClick={this.openSignUpNav}>Sign up</NavLink>
           {/* <button onClick={this.openUploadWindow}>Upload files</button>
@@ -468,9 +471,9 @@ class App extends Component {
             );
           })}
           {/* buttons for sorting the data */}
-          <Route path='/api/upload-csv' render={() => (
+          {/* <Route path='/api/upload-csv' render={() => (
             uploaded ? <DataDisplay /> : <Redirect to='/' />
-          )} />
+          )} /> */}
           {/* data displayed as resulted from search and sort operations */}
           <DropDownMenu
             menuVisible={menuVisible} mouseOutMenu={this.menuHide}

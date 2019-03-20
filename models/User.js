@@ -5,11 +5,10 @@ const { Schema } = mongoose;
 //Create fileSchema
 const fileSchema = new Schema({
   header: {
-    type: String,
-    default: ''
+    type: [String],
   },
   data: {
-    any: [[]] 
+    any: [[]],
   }
 })
 

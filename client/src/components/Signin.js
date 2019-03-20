@@ -28,6 +28,7 @@ class SignIn extends Component {
     };
     axios.post('/api/users/signin', user)
       .then(res => {
+        console.log('Sign in clicked: ', );
         this.props.signedIn();
       })
       .catch(err => this.setState({ errors: err.response.data }));
