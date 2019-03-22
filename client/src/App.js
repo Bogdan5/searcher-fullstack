@@ -338,7 +338,7 @@ class App extends Component {
   }
 
   openSignUpNav = () => {
-    this.setState({ uploaded: false });
+    this.setState({ uploaded: false, windowVisible: true });
   }
 
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////

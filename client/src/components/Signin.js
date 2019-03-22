@@ -11,7 +11,6 @@ class SignIn extends Component {
       errors: {},
     }
 
-    console.log(this.state);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.onSignIn = this.onSignIn.bind(this);
   }
