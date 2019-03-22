@@ -4,7 +4,7 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const jwt = require('jsonwebtoken');
 
-const User = require('./models/user');
+const User = require('./models/User');
 const config = require('./config/config');
 
 exports.local = passport.use(new LocalStrategy(User.authenticate()));
@@ -24,12 +24,14 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts,
     console.log('JWT Payload: ', jwt_payload);
     User.findOne({ _id: jwt_payload._id }, (err, user) => {
       if (err) {
+        console.log('authenticate error');
         return done(err, false);
       }
       if (user) {
-        console.log(user);
+        console.log('authenticate user: ', user);
         return done(null, user);
       }
+      console.log('authenticate point');
       return done(null, false);
     });
   }));

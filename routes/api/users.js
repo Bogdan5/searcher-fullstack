@@ -167,8 +167,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 
-const User = require('../models/user');
-const authenticate = require('../authenticate');
+const User = require('../../models/User');
+const authenticate = require('../../authenticate');
 // const cors = require('./cors');
 
 const router = express.Router();
