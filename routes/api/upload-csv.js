@@ -6,6 +6,7 @@ const path = require('path');
 
 const router = express.Router();
 const passport = require('passport');
+const authenticate = require('../authenticate');
 const upload = multer({ dest: 'tmp/csv/' });
 
 // const upload = require("express-fileupload");
@@ -18,7 +19,7 @@ const User = require('../../models/User');
 // @route POST api/upload-csv
 // @desc Upload file
 // @access Public
-router.post('/', passport.authenticate('jwt', {session: false}),
+router.post('/', authenticate.verifyUser,
   upload.single('file'), function (req, res) {
   console.log('start post - req.file is: ',req.file);
   const fileRows = [];
