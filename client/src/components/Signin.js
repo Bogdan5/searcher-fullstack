@@ -22,14 +22,30 @@ class SignIn extends Component {
   onSignIn = (e) => {
     e.preventDefault();
     const user = {
-      email: this.state.username,
+      username: this.state.username,
       password: this.state.password
     };
     axios.post('/api/users/signin', user)
-      .then(res => {
-        console.log('Sign in clicked: ', );
-        this.props.signedIn();
+      .then((res) => {
+        if (res.ok) {
+          return res;
+        } else {
+          var error = new Error('Error ' + res.status + ': ' + res.statusText);
+          error.res = res;
+          throw error;
+        }
       })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          // If login was successful, set the token in local storage
+          localStorage.setItem('token', res.token);
+        } else {
+          var error = new Error('Error ' + res.status);
+          error.response = res;
+          throw error;
+        }
+    })
       .catch(err => this.setState({ errors: err.response.data }));
   }
 

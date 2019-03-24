@@ -27,16 +27,18 @@ class Upload extends Component {
   uploadCSV = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('file',this.state.file);
+    formData.append('file', this.state.file);
     formData.set('firstRowHeader', this.state.firstRowHeader);
 
+    const bearer = 'Bearer ' + localStorage.getItem('token');
     const config = {
-        headers: {
-            'content-type': 'multipart/form-data'
-        }
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': bearer
+      }
     };
     axios.post('/api/upload-csv',formData,config)
-        .then((response) => {
+        .then((res) => {
             alert('The file is successfully uploaded');
         }).catch((error) => {console.log('Error: ', error)}
     );

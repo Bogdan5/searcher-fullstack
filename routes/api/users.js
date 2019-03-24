@@ -151,7 +151,7 @@
 //         }
 
 //         /** generate a signed json web token and return it in the response */
-//         const token = jwt.sign(JSON.stringify(payload), process.env.secretOrKey);
+//         const token = jwt.sign(JSON.stringify(payload), process.env.sercretOrKey);
 
 //         /** assign our jwt to the cookie */
 //         res.cookie('jwt', jwt, { httpOnly: true, secure: true });
