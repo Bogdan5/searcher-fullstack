@@ -6,7 +6,7 @@ class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
+      username: '',
       password: '',
       errors: {},
     }
@@ -22,7 +22,7 @@ class SignIn extends Component {
   onSignIn = (e) => {
     e.preventDefault();
     const user = {
-      email: this.state.email,
+      email: this.state.username,
       password: this.state.password
     };
     axios.post('/api/users/signin', user)
@@ -37,10 +37,10 @@ class SignIn extends Component {
     return (
       <div>
         <form onSubmit={this.onSignIn}>
-          <div>Email</div>
+          <div>Username</div>
           <input
-            type='text' placeholder='Email address'
-            name='email' value={this.state.email}
+            type='text' placeholder='Username'
+            name='username' value={this.state.email}
             onChange={this.handleInputChange}
           />
           <div>Password</div>
