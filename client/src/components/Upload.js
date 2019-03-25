@@ -31,6 +31,7 @@ class Upload extends Component {
     formData.set('firstRowHeader', this.state.firstRowHeader);
 
     const bearer = 'Bearer ' + localStorage.getItem('token');
+    console.log('bearer: ', bearer);
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
