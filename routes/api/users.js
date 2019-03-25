@@ -185,7 +185,7 @@ router.get('/', authenticate.verifyUser, (req, res, next) => {
     .catch(err => next(err));
 });
 
-router.post('/register', (req, res, next) => {
+router.post('/signup', (req, res, next) => {
   User.register(new User({ username: req.body.username }), req.body.password,
     (err, user) => {
       if (err) {

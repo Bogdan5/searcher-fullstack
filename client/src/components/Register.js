@@ -6,7 +6,7 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nameUser: '',
+      username: '',
       email: '',
       password: '',
       password2: '',
@@ -23,12 +23,12 @@ class Register extends Component {
   onSubmit(e) {
     e.preventDefault();
     const newUser = {
-      nameUser: this.state.nameUser,
+      username: this.state.username,
       email: this.state.email,
       password: this.state.password,
       password2: this.state.password2
     }
-    axios.post('/api/users/register', newUser)
+    axios.post('/api/users/signup', newUser)
       .then(res => {
         console.log(res.data);
         this.props.registered();
@@ -43,7 +43,7 @@ class Register extends Component {
           <div>Name</div>
           <input
             type='text' placeholder='Name'
-            name='nameUser' value={this.state.nameUser}
+            name='username' value={this.state.nameUser}
             onChange={this.handleInputChange}
           />         
           <div>Email</div>

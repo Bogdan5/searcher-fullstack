@@ -22,7 +22,6 @@ const User = require('../../models/User');
 // 
 router.post('/', authenticate.verifyUser, upload.single('file'),
   function (req, res) {
-    console.log('start post - req.file is: ', req.file);
     const fileRows = [];
 
     // open uploaded file
@@ -37,7 +36,6 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
         if (req.body.firstRowHeader) {
           header = fileRows.shift();
         }
-        console.log('req.body is: ', req.body);
         return res.sendStatus(200).end();
       })
       .on('error', (err) => res.sendStatus(404).end('Error in file upload: ', err));

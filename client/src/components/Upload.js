@@ -38,10 +38,10 @@ class Upload extends Component {
       }
     };
     axios.post('/api/upload-csv',formData,config)
-        .then((res) => {
-            alert('The file is successfully uploaded');
-        }).catch((error) => {console.log('Error: ', error)}
-    );
+      .then((res) => {
+        alert('The file is successfully uploaded');
+      })
+      .catch((error) => {console.log('Error: ', error)});
 
     this.props.uploaded();
   } 

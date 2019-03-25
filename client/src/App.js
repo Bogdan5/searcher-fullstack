@@ -325,6 +325,7 @@ class App extends Component {
 
   // called when 'Sign in' is clicked in SignIn component
   signedIn = () => {
+    console.log('signedIn props fired');
     this.setState({ signedIn: true });
   }
 
