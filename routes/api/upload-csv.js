@@ -17,6 +17,7 @@ let csvData = 'test';
 
 // Load User model
 const User = require('../../models/User');
+const File = require('../../models/File');
 
 // @route POST api/upload-csv
 // @desc Upload file
@@ -24,9 +25,9 @@ const User = require('../../models/User');
 // 
 router.post('/', authenticate.verifyUser, upload.single('file'),
   function (req, res) {
-    console.log('res is: ', req.user._id);
+    // console.log('res is: ', res);
     const fileRows = [];
-    const decoded = jwt.verify(res.data.token, config.secretKey);
+    // const decoded = jwt.verify(res.data.token, config.secretKey);
 
     // open uploaded file
     csv.fromPath(req.file.path)
@@ -39,18 +40,18 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
         //process "fileRows" and respond
         if (req.body.firstRowHeader) {
           header = fileRows.shift();
-        }
-        User.update(
-          {'_id': ObjectId(req.user._id)},
-          {
-            '$push': {
-              'files': {
-                'header': header,
-                'data': fileRows
-              }
-            }
+        } else {
+          let maxLength = fileRows.reduce((acc, el, index) => Math.max(acc, el.length), 0);
+          if (maxLength > 20) { maxLength = 10}
+          for (let i = 0; i < maxLength; i++) {
+            header.push(`Column ${i + 1}`);
           }
-        )
+        }
+        File.create({
+          header,
+          data: fileRows,
+          author: req.user._id
+        });
         return res.sendStatus(200).end();
       })
       .on('error', (err) => res.sendStatus(404).end('Error in file upload: ', err));

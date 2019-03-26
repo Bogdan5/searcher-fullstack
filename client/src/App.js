@@ -385,7 +385,7 @@ class App extends Component {
           {/* <button onClick={this.openUploadWindow}>Upload files</button>
           <button onClick={this.openUploadWindow}>Upload files</button> */}
         </NavBar>
-        {/* main application */}
+        {/* -------------------------------main application----------------------------------------------- */}
         <div className='App' ref={this.appRef}>
           {/* the header with the description on the app */}
           <Header title='Data display - Search and sort' />
