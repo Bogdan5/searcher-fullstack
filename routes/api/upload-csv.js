@@ -27,7 +27,6 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
     console.log('res is: ', req.user._id);
     const fileRows = [];
     const decoded = jwt.verify(res.data.token, config.secretKey);
-    console.log('decoded', decoded);
 
     // open uploaded file
     csv.fromPath(req.file.path)
