@@ -29,11 +29,24 @@ class Register extends Component {
       password2: this.state.password2
     }
     axios.post('/api/users/signup', newUser)
-      .then(res => {
-        console.log(res.data);
+    .then((res) => {
+      if (res.data.success) {
         this.props.registered();
-      })
-      .catch(err => this.setState({ errors: err.response.data }))
+        localStorage.setItem('token', res.data.token);
+      } else {
+        var error = new Error('Error ' + res.status + ': ' + res.statusText);
+        error.res = res;
+        throw error;
+      }
+    })
+    .catch(err => {
+      this.setState({ errors: err.response.data });
+    });
+      // .then(res => {
+      //   console.log(res.data);
+      //   this.props.registered();
+      // })
+      // .catch(err => this.setState({ errors: err.response.data }))
   }
 
   render() {

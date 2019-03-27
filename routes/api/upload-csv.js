@@ -4,6 +4,7 @@ const csv = require('fast-csv');
 const multer = require('multer');
 const path = require('path');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
 const router = express.Router();
 const passport = require('passport');
@@ -33,6 +34,7 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
     csv.fromPath(req.file.path)
       .on("data", function (data) {
         fileRows.push(data); // push each row
+        console.log('path: ', req.file.path);
       })
       .on("end", function () {
         let header = [];
@@ -41,8 +43,8 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
         if (req.body.firstRowHeader) {
           header = fileRows.shift();
         } else {
-          let maxLength = fileRows.reduce((acc, el, index) => Math.max(acc, el.length), 0);
-          if (maxLength > 20) { maxLength = 10}
+          let maxLength = fileRows.reduce((acc, el) => Math.max(acc, el.length), 0);
+          if (maxLength > 10) { maxLength = 10}
           for (let i = 0; i < maxLength; i++) {
             header.push(`Column ${i + 1}`);
           }
@@ -50,9 +52,14 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
         File.create({
           header,
           data: fileRows,
-          author: req.user._id
+          author: mongoose.Types.ObjectId(req.user._id)
+        }, (err, file) => {
+          if (err) {
+            return res.sendStatus(404).end('Error' + err);
+          } else {
+            return res.sendStatus(200).end();
+          }
         });
-        return res.sendStatus(200).end();
       })
       .on('error', (err) => res.sendStatus(404).end('Error in file upload: ', err));
 });

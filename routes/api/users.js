@@ -189,7 +189,6 @@ router.post('/signup', (req, res, next) => {
   User.register(new User({ username: req.body.username }), req.body.password,
     (err, user) => {
       if (err) {
-        console.log('err1: ', err);
         res.statusCode = 500;
         res.setHeader('Content-Type', 'application/json');
         res.json({ err });
@@ -198,7 +197,6 @@ router.post('/signup', (req, res, next) => {
         if (req.body.lastname) { user.lastname = req.body.lastname; }
         user.save((err, user) => {
           if (err) {
-            console.log('err2');
             res.statusCode = 500;
             res.setHeader('Content-Type', 'application/json');
             res.json({ err });
@@ -206,9 +204,11 @@ router.post('/signup', (req, res, next) => {
           }
 
           passport.authenticate('local')(req, res, () => {
+            const token = authenticate.getToken({ _id: req.user._id });
+            
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json({ success: true, status: 'Registration successful!' });
+            res.json({ success: true, token, status: 'Registration successful!' });
           });
         });
       }
@@ -228,17 +228,17 @@ router.post('/signin', passport.authenticate('local'), (req, res) => {
   });
 });
 
-router.get('/logout', (req, res, next) => {
-  console.log(req.session);
-  if (req.session) {
-    req.session.destroy();
-    res.clearCookie('session-id');
-    res.redirect('/');
-  } else {
-    const err = new Error('You are not logged in!');
-    err.status = 403;
-    next(err);
-  }
-});
+// router.get('/logout', (req, res, next) => {
+//   console.log(req.session);
+//   if (req.session) {
+//     req.session.destroy();
+//     res.clearCookie('session-id');
+//     res.redirect('/');
+//   } else {
+//     const err = new Error('You are not logged in!');
+//     err.status = 403;
+//     next(err);
+//   }
+// });
 
 module.exports = router;
