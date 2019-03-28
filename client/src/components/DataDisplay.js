@@ -19,6 +19,10 @@ class DataDisplay extends Component {
     }
   }
 
+  componentDidMount(){
+    
+  }
+
   render() {
     const {prevPath} = this.state;
     return (

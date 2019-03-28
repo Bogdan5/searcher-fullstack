@@ -31,7 +31,6 @@ class Upload extends Component {
     formData.set('firstRowHeader', this.state.firstRowHeader);
 
     const bearer = 'Bearer ' + localStorage.getItem('token');
-    console.log('bearer: ', bearer);
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -41,10 +40,10 @@ class Upload extends Component {
     axios.post('/api/upload-csv',formData,config)
       .then((res) => {
         alert('The file is successfully uploaded');
+        this.props.uploaded();
       })
       .catch((error) => {console.log('Error: ', error)});
 
-    this.props.uploaded();
   } 
 
   render() {
