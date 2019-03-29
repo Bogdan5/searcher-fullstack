@@ -4,32 +4,40 @@ import Table from './Table.js'
 
 // import PropTypes from 'prop-types';
 import '../App.css';
+import axios from 'axios';
 
 class DataDisplay extends Component {
   constructor (props) {
     super(props);
     this.state = {
       prevPath: '',
+      data: [],
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.location !== this.props.location) {
-      this.setState({ prevPath: this.props.location })
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.location !== this.props.location) {
+  //     this.setState({ prevPath: this.props.location })
+  //   }
+  // }
 
   componentDidMount(){
-    
+    axios.get(`/api/datadisplay/${this.props.fileID}`)
+      .then((response) => {
+        console.log('response axios get: ', response);
+        // this.setState({ data: response});
+      })
+      .catch((err) => console.log(`Error: ${err}`));
   }
 
   render() {
-    const {prevPath} = this.state;
+    const {prevPath, data} = this.state;
     return (
       <div className='dataDisplay'>
-        <Route render={() => (
-          (prevPath === '/') ? <Table /> : <Redirect to='/' />
-        )} />
+        Stuff
+        {/* <Route render={() => (
+          (prevPath !== '/upload-csv') ? <Table data={data}/> : <Redirect to='/' />
+        )} /> */}
       </div>
     );
   }

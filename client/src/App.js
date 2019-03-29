@@ -60,6 +60,7 @@ class App extends Component {
       registered: false,
       signedIn: false,
       uploaded: false,
+      uploadedID: '',
     };
   }
 
@@ -329,8 +330,8 @@ class App extends Component {
     this.setState({ signedIn: true });
   }
 
-  uploaded = () => {
-    this.setState({ uploaded: true, windowVisible: false });
+  uploaded = (id) => {
+    this.setState({ uploaded: true, windowVisible: false, uploadedID: id });
   }
 
   // after click on 'Sign in' button in the Navbar opens the 
@@ -349,7 +350,7 @@ class App extends Component {
    render() {
     const {
       inputVisibility, menuVisible, active, listCards, menuTop, menuLeft,
-      cardSelected, data, windowVisible, registered, uploaded, signedIn,
+      cardSelected, data, windowVisible, registered, uploaded, signedIn, uploadedID
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -472,9 +473,9 @@ class App extends Component {
             );
           })}
           {/* buttons for sorting the data */}
-          {/* <Route path='/api/upload-csv' render={() => (
-            uploaded ? <DataDisplay /> : <Redirect to='/' />
-          )} /> */}
+          <Route path='/api/datadisplay' render={() => (
+            uploaded ? <DataDisplay uploadedID={uploadedID}/> : <Redirect to='/' />
+          )} />
           {/* data displayed as resulted from search and sort operations */}
           <DropDownMenu
             menuVisible={menuVisible} mouseOutMenu={this.menuHide}
@@ -496,7 +497,7 @@ class App extends Component {
                 <Redirect to='/api/upload-csv' /> : <Register registered={this.registered} />)} />
               <Route path='/api/users/signin' render={() => (signedIn ?
                 <Redirect to='/api/upload-csv' /> : <SignIn signedIn={this.signedIn} />)} />
-              <Route path='/api/upload-csv' render={() => (uploaded ? <Redirect to='/' /> : 
+              <Route path='/api/upload-csv' render={() => (uploaded ? <Redirect to='/api/datadisplay' /> : 
                 <Upload uploaded={this.uploaded} />)} />
             </Switch>
           </UploadWindow>

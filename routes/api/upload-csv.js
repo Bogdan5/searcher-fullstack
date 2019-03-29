@@ -51,13 +51,16 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
         }
         File.create({
           header,
-          data: fileRows,
+          body: fileRows,
           author: mongoose.Types.ObjectId(req.user._id)
         }, (err, file) => {
           if (err) {
             return res.sendStatus(404).end('Error' + err);
           } else {
-            return res.sendStatus(200).end();
+            console.log('file is: ', file);
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(file);
           }
         });
       })

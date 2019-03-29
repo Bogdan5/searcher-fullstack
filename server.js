@@ -10,6 +10,7 @@ const morgan = require('morgan');
 
 const users = require('./routes/api/users');
 const uploadCSV = require('./routes/api/upload-csv');
+const datadisplay = require('./routes/api/datadisplay');
 // const fileUpload = require('express-fileupload');
 
 
@@ -48,6 +49,7 @@ app.get('/', (req, res) => res.send('Hello World'));
 // Use routes
 app.use('/api/users', users);
 app.use('/api/upload-csv', uploadCSV);
+app.use('/api/datadisplay', datadisplay);
 
 // Start server
 function startServer() {
