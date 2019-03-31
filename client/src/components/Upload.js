@@ -44,6 +44,17 @@ class Upload extends Component {
         alert('The file is successfully uploaded');
         this.setState({ uploaded: true, uploadedID: res.data._id });
         this.props.uploaded(res.data._id);
+
+        const bearer = 'Bearer ' + localStorage.getItem('token');
+        const conf = {
+          headers: { 'Authorization': bearer }
+        };
+        axios.get(`/api/datadisplay/${res.data._id}`, conf)
+          .then((response) => {
+            console.log('response axios get: ', response);
+            // this.setState({ data: response});
+          })
+          .catch((err) => console.log(`Error: ${err}`));
       })
       .catch((error) => {console.log('Error: ', error)});
 

@@ -60,7 +60,7 @@ class App extends Component {
       registered: false,
       signedIn: false,
       uploaded: false,
-      uploadedID: '',
+      uploadedID: null,
     };
   }
 
@@ -474,7 +474,7 @@ class App extends Component {
             );
           })}
           {/* buttons for sorting the data */}
-          <Route path='/api/datadisplay' component={DataDisplay} />
+          <Route path='/api/datadisplay' render={() => (<DataDisplay uploadedID={uploadedID} />)} />
 
           {/* data displayed as resulted from search and sort operations ------------------------------------*/}
           <DropDownMenu

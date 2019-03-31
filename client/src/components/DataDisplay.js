@@ -21,14 +21,21 @@ class DataDisplay extends Component {
   //   }
   // }
 
-  componentDidMount(){
-    axios.get(`/api/datadisplay/${this.props.uploadedID}`)
-      .then((response) => {
-        console.log('response axios get: ', response);
-        // this.setState({ data: response});
-      })
-      .catch((err) => console.log(`Error: ${err}`));
-  }
+  // componentDidMount(){
+  //   const {uploadedID} = this.props;
+  //   if (uploadedID) {
+  //     const bearer = 'Bearer ' + localStorage.getItem('token');
+  //     const config = {
+  //       headers: { 'Authorization': bearer }
+  //     };
+  //     axios.get(`/api/datadisplay/${uploadedID}`, config)
+  //       .then((response) => {
+  //         console.log('response axios get: ', response);
+  //         // this.setState({ data: response});
+  //       })
+  //       .catch((err) => console.log(`Error: ${err}`));
+  //   }
+  // }
 
   render() {
     const {prevPath, data} = this.state;
