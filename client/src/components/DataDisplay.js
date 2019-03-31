@@ -22,7 +22,7 @@ class DataDisplay extends Component {
   // }
 
   componentDidMount(){
-    axios.get(`/api/datadisplay/${this.props.fileID}`)
+    axios.get(`/api/datadisplay/${this.props.uploadedID}`)
       .then((response) => {
         console.log('response axios get: ', response);
         // this.setState({ data: response});
@@ -41,7 +41,7 @@ class DataDisplay extends Component {
       </div>
     );
   }
-};
+}
 
 // DataDisplay.propTypes = {
 //   data: PropTypes.object.isRequired

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Route, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import '../App.css';
 
@@ -6,9 +7,10 @@ class Upload extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      upload: true,
+      uploaded: false,
       file: null,
       firstRowHeader: false,
+      uploadedID: '',
     }
 
     this.onChange = this.onChange.bind(this);
@@ -40,7 +42,7 @@ class Upload extends Component {
     axios.post('/api/upload-csv',formData,config)
       .then((res) => {
         alert('The file is successfully uploaded');
-        console.log('res after upload: ', res);
+        this.setState({ uploaded: true, uploadedID: res.data._id });
         this.props.uploaded(res.data._id);
       })
       .catch((error) => {console.log('Error: ', error)});
@@ -48,8 +50,12 @@ class Upload extends Component {
   } 
 
   render() {
+    const {uploaded} = this.state;
     return (
       <div>
+        {/* <Route path='/api/upload-csv' render={() => (uploaded ? 
+            (<Redirect to={`/api/datadisplay/${this.state.uploadedID}`} />) : null)
+          }/> */}
         <br/>
         <form action='/api/upload-csv' encType='multipart/form-data' method='POST'
         noValidate onSubmit={this.uploadCSV}> 
@@ -58,7 +64,7 @@ class Upload extends Component {
           <input type="checkbox" id='firstRowHeader' onChange={this.radioClicked} />
           <label htmlFor='firstRowHeader'>The first row is the header</label>
           <br/>
-          <input type='submit' value='Upload a file'/>
+          <input type='submit' value='Upload a file'/>          
         </form>
       </div>
     );

@@ -331,6 +331,7 @@ class App extends Component {
   }
 
   uploaded = (id) => {
+    console.log('uploaded in App triggered and id is: ', id);
     this.setState({ uploaded: true, windowVisible: false, uploadedID: id });
   }
 
@@ -473,10 +474,9 @@ class App extends Component {
             );
           })}
           {/* buttons for sorting the data */}
-          <Route path='/api/datadisplay' render={() => (
-            uploaded ? <DataDisplay uploadedID={uploadedID}/> : <Redirect to='/' />
-          )} />
-          {/* data displayed as resulted from search and sort operations */}
+          <Route path='/api/datadisplay' component={DataDisplay} />
+
+          {/* data displayed as resulted from search and sort operations ------------------------------------*/}
           <DropDownMenu
             menuVisible={menuVisible} mouseOutMenu={this.menuHide}
             style={{ top: menuTop, left: menuLeft }}
@@ -487,6 +487,7 @@ class App extends Component {
             <MenuElementWithHandler name='DELETE' />
           </DropDownMenu>
         </div>
+        {/* The modal that contains the registration, signin, and file upload ------------------------------ */}
         <BackgroundPopWindow classInput={windowVisible}>
           <UploadWindow classInput={windowVisible}>
             <div className='popHeader'>
@@ -497,7 +498,8 @@ class App extends Component {
                 <Redirect to='/api/upload-csv' /> : <Register registered={this.registered} />)} />
               <Route path='/api/users/signin' render={() => (signedIn ?
                 <Redirect to='/api/upload-csv' /> : <SignIn signedIn={this.signedIn} />)} />
-              <Route path='/api/upload-csv' render={() => (uploaded ? <Redirect to='/api/datadisplay' /> : 
+              <Route path='/api/upload-csv' render={() => (uploaded ?
+                <Redirect to={`/api/datadisplay/${uploadedID}`} /> : 
                 <Upload uploaded={this.uploaded} />)} />
             </Switch>
           </UploadWindow>
