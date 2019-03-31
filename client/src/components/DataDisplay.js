@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import Table from './Table.js'
+// import { Route, Redirect } from 'react-router-dom';
+// import Table from './Table.js'
 
 // import PropTypes from 'prop-types';
 import '../App.css';
-import axios from 'axios';
+// import axios from 'axios';
 
 class DataDisplay extends Component {
   constructor (props) {
@@ -38,7 +38,7 @@ class DataDisplay extends Component {
   // }
 
   render() {
-    const {prevPath, data} = this.state;
+    // const {prevPath, data} = this.state;
     return (
       <div className='dataDisplay'>
         Stuff

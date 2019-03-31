@@ -7,7 +7,7 @@ const File = new Schema({
     type: Array,
     default: []
   },
-  data: {
+  body: {
     type: Array,
     default: []
   },

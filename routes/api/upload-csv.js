@@ -34,7 +34,6 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
     csv.fromPath(req.file.path)
       .on("data", function (data) {
         fileRows.push(data); // push each row
-        console.log('path: ', req.file.path);
       })
       .on("end", function () {
         let header = [];
@@ -57,7 +56,6 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
           if (err) {
             return res.sendStatus(404).end('Error' + err);
           } else {
-            console.log('file is: ', file);
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
             res.json(file);

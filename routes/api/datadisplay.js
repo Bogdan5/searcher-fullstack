@@ -8,7 +8,9 @@ const File = require('../../models/File');
 router.get('/:fileID', authenticate.verifyUser, (req, res, next) => {
   File.findById(req.params.fileID)
     .then((file) => {
-      return res.sendStatus(200).setHeader('Content-Type', 'application/json').json(file);
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.json(file);
     }, (err) => {
       next(err);
     })

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import axios from 'axios';
+import uuid from "uuid";
 import '../App.css';
 
 class Upload extends Component {
@@ -43,7 +44,6 @@ class Upload extends Component {
       .then((res) => {
         alert('The file is successfully uploaded');
         this.setState({ uploaded: true, uploadedID: res.data._id });
-        this.props.uploaded(res.data._id);
 
         const bearer = 'Bearer ' + localStorage.getItem('token');
         const conf = {
@@ -51,8 +51,19 @@ class Upload extends Component {
         };
         axios.get(`/api/datadisplay/${res.data._id}`, conf)
           .then((response) => {
-            console.log('response axios get: ', response);
-            // this.setState({ data: response});
+            let newHeader = [];
+            let newBody = [];
+            response.data.header.map(el => newHeader.push([uuid.v4(), el]));
+            response.data.body.map(el => {
+              let newRow = [];
+              el.map(elem => newRow.push([uuid.v4(), elem]));
+              return newBody.push([uuid.v4(), newRow]);
+            });
+            const newData = Object.assign({}, res.data, {
+              header: newHeader,
+              body: newBody,
+            });
+            this.props.uploaded(newData);
           })
           .catch((err) => console.log(`Error: ${err}`));
       })

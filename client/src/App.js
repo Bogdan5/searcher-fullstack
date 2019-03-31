@@ -61,6 +61,7 @@ class App extends Component {
       signedIn: false,
       uploaded: false,
       uploadedID: null,
+      uploadedData: {},
     };
   }
 
@@ -330,9 +331,10 @@ class App extends Component {
     this.setState({ signedIn: true });
   }
 
-  uploaded = (id) => {
-    console.log('uploaded in App triggered and id is: ', id);
-    this.setState({ uploaded: true, windowVisible: false, uploadedID: id });
+  uploaded = (data) => {
+    let {header, body} = data;
+    
+    this.setState({ uploadedData: data });
   }
 
   // after click on 'Sign in' button in the Navbar opens the 
