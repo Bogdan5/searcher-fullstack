@@ -27,8 +27,10 @@ class SignIn extends Component {
     };
     axios.post('/api/users/signin', user)
       .then((res) => {
+        console.log('res from post signin', res);
+        const {username, userID} = res.data;
         if (res.data.success) {
-          this.props.signedIn();
+          this.props.signedIn(username, userID);
           localStorage.setItem('token', res.data.token);
         } else {
           var error = new Error('Error ' + res.status + ': ' + res.statusText);

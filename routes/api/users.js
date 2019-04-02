@@ -216,12 +216,14 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.post('/signin', passport.authenticate('local'), (req, res) => {
-  console.log("authenticator");
+  // console.log("authenticator res: ", res);
   const token = authenticate.getToken({ _id: req.user._id });
 
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
   res.json({
+    username: req.user.username,
+    userID: req.user._id,
     success: true,
     token,
     status: 'You are successfully logged in!',

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 import { Switch, NavLink, Route, Redirect } from 'react-router-dom';
 
 import Keyboard from './components/Keyboard';
@@ -24,6 +24,7 @@ import SignIn from './components/SignIn.js';
 import SortButton from './components/SortButton';
 import BackgroundPopWindow from './components/BackgroundPopWindow';
 import Upload from './components/Upload';
+import Account from './components/Account';
 
 import './App.css';
 
@@ -49,11 +50,7 @@ class App extends Component {
       idConditional: 0,
       menuVisible: false,
       mergerArray: [null, null, null],
-      data: [{
-        column1: 12,
-        column2: 23,
-        column3: 20,
-      }],
+      data: [],
       windowVisible: false,
       windowKind: 'upload',
       email: '',
@@ -62,6 +59,8 @@ class App extends Component {
       uploaded: false,
       uploadedID: null,
       uploadedData: {},
+      userID: null,
+      username: '',
     };
   }
 
@@ -326,14 +325,14 @@ class App extends Component {
   }
 
   // called when 'Sign in' is clicked in SignIn component
-  signedIn = () => {
+  signedIn = (username, userID) => {
     console.log('signedIn props fired');
     this.setState({ signedIn: true });
   }
 
   uploaded = (data) => {
     let {header, body} = data;
-    
+
     this.setState({ uploadedData: data });
   }
 
@@ -346,14 +345,18 @@ class App extends Component {
     this.setState({ uploaded: false, windowVisible: true });
   }
 
+  accountView = () => {
+    // axios.get('/api/account/')
+  }
+
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
    /////////////////////////////////////////RENDER////////////////////////////////////////////////////////////
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
    render() {
     const {
-      inputVisibility, menuVisible, active, listCards, menuTop, menuLeft,
-      cardSelected, data, windowVisible, registered, uploaded, signedIn, uploadedID
+      inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
+      data, windowVisible, registered, uploaded, signedIn, uploadedID, userID, username
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -383,9 +386,19 @@ class App extends Component {
       <div className='bodyContainer'>
         {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
-          <NavLink to='/api/upload-csv' onClick={this.uploadClickedNav}>Upload files without signing in</NavLink>
+          <NavLink to='/api/upload-csv' onClick={this.uploadUnsigned}>Upload file without signing in</NavLink>
+          <NavLink to='/api/upload-csv' onClick={this.uploadSigned}>Upload file</NavLink>
           <NavLink to='/api/users/signin' onClick={this.openSignInNav}>Sign in</NavLink>
           <NavLink to='/api/users/signup' onClick={this.openSignUpNav}>Sign up</NavLink>
+          <Route path='/' render={() => {
+            if (signedIn) {
+              return (<NavLink to={`/api/account/${userID}`} onClick={this.accountView}>
+                        {username}
+                      </NavLink>)
+            } else {
+              return null;
+            }
+          }} />
           {/* <button onClick={this.openUploadWindow}>Upload files</button>
           <button onClick={this.openUploadWindow}>Upload files</button> */}
         </NavBar>
@@ -497,12 +510,15 @@ class App extends Component {
             </div>
             <Switch>
               <Route path='/api/users/signup' render={() => (registered ?
-                <Redirect to='/api/upload-csv' /> : <Register registered={this.registered} />)} />
+                <Redirect to='/' /> : <Register registered={this.registered} />)} />
               <Route path='/api/users/signin' render={() => (signedIn ?
-                <Redirect to='/api/upload-csv' /> : <SignIn signedIn={this.signedIn} />)} />
+                <Redirect to='/' /> : <SignIn signedIn={this.signedIn} />)} />
               <Route path='/api/upload-csv' render={() => (uploaded ?
                 <Redirect to={`/api/datadisplay/${uploadedID}`} /> : 
                 <Upload uploaded={this.uploaded} />)} />
+              <Route path='/api/account' render={() => (accountExit ?
+                <Redirect path='/' /> : <Account username={username} userID={userID} />
+              )} />
             </Switch>
           </UploadWindow>
         </BackgroundPopWindow>

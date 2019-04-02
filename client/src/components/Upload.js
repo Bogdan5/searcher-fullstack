@@ -59,10 +59,11 @@ class Upload extends Component {
               el.map(elem => newRow.push([uuid.v4(), elem]));
               return newBody.push([uuid.v4(), newRow]);
             });
-            const newData = Object.assign({}, res.data, {
+            const newData = {
               header: newHeader,
               body: newBody,
-            });
+              id: res.data._id,
+            };
             this.props.uploaded(newData);
           })
           .catch((err) => console.log(`Error: ${err}`));
