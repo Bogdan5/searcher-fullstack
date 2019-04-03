@@ -348,14 +348,17 @@ class App extends Component {
   }
 
   accountView = () => {
-    this.setState({ accountView: true })
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
-      headers: { 'Authorization': bearer }
+      headers: { 'Authorization': bearer },
     };
-    axios.get(`/api/account/${this.state.userID}`, conf)
+    const data = {
+      userID: this.state.userID,
+    };
+    axios.get(`/api/account/${this.state.userID}`, data, conf)
       .then((response) => {
-
+        this.setState({ accountView: true, accountData: response.data.accountData });
+        console.log('Response for get account: ', response.data);
       })
       .catch((err) => console.log(`Error: ${err}`));
   }
