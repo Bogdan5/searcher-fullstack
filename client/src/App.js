@@ -61,6 +61,8 @@ class App extends Component {
       uploadedData: {},
       userID: null,
       username: '',
+      accountView: false,
+      accountData: null,
     };
   }
 
@@ -346,7 +348,20 @@ class App extends Component {
   }
 
   accountView = () => {
-    // axios.get('/api/account/')
+    this.setState({ accountView: true })
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    const conf = {
+      headers: { 'Authorization': bearer }
+    };
+    axios.get(`/api/account/${this.state.userID}`, conf)
+      .then((response) => {
+
+      })
+      .catch((err) => console.log(`Error: ${err}`));
+  }
+
+  accountExit = () => {
+    this.setState({ accountView: false });
   }
 
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -356,7 +371,8 @@ class App extends Component {
    render() {
     const {
       inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
-      data, windowVisible, registered, uploaded, signedIn, uploadedID, userID, username
+      data, windowVisible, registered, uploaded, signedIn, uploadedID, userID, username,
+      accountView, accountData,
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -516,8 +532,9 @@ class App extends Component {
               <Route path='/api/upload-csv' render={() => (uploaded ?
                 <Redirect to={`/api/datadisplay/${uploadedID}`} /> : 
                 <Upload uploaded={this.uploaded} />)} />
-              <Route path='/api/account' render={() => (accountExit ?
-                <Redirect path='/' /> : <Account username={username} userID={userID} />
+              <Route path='/api/account' render={() => (accountView ?
+                <Account username={username} userID={userID}
+                accountExit={this.accountExit} accountData={accountData} /> : <Redirect path='/' />
               )} />
             </Switch>
           </UploadWindow>
