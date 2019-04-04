@@ -12,11 +12,13 @@ class Upload extends Component {
       file: null,
       firstRowHeader: false,
       uploadedID: '',
+      description: ''
     }
 
     this.onChange = this.onChange.bind(this);
     this.uploadCSV = this.uploadCSV.bind(this);
-    this.radioClicked = this.radioClicked.bind(this);    
+    this.radioClicked = this.radioClicked.bind(this);
+    this.description = this.description.bind(this);    
   }
 
   onChange = (e) => {
@@ -27,11 +29,16 @@ class Upload extends Component {
     this.setState({ firstRowHeader: true });
   }
 
+  description = (e) => {
+    this.setState({ description: e.target.value });
+  }
+
   uploadCSV = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', this.state.file);
     formData.set('firstRowHeader', this.state.firstRowHeader);
+    formData.set('description', this.state.description);
 
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const config = {
@@ -63,6 +70,8 @@ class Upload extends Component {
               header: newHeader,
               body: newBody,
               id: res.data._id,
+              time: Date.now(),
+              description: res.data.description,
             };
             this.props.uploaded(newData);
           })
@@ -87,6 +96,8 @@ class Upload extends Component {
           <input type="checkbox" id='firstRowHeader' onChange={this.radioClicked} />
           <label htmlFor='firstRowHeader'>The first row is the header</label>
           <br/>
+          <label htmlFor='description'></label>
+          <input type='text' onChange={this.description} placeholder='File description' />
           <input type='submit' value='Upload a file'/>          
         </form>
       </div>

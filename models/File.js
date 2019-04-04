@@ -14,6 +14,14 @@ const File = new Schema({
   author: {
     type: String,
     default: ''
+  },
+  description: {
+    type: String,
+    default: ''
+  },
+  time: {
+    type: Date,
+    default: Date.now()
   }
 });
 
