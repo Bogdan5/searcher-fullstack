@@ -12,17 +12,13 @@ const File = new Schema({
     default: []
   },
   author: {
-    type: String,
-    default: ''
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   description: {
     type: String,
     default: ''
-  },
-  time: {
-    type: Date,
-    default: Date.now()
   }
-});
+}, { timestamps: { createdAt: 'created_at' } });
 
 module.exports = mongoose.model('File', File);

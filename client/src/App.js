@@ -25,6 +25,7 @@ import SortButton from './components/SortButton';
 import BackgroundPopWindow from './components/BackgroundPopWindow';
 import Upload from './components/Upload';
 import Account from './components/Account';
+import UploadOptions from './components/UploadOptions';
 
 import './App.css';
 
@@ -63,6 +64,8 @@ class App extends Component {
       username: '',
       accountView: false,
       accountData: null,
+      uploadOptions: true,
+      optionChosen: 'without',
     };
   }
 
@@ -365,6 +368,10 @@ class App extends Component {
     this.setState({ accountView: false, windowVisible: false });
   }
 
+  optionChosen = (option) => {
+    this.setState({ optionChosen: option, uploadOptions: false })
+  }
+
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
    /////////////////////////////////////////RENDER////////////////////////////////////////////////////////////
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -401,6 +408,7 @@ class App extends Component {
 
     return (
       <div className='bodyContainer'>
+        {/* -------------------------------------------NAVBAR----------------------------------------------- */}
         {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
           <NavLink to='/api/upload-csv' onClick={this.uploadUnsigned}>Upload file without signing in</NavLink>
@@ -419,6 +427,7 @@ class App extends Component {
           {/* <button onClick={this.openUploadWindow}>Upload files</button>
           <button onClick={this.openUploadWindow}>Upload files</button> */}
         </NavBar>
+
         {/* -------------------------------main application----------------------------------------------- */}
         <div className='App' ref={this.appRef}>
           {/* the header with the description on the app */}
@@ -537,6 +546,9 @@ class App extends Component {
                 <Account username={username} userID={userID}
                 accountExit={this.accountExit} accountData={accountData} /> : <Redirect to='/' />
               )} />
+              <Route path='/' render={() => (this.state.uploadOptions ? 
+                <UploadOptions optionChosen={this.optionChosen} /> : <Redirect to='' />)
+              } />
             </Switch>
           </UploadWindow>
         </BackgroundPopWindow>

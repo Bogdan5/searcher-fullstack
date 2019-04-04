@@ -70,7 +70,6 @@ class Upload extends Component {
               header: newHeader,
               body: newBody,
               id: res.data._id,
-              time: Date.now(),
               description: res.data.description,
             };
             this.props.uploaded(newData);
