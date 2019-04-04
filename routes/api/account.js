@@ -3,8 +3,11 @@ const passport = require('passport');
 const authenticate = require('../../authenticate');
 const router = express.Router();
 
+const File = require('../../models/File');
+
 router.get('/:userID', authenticate.verifyUser, (req, res, next) =>{
-  File.find({author: userID})
+  console.log('Response for the get account: ', res);
+  File.find({author: req.params.userID})
     .then((files) => {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');

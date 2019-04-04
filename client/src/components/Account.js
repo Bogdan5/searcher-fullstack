@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 import '../App.css';
 
 const Account = (props) => {
+  const {data} = props;
+
+  const handler = () => {
+    this.props.accountExit();
+  }
 
   return (
     <div>
@@ -14,20 +19,18 @@ const Account = (props) => {
           <th>Delete file?</th>
         </head>
         <body>
-          {data.map((el, index) => (
+          {/* {data.map((el, index) => (
             <tr>
               <td>index</td>
               <td>el.filename</td>
               <td>el.date</td>
               <td></td>
             </tr>
-          ))}
+          ))} */}
         </body>
       </table>
-      <br>
-      <hr>
-      <br>
-      <input type='button' onClick={this.props.accountExit}>Done</input>
+      <hr/>
+      <input type='button' onClick={handler}>Done</input>
     </div>
   );
 }

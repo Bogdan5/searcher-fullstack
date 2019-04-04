@@ -323,13 +323,13 @@ class App extends Component {
 
   // called when 'Sign up' is clicked in Register component
   registered = () => {
-    this.setState({ registered: true, signedIn: true });
+    this.setState({ registered: true, signedIn: true, windowVisible: false });
   }
 
   // called when 'Sign in' is clicked in SignIn component
   signedIn = (username, userID) => {
     console.log('signedIn props fired');
-    this.setState({ signedIn: true });
+    this.setState({ signedIn: true, userID, username, windowVisible: false });
   }
 
   uploaded = (data) => {
@@ -351,20 +351,18 @@ class App extends Component {
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer },
-    };
-    const data = {
       userID: this.state.userID,
     };
-    axios.get(`/api/account/${this.state.userID}`, data, conf)
+    axios.get(`/api/account/${this.state.userID}`, conf)
       .then((response) => {
         this.setState({ accountView: true, accountData: response.data.accountData });
-        console.log('Response for get account: ', response.data);
+        console.log('Response for get account: ', response);
       })
       .catch((err) => console.log(`Error: ${err}`));
   }
 
   accountExit = () => {
-    this.setState({ accountView: false });
+    this.setState({ accountView: false, windowVisible: false });
   }
 
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -535,9 +533,9 @@ class App extends Component {
               <Route path='/api/upload-csv' render={() => (uploaded ?
                 <Redirect to={`/api/datadisplay/${uploadedID}`} /> : 
                 <Upload uploaded={this.uploaded} />)} />
-              <Route path='/api/account' render={() => (accountView ?
+              <Route path={`/api/account/${userID}`} render={() => (accountView ?
                 <Account username={username} userID={userID}
-                accountExit={this.accountExit} accountData={accountData} /> : <Redirect path='/' />
+                accountExit={this.accountExit} accountData={accountData} /> : <Redirect to='/' />
               )} />
             </Switch>
           </UploadWindow>
