@@ -25,7 +25,7 @@ import SortButton from './components/SortButton';
 import BackgroundPopWindow from './components/BackgroundPopWindow';
 import Upload from './components/Upload';
 import Account from './components/Account';
-import UploadOptions from './components/UploadOptions';
+import StartScreen from './components/StartScreen';
 
 import './App.css';
 
@@ -52,7 +52,7 @@ class App extends Component {
       menuVisible: false,
       mergerArray: [null, null, null],
       data: [],
-      windowVisible: false,
+      windowVisible: true,
       windowKind: 'upload',
       email: '',
       registered: false,
@@ -64,7 +64,7 @@ class App extends Component {
       username: '',
       accountView: false,
       accountData: null,
-      uploadOptions: true,
+      startScreenDisplay: true,
       optionChosen: 'without',
     };
   }
@@ -368,8 +368,8 @@ class App extends Component {
     this.setState({ accountView: false, windowVisible: false });
   }
 
-  optionChosen = (option) => {
-    this.setState({ optionChosen: option, uploadOptions: false })
+  optChosen = (option) => {
+    this.setState({ optionChosen: option, startScreenDisplay: false })
   }
 
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -380,7 +380,7 @@ class App extends Component {
     const {
       inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
       data, windowVisible, registered, uploaded, signedIn, uploadedID, userID, username,
-      accountView, accountData,
+      accountView, accountData, startScreenDisplay, optionChosen
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -546,8 +546,20 @@ class App extends Component {
                 <Account username={username} userID={userID}
                 accountExit={this.accountExit} accountData={accountData} /> : <Redirect to='/' />
               )} />
-              <Route path='/' render={() => (this.state.uploadOptions ? 
-                <UploadOptions optionChosen={this.optionChosen} /> : <Redirect to='' />)
+              <Route path='/' render={() => {
+                if (startScreenDisplay) {
+                  <StartScreen optChosen={this.optChosen} />
+                } else {
+                  switch (optionChosen) {
+                    case 'with':
+                      
+                  }
+                }
+              }
+              
+              (startScreenDisplay ? 
+                <StartScreen optChosen={this.optChosen} /> : ((optionChosen === 'with') ?
+                <Redirect to='/api/users/signin' /> : <Redirect to='/api/upload-csv' />))
               } />
             </Switch>
           </UploadWindow>
