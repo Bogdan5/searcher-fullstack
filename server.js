@@ -12,6 +12,7 @@ const users = require('./routes/api/users');
 const uploadCSV = require('./routes/api/upload-csv');
 const datadisplay = require('./routes/api/datadisplay');
 const account = require('./routes/api/account');
+const test = require('./routes/api/testAuth');
 // const fileUpload = require('express-fileupload');
 
 
@@ -52,6 +53,7 @@ app.use('/api/users', users);
 app.use('/api/upload-csv', uploadCSV);
 app.use('/api/datadisplay', datadisplay);
 app.use('/api/account', account);
+app.use('/test', test);
 
 // Start server
 function startServer() {

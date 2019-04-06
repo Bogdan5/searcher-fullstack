@@ -66,11 +66,19 @@ class App extends Component {
       accountData: null,
       startScreenDisplay: true,
       optionChosen: 'without',
+      authenticated: false,
     };
   }
 
   componentDidMount() {
+    console.log('component did mount');
     this.textInput.current.focus();
+    axios.get('/test')
+      .then((res) => {
+        console.log('Auth: ', res.data.authenticated)
+        this.setState({ authenticated: res.data.authenticated});
+        })
+      .catch(err => console.log('Error: ', err));
   }
 
   textHandler = (e) => {
@@ -546,13 +554,13 @@ class App extends Component {
                 <Account username={username} userID={userID}
                 accountExit={this.accountExit} accountData={accountData} /> : <Redirect to='/' />
               )} />
-              <Route path='/' render={() => {
+              {/* <Route path='/' render={() => {
                 if (startScreenDisplay) {
                   <StartScreen optChosen={this.optChosen} />
                 } else {
                   switch (optionChosen) {
                     case 'with':
-                      
+
                   }
                 }
               }
@@ -560,7 +568,7 @@ class App extends Component {
               (startScreenDisplay ? 
                 <StartScreen optChosen={this.optChosen} /> : ((optionChosen === 'with') ?
                 <Redirect to='/api/users/signin' /> : <Redirect to='/api/upload-csv' />))
-              } />
+              } /> */}
             </Switch>
           </UploadWindow>
         </BackgroundPopWindow>
