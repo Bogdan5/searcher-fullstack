@@ -53,7 +53,7 @@ app.use('/api/users', users);
 app.use('/api/upload-csv', uploadCSV);
 app.use('/api/datadisplay', datadisplay);
 app.use('/api/account', account);
-app.use('/test', test);
+app.use('/', test);
 
 // Start server
 function startServer() {

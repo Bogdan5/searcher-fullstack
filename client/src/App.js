@@ -73,12 +73,18 @@ class App extends Component {
   componentDidMount() {
     console.log('component did mount');
     this.textInput.current.focus();
-    axios.get('/test')
-      .then((res) => {
-        console.log('Auth: ', res.data.authenticated)
-        this.setState({ authenticated: res.data.authenticated});
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    const conf = {
+      headers: { 'Authorization': bearer }
+    };
+    axios.get('/test', conf)
+      .then(async (res) => {
+        console.log('test res is: ', res);
+        await this.setState({ authenticated: true, username: res.data.username, userID: res.data._id });
+        console.log('username: ', this.state.username);
         })
-      .catch(err => console.log('Error: ', err));
+      .catch(err => console.log('Error:', err));
   }
 
   textHandler = (e) => {
