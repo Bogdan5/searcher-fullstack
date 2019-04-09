@@ -295,3 +295,22 @@ body{
   height: 30px;
   background-color: red;
 }
+
+.navLinkButton{
+  display: block;
+  height: 50px;
+  width: 350px;
+  font-size: 20px;
+  border: 1px solid black;
+  color: white;
+  border-radius: 7px;
+  background-color: $green;
+  text-align: center;
+  line-height: 50px;
+  margin: 20px auto;
+  text-decoration: none;
+  box-shadow: 3px 5px 5px rgba(184,182,207,1);
+  &:active{
+    box-shadow: 1px 3px 5px rgba(184,182,207,1);
+  }
+}

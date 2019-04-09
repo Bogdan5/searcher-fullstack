@@ -26,6 +26,7 @@ import BackgroundPopWindow from './components/BackgroundPopWindow';
 import Upload from './components/Upload';
 import Account from './components/Account';
 import StartScreen from './components/StartScreen';
+import SignOptions from './components/SignOptions'
 
 import './App.css';
 
@@ -55,8 +56,6 @@ class App extends Component {
       windowVisible: true,
       windowKind: 'upload',
       email: '',
-      registered: false,
-      signedIn: false,
       uploaded: false,
       uploadedID: null,
       uploadedData: {},
@@ -67,11 +66,11 @@ class App extends Component {
       startScreenDisplay: true,
       optionChosen: 'without',
       authenticated: false,
+      anonymous: true,
     };
   }
 
   componentDidMount() {
-    console.log('component did mount');
     this.textInput.current.focus();
 
     const bearer = 'Bearer ' + localStorage.getItem('token');
@@ -80,9 +79,7 @@ class App extends Component {
     };
     axios.get('/test', conf)
       .then(async (res) => {
-        console.log('test res is: ', res);
         await this.setState({ authenticated: true, username: res.data.username, userID: res.data._id });
-        console.log('username: ', this.state.username);
         })
       .catch(err => console.log('Error:', err));
   }
@@ -308,13 +305,13 @@ class App extends Component {
      }
    }
 
-   openUploadWindow = () => {
+  openUploadWindow = () => {
     this.setState({ windowVisible: true });
- }
+  }
 
-   closeUploadWindow = () => {
-      this.setState({ windowVisible: false });
-   }
+  closeUploadWindow = () => {
+    this.setState({ windowVisible: false });
+  }
 
   //  navbarClickHandler = (name) => {
   //    switch (name) {
@@ -340,13 +337,12 @@ class App extends Component {
 
   // called when 'Sign up' is clicked in Register component
   registered = () => {
-    this.setState({ registered: true, signedIn: true, windowVisible: false });
+    this.setState({ authenticated: true, authenticated: true, windowVisible: false });
   }
 
   // called when 'Sign in' is clicked in SignIn component
   signedIn = (username, userID) => {
-    console.log('signedIn props fired');
-    this.setState({ signedIn: true, userID, username, windowVisible: false });
+    this.setState({ authenticated: true, userID, username, windowVisible: false });
   }
 
   uploaded = (data) => {
@@ -373,7 +369,6 @@ class App extends Component {
     axios.get(`/api/account/${this.state.userID}`, conf)
       .then((response) => {
         this.setState({ accountView: true, accountData: response.data.accountData });
-        console.log('Response for get account: ', response);
       })
       .catch((err) => console.log(`Error: ${err}`));
   }
@@ -383,6 +378,16 @@ class App extends Component {
   }
 
   optChosen = (option) => {
+    switch(option){
+      case 'uploadAnon':
+        this.setState({anonymous: true});
+        break;
+      case 'uploadSign':
+        this.setState({anonymous: false});
+        break;
+      default:
+    }
+
     this.setState({ optionChosen: option, startScreenDisplay: false })
   }
 
@@ -390,11 +395,11 @@ class App extends Component {
    /////////////////////////////////////////RENDER////////////////////////////////////////////////////////////
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-   render() {
+  render() {
     const {
       inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
-      data, windowVisible, registered, uploaded, signedIn, uploadedID, userID, username,
-      accountView, accountData, startScreenDisplay, optionChosen
+      data, windowVisible, uploaded, uploadedID, userID, username,
+      accountView, accountData, startScreenDisplay, optionChosen, authenticated, anonymous,
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -426,11 +431,12 @@ class App extends Component {
         {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
           <NavLink to='/api/upload-csv' onClick={this.uploadUnsigned}>Upload file without signing in</NavLink>
-          <NavLink to='/api/upload-csv' onClick={this.uploadSigned}>Upload file</NavLink>
+          <NavLink to={authenticated ? '/api/upload-csv' : '/api/users/signOptions'}
+            onClick={this.uploadSigned}>Upload file</NavLink>
           <NavLink to='/api/users/signin' onClick={this.openSignInNav}>Sign in</NavLink>
           <NavLink to='/api/users/signup' onClick={this.openSignUpNav}>Sign up</NavLink>
           <Route path='/' render={() => {
-            if (signedIn) {
+            if (authenticated) {
               return (<NavLink to={`/api/account/${userID}`} onClick={this.accountView}>
                         {username}
                       </NavLink>)
@@ -549,32 +555,32 @@ class App extends Component {
               <NavLink to='/' onClick={this.closeUploadWindow} >X</NavLink>
             </div>
             <Switch>
-              <Route path='/api/users/signup' render={() => (registered ?
+              <Route path='/api/users/signup' render={() => (authenticated ?
                 <Redirect to='/' /> : <Register registered={this.registered} />)} />
-              <Route path='/api/users/signin' render={() => (signedIn ?
+              <Route path='/api/users/signin' render={() => (authenticated ?
                 <Redirect to='/' /> : <SignIn signedIn={this.signedIn} />)} />
               <Route path='/api/upload-csv' render={() => (uploaded ?
                 <Redirect to={`/api/datadisplay/${uploadedID}`} /> : 
-                <Upload uploaded={this.uploaded} />)} />
+                <Upload uploaded={this.uploaded} anonymous={anonymous}/>)} />
               <Route path={`/api/account/${userID}`} render={() => (accountView ?
                 <Account username={username} userID={userID}
                 accountExit={this.accountExit} accountData={accountData} /> : <Redirect to='/' />
               )} />
-              {/* <Route path='/' render={() => {
+              <Route exact path='/' render={() => {
                 if (startScreenDisplay) {
-                  <StartScreen optChosen={this.optChosen} />
+                  return <StartScreen optChosen={this.optChosen} authenticated={authenticated}
+                          userID={userID} />
                 } else {
-                  switch (optionChosen) {
-                    case 'with':
-
-                  }
+                  return null;
                 }
-              }
-              
-              (startScreenDisplay ? 
-                <StartScreen optChosen={this.optChosen} /> : ((optionChosen === 'with') ?
-                <Redirect to='/api/users/signin' /> : <Redirect to='/api/upload-csv' />))
-              } /> */}
+              }} />
+              <Route path='/api/users/signOptions' render={() => (authenticated ?
+                <SignOptions>
+                  <SignIn signedIn={this.signedIn} />
+                  <Register registered={this.registered} />
+                </SignOptions> :
+                <Redirect to='/api/upload-csv' />
+              ) } />
             </Switch>
           </UploadWindow>
         </BackgroundPopWindow>
