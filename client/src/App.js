@@ -575,10 +575,10 @@ class App extends Component {
                 }
               }} />
               <Route path='/api/users/signOptions' render={() => (authenticated ?
-                <SignOptions>
+                (<SignOptions>
                   <SignIn signedIn={this.signedIn} />
                   <Register registered={this.registered} />
-                </SignOptions> :
+                </SignOptions>) :
                 <Redirect to='/api/upload-csv' />
               ) } />
             </Switch>

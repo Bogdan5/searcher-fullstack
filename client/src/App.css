@@ -237,3 +237,7 @@ body {
   box-shadow: 3px 5px 5px #b8b6cf; }
   .navLinkButton:active {
     box-shadow: 1px 3px 5px #b8b6cf; }
+
+.signOptions {
+  display: flex;
+  flex-direction: row; }

@@ -314,3 +314,7 @@ body{
     box-shadow: 1px 3px 5px rgba(184,182,207,1);
   }
 }
+
+.signOptions{
+  @include row-flex;  
+}
