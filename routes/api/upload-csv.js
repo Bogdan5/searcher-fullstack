@@ -51,6 +51,7 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
         File.create({
           header,
           body: fileRows,
+          description: req.body.description,
           author: mongoose.Types.ObjectId(req.user._id)
         }, (err, file) => {
           if (err) {

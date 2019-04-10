@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import axios from 'axios';
-import uuid from "uuid";
 import '../App.css';
 
 class Upload extends Component {
@@ -18,7 +17,7 @@ class Upload extends Component {
     this.onChange = this.onChange.bind(this);
     this.uploadCSV = this.uploadCSV.bind(this);
     this.radioClicked = this.radioClicked.bind(this);
-    this.description = this.description.bind(this);    
+    this.descriptionHandler = this.descriptionHandler.bind(this);    
   }
 
   onChange = (e) => {
@@ -29,7 +28,7 @@ class Upload extends Component {
     this.setState({ firstRowHeader: true });
   }
 
-  description = (e) => {
+  descriptionHandler = (e) => {
     this.setState({ description: e.target.value });
   }
 
@@ -51,30 +50,31 @@ class Upload extends Component {
       .then((res) => {
         alert('The file is successfully uploaded');
         this.setState({ uploaded: true, uploadedID: res.data._id });
+        this.props.uploadSuccesfulCall(res.data._id);
 
-        const bearer = 'Bearer ' + localStorage.getItem('token');
-        const conf = {
-          headers: { 'Authorization': bearer }
-        };
-        axios.get(`/api/datadisplay/${res.data._id}`, conf)
-          .then((response) => {
-            let newHeader = [];
-            let newBody = [];
-            response.data.header.map(el => newHeader.push([uuid.v4(), el]));
-            response.data.body.map(el => {
-              let newRow = [];
-              el.map(elem => newRow.push([uuid.v4(), elem]));
-              return newBody.push([uuid.v4(), newRow]);
-            });
-            const newData = {
-              header: newHeader,
-              body: newBody,
-              id: res.data._id,
-              description: res.data.description,
-            };
-            this.props.uploaded(newData);
-          })
-          .catch((err) => console.log(`Error: ${err}`));
+        // const bearer = 'Bearer ' + localStorage.getItem('token');
+        // const conf = {
+        //   headers: { 'Authorization': bearer }
+        // };
+        // axios.get(`/api/datadisplay/${res.data._id}`, conf)
+        //   .then((response) => {
+        //     let newHeader = [];
+        //     let newBody = [];
+        //     response.data.header.map(el => newHeader.push([uuid.v4(), el]));
+        //     response.data.body.map(el => {
+        //       let newRow = [];
+        //       el.map(elem => newRow.push([uuid.v4(), elem]));
+        //       return newBody.push([uuid.v4(), newRow]);
+        //     });
+        //     const newData = {
+        //       header: newHeader,
+        //       body: newBody,
+        //       id: res.data._id,
+        //       description: res.data.description,
+        //     };
+        //     this.props.uploaded(newData);
+        //   })
+        //   .catch((err) => console.log(`Error: ${err}`));
       })
       .catch((error) => {console.log('Error: ', error)});
 
@@ -95,8 +95,8 @@ class Upload extends Component {
           <input type="checkbox" id='firstRowHeader' onChange={this.radioClicked} />
           <label htmlFor='firstRowHeader'>The first row is the header</label>
           <br/>
-          <label htmlFor='description'></label>
-          <input type='text' onChange={this.description} placeholder='File description' />
+          <label htmlFor='description'>File description</label>
+          <input type='text' name='description' onChange={this.descriptionHandler} placeholder='File description' />
           <input type='submit' value='Upload a file'/>          
         </form>
       </div>

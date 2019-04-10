@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Switch, NavLink, Route, Redirect } from 'react-router-dom';
+import uuid from "uuid";
 
 import Keyboard from './components/Keyboard';
 import ButtonGroup from './components/ButtonGroup';
@@ -26,7 +27,8 @@ import BackgroundPopWindow from './components/BackgroundPopWindow';
 import Upload from './components/Upload';
 import Account from './components/Account';
 import StartScreen from './components/StartScreen';
-import SignOptions from './components/SignOptions'
+import SignOptions from './components/SignOptions';
+import UploadSuccess from './components/UploadSuccess';
 
 import './App.css';
 
@@ -52,7 +54,7 @@ class App extends Component {
       idConditional: 0,
       menuVisible: false,
       mergerArray: [null, null, null],
-      data: [],
+      data: {},
       windowVisible: true,
       windowKind: 'upload',
       email: '',
@@ -67,6 +69,7 @@ class App extends Component {
       optionChosen: 'without',
       authenticated: false,
       anonymous: true,
+      uploadedSuccesful: false,
     };
   }
 
@@ -310,7 +313,7 @@ class App extends Component {
   }
 
   closeUploadWindow = () => {
-    this.setState({ windowVisible: false });
+    this.setState({ windowVisible: false, uploadSuccesful: false });
   }
 
   //  navbarClickHandler = (name) => {
@@ -335,6 +338,10 @@ class App extends Component {
     this.openUploadWindow();
   }
 
+  uploadSigned = () => {
+    this.setState({ windowVisible: true });
+  }
+
   // called when 'Sign up' is clicked in Register component
   registered = () => {
     this.setState({ authenticated: true, authenticated: true, windowVisible: false });
@@ -345,10 +352,9 @@ class App extends Component {
     this.setState({ authenticated: true, userID, username, windowVisible: false });
   }
 
-  uploaded = (data) => {
-    let {header, body} = data;
-
-    this.setState({ uploadedData: data });
+  uploadCall = (id) => {
+    console.log('uploadSuccesfulCall');
+    this.setState({ uploadedID: id, uploadSuccesful: true });
   }
 
   // after click on 'Sign in' button in the Navbar opens the 
@@ -391,6 +397,38 @@ class App extends Component {
     this.setState({ optionChosen: option, startScreenDisplay: false })
   }
 
+  getUploadedData = () => {
+    // console.log('get uploaded data fired');
+    const { uploadedID, userID} = this.state;
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    const conf = {
+      headers: { 'Authorization': bearer }
+    };
+    axios.get(`/api/datadisplay/${this.state.uploadedID}`, conf)
+      .then(async (response) => {
+        // console.log('get data start');
+        let newHeader = [];
+        let newBody = [];
+        response.data.header.map(el => newHeader.push([uuid.v4(), el]));
+        response.data.body.map(el => {
+          let newRow = [];
+          el.map(elem => newRow.push([uuid.v4(), elem]));
+          return newBody.push([uuid.v4(), newRow]);
+        });
+        const newData = {
+          header: newHeader,
+          body: newBody,
+          id: uploadedID,
+          description: response.data.description,
+        };
+        await this.setState({ data: newData, windowVisible: false, uploadSuccesful: false });
+        // console.log('new Data is: ', this.state.data);
+      })
+      .catch((err) => console.log(`Error: ${err}`));
+      // this.setState({ uploadSuccesful: false });
+
+  }
+
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
    /////////////////////////////////////////RENDER////////////////////////////////////////////////////////////
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -398,7 +436,7 @@ class App extends Component {
   render() {
     const {
       inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
-      data, windowVisible, uploaded, uploadedID, userID, username,
+      data, windowVisible, uploaded, uploadedID, userID, username, uploadSuccesful,
       accountView, accountData, startScreenDisplay, optionChosen, authenticated, anonymous,
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
@@ -433,8 +471,10 @@ class App extends Component {
           <NavLink to='/api/upload-csv' onClick={this.uploadUnsigned}>Upload file without signing in</NavLink>
           <NavLink to={authenticated ? '/api/upload-csv' : '/api/users/signOptions'}
             onClick={this.uploadSigned}>Upload file</NavLink>
-          <NavLink to='/api/users/signin' onClick={this.openSignInNav}>Sign in</NavLink>
-          <NavLink to='/api/users/signup' onClick={this.openSignUpNav}>Sign up</NavLink>
+          <Route render={() => (authenticated ? null :
+            <NavLink to='/api/users/signin' onClick={this.openSignInNav}>Sign in</NavLink>) } />
+          <Route render={() => (authenticated ? null :
+            <NavLink to='/api/users/signup' onClick={this.openSignUpNav}>Sign up</NavLink>)} />         
           <Route path='/' render={() => {
             if (authenticated) {
               return (<NavLink to={`/api/account/${userID}`} onClick={this.accountView}>
@@ -535,7 +575,8 @@ class App extends Component {
             );
           })}
           {/* buttons for sorting the data */}
-          <Route path='/api/datadisplay' render={() => (<DataDisplay uploadedID={uploadedID} />)} />
+          <Route path={`/api/datadisplay/${uploadedID}`}
+            render={() => (uploadSuccesful ? null : <DataDisplay data={data} />)} />
 
           {/* data displayed as resulted from search and sort operations ------------------------------------*/}
           <DropDownMenu
@@ -559,9 +600,14 @@ class App extends Component {
                 <Redirect to='/' /> : <Register registered={this.registered} />)} />
               <Route path='/api/users/signin' render={() => (authenticated ?
                 <Redirect to='/' /> : <SignIn signedIn={this.signedIn} />)} />
-              <Route path='/api/upload-csv' render={() => (uploaded ?
-                <Redirect to={`/api/datadisplay/${uploadedID}`} /> : 
-                <Upload uploaded={this.uploaded} anonymous={anonymous}/>)} />
+              <Route path='/api/upload-csv' render={() => (uploadSuccesful ?
+                (<UploadSuccess>
+                  <NavLink to={`/api/datadisplay/${uploadedID}`}
+                    className='navLinkButton' onClick={this.getUploadedData} >Display data</NavLink>
+                  <NavLink to={`/api/account/${userID}`}
+                    className='navLinkButton' onClick={this.uploadSuccessClicked} >View account</NavLink>
+                </UploadSuccess>) : 
+                <Upload uploadSuccesfulCall={this.uploadCall} anonymous={anonymous}/>)} />
               <Route path={`/api/account/${userID}`} render={() => (accountView ?
                 <Account username={username} userID={userID}
                 accountExit={this.accountExit} accountData={accountData} /> : <Redirect to='/' />

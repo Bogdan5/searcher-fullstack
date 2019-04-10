@@ -4,6 +4,7 @@ import {NavLink} from 'react-router-dom';
 
 const StartScreen = (props) => {
   const {optChosen, authenticated, userID} = props;
+
   const handler1 = (e) => {
     optChosen('uploadAnon');
   }
@@ -21,7 +22,7 @@ const StartScreen = (props) => {
       <NavLink to='/api/upload-csv' className='navLinkButton' onClick={handler2}>
         Upload in your account
       </NavLink> :
-      <NavLink to='/api/users/signOptions' className='navLinkButton'>
+      <NavLink to='/api/users/signin' className='navLinkButton'>
         Sign in
       </NavLink>
       }
@@ -29,7 +30,7 @@ const StartScreen = (props) => {
       <NavLink to={`/api/account/${userID}`} className='navLinkButton'>
         View account
       </NavLink> : 
-      <NavLink to='/api/users/signOptions' className='navLinkButton'>
+      <NavLink to='/api/users/signup' className='navLinkButton'>
         Register
       </NavLink>}
     </div>
