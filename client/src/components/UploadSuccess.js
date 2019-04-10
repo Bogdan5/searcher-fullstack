@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import { NavLink } from 'react-router-dom';
+// import { NavLink } from 'react-router-dom';
 
 const UploadSuccess = (props) => {
   const { children } = props;

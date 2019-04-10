@@ -13,6 +13,10 @@ const StartScreen = (props) => {
     optChosen('uploadSign');
   }
 
+  const handler3 = (e) => {
+    optChosen('account');
+  }
+
   return (
     <div>
       <NavLink to='/api/upload-csv' className='navLinkButton' onClick={handler1}>
@@ -27,7 +31,7 @@ const StartScreen = (props) => {
       </NavLink>
       }
       {authenticated ?
-      <NavLink to={`/api/account/${userID}`} className='navLinkButton'>
+      <NavLink to={`/api/account/${userID}`} className='navLinkButton' onClick={handler3}>
         View account
       </NavLink> : 
       <NavLink to='/api/users/signup' className='navLinkButton'>

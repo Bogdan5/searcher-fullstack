@@ -4,7 +4,6 @@ import Table from './Table.js'
 
 // import PropTypes from 'prop-types';
 import '../App.css';
-// import axios from 'axios';
 
 class DataDisplay extends Component {
   constructor (props) {
@@ -14,28 +13,6 @@ class DataDisplay extends Component {
       data: [],
     }
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.location !== this.props.location) {
-  //     this.setState({ prevPath: this.props.location })
-  //   }
-  // }
-
-  // componentDidMount(){
-  //   const {uploadedID} = this.props;
-  //   if (uploadedID) {
-  //     const bearer = 'Bearer ' + localStorage.getItem('token');
-  //     const config = {
-  //       headers: { 'Authorization': bearer }
-  //     };
-  //     axios.get(`/api/datadisplay/${uploadedID}`, config)
-  //       .then((response) => {
-  //         console.log('response axios get: ', response);
-  //         // this.setState({ data: response});
-  //       })
-  //       .catch((err) => console.log(`Error: ${err}`));
-  //   }
-  // }
 
   render() {
     // console.log('data from DataDisplay is: ', this.props.data);

@@ -8,7 +8,7 @@ import ButtonGroup from './components/ButtonGroup';
 import DataDisplay from './components/DataDisplay';
 import DumbButton from './components/DumbButton';
 import Header from './components/Header';
-import Sorter from './components/Sorter';
+// import Sorter from './components/Sorter';
 import ComponentEnhancer from './components/ComponentEnhancer';
 import ConditionButtonFormatter from './components/ConditionButtonFormatter';
 import ConditionButton from './components/ConditionButton';
@@ -19,10 +19,10 @@ import SelectButton from './components/SelectButton';
 import ColumnSelector from './components/ColumnSelector';
 import UploadWindow from './components/UploadWindow';
 import NavBar from './components/NavBar';
-import ComponentChildAdder from './components/ComponentChildAdder';
+// import ComponentChildAdder from './components/ComponentChildAdder';
 import Register from './components/Register.js';
 import SignIn from './components/SignIn.js';
-import SortButton from './components/SortButton';
+// import SortButton from './components/SortButton';
 import BackgroundPopWindow from './components/BackgroundPopWindow';
 import Upload from './components/Upload';
 import Account from './components/Account';
@@ -344,7 +344,7 @@ class App extends Component {
 
   // called when 'Sign up' is clicked in Register component
   registered = () => {
-    this.setState({ authenticated: true, authenticated: true, windowVisible: false });
+    this.setState({ authenticated: true, windowVisible: false });
   }
 
   // called when 'Sign in' is clicked in SignIn component
@@ -366,7 +366,7 @@ class App extends Component {
     this.setState({ uploaded: false, windowVisible: true });
   }
 
-  accountView = () => {
+  viewAccount = () => {
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer },
@@ -374,7 +374,8 @@ class App extends Component {
     };
     axios.get(`/api/account/${this.state.userID}`, conf)
       .then((response) => {
-        this.setState({ accountView: true, accountData: response.data.accountData });
+        console.log('account get response: ', response.data);
+        this.setState({ accountView: true, accountData: response.data, windowVisible: true });
       })
       .catch((err) => console.log(`Error: ${err}`));
   }
@@ -391,6 +392,8 @@ class App extends Component {
       case 'uploadSign':
         this.setState({anonymous: false});
         break;
+      case 'account':
+        this.viewAccount();
       default:
     }
 
@@ -399,7 +402,7 @@ class App extends Component {
 
   getUploadedData = () => {
     // console.log('get uploaded data fired');
-    const { uploadedID, userID} = this.state;
+    const { uploadedID } = this.state;
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer }
@@ -477,7 +480,7 @@ class App extends Component {
             <NavLink to='/api/users/signup' onClick={this.openSignUpNav}>Sign up</NavLink>)} />         
           <Route path='/' render={() => {
             if (authenticated) {
-              return (<NavLink to={`/api/account/${userID}`} onClick={this.accountView}>
+              return (<NavLink to={`/api/account/${userID}`} onClick={this.viewAccount}>
                         {username}
                       </NavLink>)
             } else {
@@ -610,7 +613,7 @@ class App extends Component {
                 <Upload uploadSuccesfulCall={this.uploadCall} anonymous={anonymous}/>)} />
               <Route path={`/api/account/${userID}`} render={() => (accountView ?
                 <Account username={username} userID={userID}
-                accountExit={this.accountExit} accountData={accountData} /> : <Redirect to='/' />
+                accountExit={this.accountExit} accData={accountData} /> : <Redirect to='/' />
               )} />
               <Route exact path='/' render={() => {
                 if (startScreenDisplay) {

@@ -2,7 +2,7 @@ import React from 'react';
 import '../App.css';
 
 const Account = (props) => {
-  const {data} = props;
+  const {accData} = props;
 
   const handler = () => {
     this.props.accountExit();
@@ -12,25 +12,27 @@ const Account = (props) => {
     <div>
       <h3>Uploaded files</h3>
       <table>
-        <head>
-          <th>#</th>
-          <th>File name</th>
-          <th>Upload date</th>
-          <th>Delete file?</th>
-        </head>
-        <body>
-          {/* {data.map((el, index) => (
-            <tr>
-              <td>index</td>
-              <td>el.filename</td>
-              <td>el.date</td>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>File name</th>
+            <th>Upload date</th>
+            <th>Delete file?</th>
+          </tr>
+        </thead>
+        <tbody>
+          {accData.map((el, index) => (
+            <tr key={el._id}>
+              <td>{index}</td>
+              <td>{el.description}</td>
+              <td>{el.created_at}</td>
               <td></td>
             </tr>
-          ))} */}
-        </body>
+          ))}
+        </tbody>
       </table>
       <hr/>
-      <input type='button' onClick={handler}>Done</input>
+      <button type='button' onClick={handler}>Done</button>
     </div>
   );
 }
