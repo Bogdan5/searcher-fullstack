@@ -416,7 +416,8 @@ class App extends Component {
     };
     axios.get(`/api/datadisplay/${id}`, conf)
       .then(async (response) => {
-        // console.log('get data start');
+        console.log('get data start');
+        console.log('data is: ', response.data);
         let newHeader = [];
         let newBody = [];
         response.data.header.map(el => newHeader.push([uuid.v4(), el]));
@@ -447,7 +448,7 @@ class App extends Component {
   render() {
     const {
       inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
-      data, windowVisible, uploaded, uploadedID, userID, username, uploadSuccesful,
+      data, windowVisible, uploaded, uploadedID, userID, username, uploadSuccesful, displayData,
       accountView, accountData, startScreenDisplay, optionChosen, authenticated, anonymous,
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
@@ -476,7 +477,9 @@ class App extends Component {
 
     return (
       <div className='bodyContainer'>
-        {accountView ? <Redirect to={`/api/account/${userID}`} />: null}
+        <Route path='/' render={() => (accountView ? <Redirect to={`/api/account/${userID}`} />: null)} />
+        <Route path='/account' render={() => (displayData ?
+          <Redirect to={`api/displaydata/${uploadedID}`} /> : null)} />
         {/* -------------------------------------------NAVBAR----------------------------------------------- */}
         {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
@@ -625,7 +628,7 @@ class App extends Component {
                 if (accountView) {
                   return <Account username={username} userID={userID}
                   accountExit={this.accountExit} accData={accountData} 
-                  getFile={this.getUploadedFile} />
+                  getFile={this.getUploadedData} />
                 } else {
                   return null;
                 }
