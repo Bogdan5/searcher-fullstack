@@ -70,6 +70,7 @@ class App extends Component {
       authenticated: false,
       anonymous: true,
       uploadedSuccesful: false,
+      displayData: false,
     };
   }
 
@@ -313,7 +314,7 @@ class App extends Component {
   }
 
   closeUploadWindow = () => {
-    this.setState({ windowVisible: false, uploadSuccesful: false });
+    this.setState({ windowVisible: false, uploadSuccesful: false, accountView: false });
   }
 
   //  navbarClickHandler = (name) => {
@@ -375,13 +376,18 @@ class App extends Component {
     axios.get(`/api/account/${this.state.userID}`, conf)
       .then((response) => {
         console.log('account get response: ', response.data);
-        this.setState({ accountView: true, accountData: response.data, windowVisible: true });
+        this.setState({accountData: response.data})
+        this.setState({ accountView: true, windowVisible: true });
       })
       .catch((err) => console.log(`Error: ${err}`));
   }
 
   accountExit = () => {
     this.setState({ accountView: false, windowVisible: false });
+  }
+
+  getAccountFile = (id) => {
+
   }
 
   optChosen = (option) => {
@@ -393,21 +399,22 @@ class App extends Component {
         this.setState({anonymous: false});
         break;
       case 'account':
+        console.log('before viewAccount fired');
         this.viewAccount();
+
       default:
     }
 
     this.setState({ optionChosen: option, startScreenDisplay: false })
   }
 
-  getUploadedData = () => {
+  getUploadedData = (id = this.state.userID) => {
     // console.log('get uploaded data fired');
-    const { uploadedID } = this.state;
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer }
     };
-    axios.get(`/api/datadisplay/${this.state.uploadedID}`, conf)
+    axios.get(`/api/datadisplay/${id}`, conf)
       .then(async (response) => {
         // console.log('get data start');
         let newHeader = [];
@@ -421,10 +428,11 @@ class App extends Component {
         const newData = {
           header: newHeader,
           body: newBody,
-          id: uploadedID,
+          id,
           description: response.data.description,
         };
-        await this.setState({ data: newData, windowVisible: false, uploadSuccesful: false });
+        await this.setState({ data: newData, windowVisible: false,
+          uploadSuccesful: false, displayData: true });
         // console.log('new Data is: ', this.state.data);
       })
       .catch((err) => console.log(`Error: ${err}`));
@@ -468,6 +476,7 @@ class App extends Component {
 
     return (
       <div className='bodyContainer'>
+        {accountView ? <Redirect to={`/api/account/${userID}`} />: null}
         {/* -------------------------------------------NAVBAR----------------------------------------------- */}
         {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
@@ -579,7 +588,7 @@ class App extends Component {
           })}
           {/* buttons for sorting the data */}
           <Route path={`/api/datadisplay/${uploadedID}`}
-            render={() => (uploadSuccesful ? null : <DataDisplay data={data} />)} />
+            render={() => (<DataDisplay data={data} /> )} />
 
           {/* data displayed as resulted from search and sort operations ------------------------------------*/}
           <DropDownMenu
@@ -592,6 +601,7 @@ class App extends Component {
             <MenuElementWithHandler name='DELETE' />
           </DropDownMenu>
         </div>
+
         {/* The modal that contains the registration, signin, and file upload ------------------------------ */}
         <BackgroundPopWindow classInput={windowVisible}>
           <UploadWindow classInput={windowVisible}>
@@ -611,10 +621,15 @@ class App extends Component {
                     className='navLinkButton' onClick={this.uploadSuccessClicked} >View account</NavLink>
                 </UploadSuccess>) : 
                 <Upload uploadSuccesfulCall={this.uploadCall} anonymous={anonymous}/>)} />
-              <Route path={`/api/account/${userID}`} render={() => (accountView ?
-                <Account username={username} userID={userID}
-                accountExit={this.accountExit} accData={accountData} /> : <Redirect to='/' />
-              )} />
+              <Route path={`/api/account/${userID}`} render={() => {
+                if (accountView) {
+                  return <Account username={username} userID={userID}
+                  accountExit={this.accountExit} accData={accountData} 
+                  getFile={this.getUploadedFile} />
+                } else {
+                  return null;
+                }
+              } } />
               <Route exact path='/' render={() => {
                 if (startScreenDisplay) {
                   return <StartScreen optChosen={this.optChosen} authenticated={authenticated}

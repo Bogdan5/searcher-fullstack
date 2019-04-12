@@ -1,11 +1,16 @@
 import React from 'react';
 import '../App.css';
+// import {Link} from 'react-router-dom';
 
 const Account = (props) => {
-  const {accData} = props;
-
+  const {accData, getFile} = props;
+  console.log('account rendered');
   const handler = () => {
     this.props.accountExit();
+  }
+
+  const getStoredFile = (e) => {
+    getFile(e.target.name);
   }
 
   return (
@@ -24,7 +29,7 @@ const Account = (props) => {
           {accData.map((el, index) => (
             <tr key={el._id}>
               <td>{index}</td>
-              <td>{el.description}</td>
+              <td name={el._id} onClick={getStoredFile}>{el.description}</td>
               <td>{el.created_at}</td>
               <td></td>
             </tr>
