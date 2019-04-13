@@ -10,7 +10,8 @@ const Account = (props) => {
   }
 
   const getStoredFile = (e) => {
-    getFile(e.target.name);
+    console.log('name of file clicked: ', e.target.id);
+    getFile(e.target.id);
   }
 
   return (
@@ -29,7 +30,7 @@ const Account = (props) => {
           {accData.map((el, index) => (
             <tr key={el._id}>
               <td>{index}</td>
-              <td name={el._id} onClick={getStoredFile}>{el.description}</td>
+              <td id={el._id} onClick={getStoredFile}>{el.description}</td>
               <td>{el.created_at}</td>
               <td></td>
             </tr>

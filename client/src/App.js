@@ -71,6 +71,8 @@ class App extends Component {
       anonymous: true,
       uploadedSuccesful: false,
       displayData: false,
+      goToSignIn: false,
+      prevPath: null,
     };
   }
 
@@ -85,7 +87,7 @@ class App extends Component {
       .then(async (res) => {
         await this.setState({ authenticated: true, username: res.data.username, userID: res.data._id });
         })
-      .catch(err => console.log('Error:', err));
+      .catch(err => console.log('Error:', err.response.status));
   }
 
   textHandler = (e) => {
@@ -350,7 +352,7 @@ class App extends Component {
 
   // called when 'Sign in' is clicked in SignIn component
   signedIn = (username, userID) => {
-    this.setState({ authenticated: true, userID, username, windowVisible: false });
+    this.setState({ authenticated: true, userID, username, windowVisible: false, goToSignIn: false });
   }
 
   uploadCall = (id) => {
@@ -376,10 +378,13 @@ class App extends Component {
     axios.get(`/api/account/${this.state.userID}`, conf)
       .then((response) => {
         console.log('account get response: ', response.data);
-        this.setState({accountData: response.data})
-        this.setState({ accountView: true, windowVisible: true });
+        this.setState({accountData: response.data, accountView: true, windowVisible: true, displayData: false });
       })
-      .catch((err) => console.log(`Error: ${err}`));
+      .catch((err) => {
+        if(err.response.status === 401) {
+          this.setState({ windowVisible: true, goToSignIn: true, prevPath: '/api/account' });
+        }
+      });
   }
 
   accountExit = () => {
@@ -401,14 +406,14 @@ class App extends Component {
       case 'account':
         console.log('before viewAccount fired');
         this.viewAccount();
-
+        break;
       default:
     }
 
     this.setState({ optionChosen: option, startScreenDisplay: false })
   }
 
-  getUploadedData = (id = this.state.userID) => {
+  getUploadedData = (id = this.state.uploadedID) => {
     // console.log('get uploaded data fired');
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
@@ -417,7 +422,7 @@ class App extends Component {
     axios.get(`/api/datadisplay/${id}`, conf)
       .then(async (response) => {
         console.log('get data start');
-        console.log('data is: ', response.data);
+        console.log('data is: ', response);
         let newHeader = [];
         let newBody = [];
         response.data.header.map(el => newHeader.push([uuid.v4(), el]));
@@ -432,11 +437,16 @@ class App extends Component {
           id,
           description: response.data.description,
         };
-        await this.setState({ data: newData, windowVisible: false,
-          uploadSuccesful: false, displayData: true });
+        await this.setState({ data: newData, windowVisible: false, uploadedID: id,
+          uploadSuccesful: false, displayData: true, accountView: false });
         // console.log('new Data is: ', this.state.data);
       })
-      .catch((err) => console.log(`Error: ${err}`));
+      .catch((err) => {
+        if(err.response.status === 401) {
+          console.log(`Error: ${err}`)
+          this.setState({ windowVisible: true, goToSignIn: true, prevPath: `/api/datadisplay/${id}` });
+        }
+      });
       // this.setState({ uploadSuccesful: false });
 
   }
@@ -450,6 +460,7 @@ class App extends Component {
       inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
       data, windowVisible, uploaded, uploadedID, userID, username, uploadSuccesful, displayData,
       accountView, accountData, startScreenDisplay, optionChosen, authenticated, anonymous,
+      goToSignIn
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -477,9 +488,12 @@ class App extends Component {
 
     return (
       <div className='bodyContainer'>
-        <Route path='/' render={() => (accountView ? <Redirect to={`/api/account/${userID}`} />: null)} />
-        <Route path='/account' render={() => (displayData ?
-          <Redirect to={`api/displaydata/${uploadedID}`} /> : null)} />
+        <Route exact path='/' render={() => (accountView ? <Redirect to={`/api/account/${userID}`} />: null)} />
+        <Route path='/api/account' render={() => (displayData ?
+          <Redirect to={`/api/datadisplay/${uploadedID}`} /> : null)} />
+        <Route path='/api/datadisplay' render={() => (accountView ?
+          <Redirect to={`/api/account/${userID}`} />: null)} />
+        <Route path='/' render={() => (goToSignIn ? < Redirect to='/api/users/signin' /> : null )} />
         {/* -------------------------------------------NAVBAR----------------------------------------------- */}
         {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
@@ -492,9 +506,9 @@ class App extends Component {
             <NavLink to='/api/users/signup' onClick={this.openSignUpNav}>Sign up</NavLink>)} />         
           <Route path='/' render={() => {
             if (authenticated) {
-              return (<NavLink to={`/api/account/${userID}`} onClick={this.viewAccount}>
+              return (<button type='button' onClick={this.viewAccount}>
                         {username}
-                      </NavLink>)
+                      </button>)
             } else {
               return null;
             }

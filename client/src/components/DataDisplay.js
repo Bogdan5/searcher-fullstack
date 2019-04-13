@@ -15,7 +15,7 @@ class DataDisplay extends Component {
   }
 
   render() {
-    // console.log('data from DataDisplay is: ', this.props.data);
+    console.log('data from DataDisplay is: ', this.props.data);
     const {data} = this.props;
     return (
       <div className='dataDisplay'>
