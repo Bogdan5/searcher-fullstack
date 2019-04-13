@@ -1,12 +1,12 @@
 import React from 'react';
 import '../App.css';
-// import {Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
 const Account = (props) => {
   const {accData, getFile} = props;
   console.log('account rendered');
   const handler = () => {
-    this.props.accountExit();
+    props.accountExit();
   }
 
   const getStoredFile = (e) => {

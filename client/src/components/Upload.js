@@ -48,7 +48,7 @@ class Upload extends Component {
     };
     axios.post('/api/upload-csv',formData,config)
       .then((res) => {
-        alert('The file is successfully uploaded');
+        alert('The file is successfully uploaded - id: ', res.data._id);
         this.setState({ uploaded: true, uploadedID: res.data._id });
         this.props.uploadSuccesfulCall(res.data._id);
 

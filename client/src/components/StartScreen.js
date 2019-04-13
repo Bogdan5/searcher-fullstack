@@ -31,7 +31,7 @@ const StartScreen = (props) => {
       </NavLink>
       }
       {authenticated ?
-      <button type='button' onClick={handler3}>View account</button>
+      <button type='button' onClick={handler3} className='navLinkButton'>View account</button>
       // <NavLink to={`/api/account/${userID}`} className='navLinkButton' onClick={handler3}>
       //   View account
       // </NavLink> : 

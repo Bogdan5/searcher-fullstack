@@ -73,6 +73,7 @@ class App extends Component {
       displayData: false,
       goToSignIn: false,
       prevPath: null,
+      goHome: false,
     };
   }
 
@@ -352,11 +353,12 @@ class App extends Component {
 
   // called when 'Sign in' is clicked in SignIn component
   signedIn = (username, userID) => {
-    this.setState({ authenticated: true, userID, username, windowVisible: false, goToSignIn: false });
+    this.setState({ authenticated: true, userID, username, windowVisible: false, goToSignIn: false,
+      prevPath: null });
   }
 
   uploadCall = (id) => {
-    console.log('uploadSuccesfulCall');
+    console.log('uploadSuccesfulCall - id: ', id);
     this.setState({ uploadedID: id, uploadSuccesful: true });
   }
 
@@ -378,7 +380,8 @@ class App extends Component {
     axios.get(`/api/account/${this.state.userID}`, conf)
       .then((response) => {
         console.log('account get response: ', response.data);
-        this.setState({accountData: response.data, accountView: true, windowVisible: true, displayData: false });
+        this.setState({accountData: response.data, accountView: true, windowVisible: true, displayData: false,
+          goHome: false, goToSignIn: false });
       })
       .catch((err) => {
         if(err.response.status === 401) {
@@ -388,7 +391,7 @@ class App extends Component {
   }
 
   accountExit = () => {
-    this.setState({ accountView: false, windowVisible: false });
+    this.setState({ accountView: false, windowVisible: false, goHome: true });
   }
 
   getAccountFile = (id) => {
@@ -414,7 +417,7 @@ class App extends Component {
   }
 
   getUploadedData = (id = this.state.uploadedID) => {
-    // console.log('get uploaded data fired');
+    console.log('get uploaded data fired - id: ', id);
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer }
@@ -460,7 +463,7 @@ class App extends Component {
       inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
       data, windowVisible, uploaded, uploadedID, userID, username, uploadSuccesful, displayData,
       accountView, accountData, startScreenDisplay, optionChosen, authenticated, anonymous,
-      goToSignIn
+      goToSignIn, goHome
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -493,7 +496,15 @@ class App extends Component {
           <Redirect to={`/api/datadisplay/${uploadedID}`} /> : null)} />
         <Route path='/api/datadisplay' render={() => (accountView ?
           <Redirect to={`/api/account/${userID}`} />: null)} />
-        <Route path='/' render={() => (goToSignIn ? < Redirect to='/api/users/signin' /> : null )} />
+        <Route path='/api/account' render={() => (goToSignIn ? < Redirect to='/api/users/signin' /> : null )} />
+        <Route exact path='/' render={() => (goToSignIn ? < Redirect to='/api/users/signin' /> : null )} />
+        <Route path='/api/upload-csv' render={() => (accountView ? <Redirect to={`/api/account/${userID}`} />: null)} />
+        <Route path='/api/account' render={() => {
+          if (!accountView && goHome) { return <Redirect to={'/'} /> }
+          else return null;
+        }} />
+        <Route path='/api/upload-csv' render={() => (displayData ?
+          <Redirect to={`/api/datadisplay/${uploadedID}`} /> : null)} />
         {/* -------------------------------------------NAVBAR----------------------------------------------- */}
         {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
@@ -632,10 +643,14 @@ class App extends Component {
                 <Redirect to='/' /> : <SignIn signedIn={this.signedIn} />)} />
               <Route path='/api/upload-csv' render={() => (uploadSuccesful ?
                 (<UploadSuccess>
-                  <NavLink to={`/api/datadisplay/${uploadedID}`}
+                  <button onClick={() => this.getUploadedData(uploadedID)} className='navLinkButton'>
+                    Display data
+                  </button>
+                  <button onClick={this.viewAccount} className='navLinkButton'>View account</button>
+                  {/* <NavLink to={`/api/datadisplay/${uploadedID}`}
                     className='navLinkButton' onClick={this.getUploadedData} >Display data</NavLink>
                   <NavLink to={`/api/account/${userID}`}
-                    className='navLinkButton' onClick={this.uploadSuccessClicked} >View account</NavLink>
+                    className='navLinkButton' onClick={this.uploadSuccessClicked} >View account</NavLink> */}
                 </UploadSuccess>) : 
                 <Upload uploadSuccesfulCall={this.uploadCall} anonymous={anonymous}/>)} />
               <Route path={`/api/account/${userID}`} render={() => {
