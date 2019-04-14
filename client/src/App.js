@@ -74,6 +74,7 @@ class App extends Component {
       goToSignIn: false,
       prevPath: null,
       goHome: false,
+      goUpload: false,
     };
   }
 
@@ -317,7 +318,8 @@ class App extends Component {
   }
 
   closeUploadWindow = () => {
-    this.setState({ windowVisible: false, uploadSuccesful: false, accountView: false });
+    this.setState({ windowVisible: false, uploadSuccesful: false,
+      accountView: false, goHome: true, goUpload: false });
   }
 
   //  navbarClickHandler = (name) => {
@@ -343,7 +345,7 @@ class App extends Component {
   }
 
   uploadSigned = () => {
-    this.setState({ windowVisible: true });
+    this.setState({ windowVisible: true, goUpload: true, goHome: false, displayData: false });
   }
 
   // called when 'Sign up' is clicked in Register component
@@ -364,11 +366,11 @@ class App extends Component {
 
   // after click on 'Sign in' button in the Navbar opens the 
   openSignInNav = () => {
-    this.setState({ uploaded: false, windowVisible: true });
+    this.setState({ uploaded: false, windowVisible: true, goHome: false });
   }
 
   openSignUpNav = () => {
-    this.setState({ uploaded: false, windowVisible: true });
+    this.setState({ uploaded: false, windowVisible: true, goHome: false });
   }
 
   viewAccount = () => {
@@ -391,7 +393,7 @@ class App extends Component {
   }
 
   accountExit = () => {
-    this.setState({ accountView: false, windowVisible: false, goHome: true });
+    this.setState({ accountView: false, windowVisible: false, goHome: true, goUpload: false });
   }
 
   getAccountFile = (id) => {
@@ -441,7 +443,7 @@ class App extends Component {
           description: response.data.description,
         };
         await this.setState({ data: newData, windowVisible: false, uploadedID: id,
-          uploadSuccesful: false, displayData: true, accountView: false });
+          uploadSuccesful: false, displayData: true, accountView: false, goUpload: false });
         // console.log('new Data is: ', this.state.data);
       })
       .catch((err) => {
@@ -463,7 +465,7 @@ class App extends Component {
       inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
       data, windowVisible, uploaded, uploadedID, userID, username, uploadSuccesful, displayData,
       accountView, accountData, startScreenDisplay, optionChosen, authenticated, anonymous,
-      goToSignIn, goHome
+      goToSignIn, goHome, goUpload
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -499,18 +501,21 @@ class App extends Component {
         <Route path='/api/account' render={() => (goToSignIn ? < Redirect to='/api/users/signin' /> : null )} />
         <Route exact path='/' render={() => (goToSignIn ? < Redirect to='/api/users/signin' /> : null )} />
         <Route path='/api/upload-csv' render={() => (accountView ? <Redirect to={`/api/account/${userID}`} />: null)} />
-        <Route path='/api/account' render={() => {
-          if (!accountView && goHome) { return <Redirect to={'/'} /> }
+        <Route path='/api/' render={() => {
+          if (goHome) { return <Redirect to='/' /> }
           else return null;
         }} />
         <Route path='/api/upload-csv' render={() => (displayData ?
           <Redirect to={`/api/datadisplay/${uploadedID}`} /> : null)} />
+        <Route path='/api/datadisplay' render={() => (goUpload ? <Redirect to='/api/upload-csv' /> : null)} />
+        <Route exact path='/' render={() => (goUpload ? <Redirect to='/api/upload-csv' /> : null)} />
         {/* -------------------------------------------NAVBAR----------------------------------------------- */}
         {/* navigation bar with upload, sign up, and sign in buttons */}
         <NavBar>
           <NavLink to='/api/upload-csv' onClick={this.uploadUnsigned}>Upload file without signing in</NavLink>
-          <NavLink to={authenticated ? '/api/upload-csv' : '/api/users/signOptions'}
-            onClick={this.uploadSigned}>Upload file</NavLink>
+          {/* <NavLink to={authenticated ? '/api/upload-csv' : '/api/users/signOptions'}
+            onClick={this.uploadSigned}>Upload file</NavLink> */}
+          <button type='button' onClick={this.uploadSigned}>Upload file</button>
           <Route render={() => (authenticated ? null :
             <NavLink to='/api/users/signin' onClick={this.openSignInNav}>Sign in</NavLink>) } />
           <Route render={() => (authenticated ? null :
@@ -634,7 +639,7 @@ class App extends Component {
         <BackgroundPopWindow classInput={windowVisible}>
           <UploadWindow classInput={windowVisible}>
             <div className='popHeader'>
-              <NavLink to='/' onClick={this.closeUploadWindow} >X</NavLink>
+              <button onClick={this.closeUploadWindow} >X</button>
             </div>
             <Switch>
               <Route path='/api/users/signup' render={() => (authenticated ?

@@ -20,6 +20,10 @@ class Upload extends Component {
     this.descriptionHandler = this.descriptionHandler.bind(this);    
   }
 
+  componentDidMount() {
+    console.log('upload rendered');
+  }
+
   onChange = (e) => {
     this.setState({ file: e.target.files[0] });
   }

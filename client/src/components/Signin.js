@@ -19,6 +19,10 @@ class SignIn extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  componentDidMount() {
+    console.log('signin rendered');
+  }
+
   onSignIn = (e) => {
     e.preventDefault();
     const user = {

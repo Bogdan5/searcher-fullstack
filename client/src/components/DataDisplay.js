@@ -14,6 +14,10 @@ class DataDisplay extends Component {
     }
   }
 
+  componentDidMount() {
+    console.log('datadisplay rendered');
+  }
+
   render() {
     console.log('data from DataDisplay is: ', this.props.data);
     const {data} = this.props;
