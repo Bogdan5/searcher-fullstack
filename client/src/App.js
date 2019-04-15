@@ -386,7 +386,9 @@ class App extends Component {
           goHome: false, goToSignIn: false });
       })
       .catch((err) => {
+        console.log('err', typeof err.response.status);
         if(err.response.status === 401) {
+          console.log('401 called')
           this.setState({ windowVisible: true, goToSignIn: true, prevPath: '/api/account' });
         }
       });
