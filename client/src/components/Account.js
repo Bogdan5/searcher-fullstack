@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import '../App.css';
 import axios from 'axios';
-// import {NavLink} from 'react-router-dom';
+import {NavLink, Route, Redirect} from 'react-router-dom';
 
 class Account extends Component {
   constructor(props){
     super(props);
     this.state = {
       data: [],
+      fileID: '',
+      goToDisplay: false,
     }
   }
 
@@ -26,7 +28,7 @@ class Account extends Component {
         console.log('err', typeof err.response.status);
         if(err.response.status === 401) {
           console.log('401 called')
-          this.setState({ windowVisible: true, goToSignIn: true, prevPath: '/api/account' });
+          // this.setState({ windowVisible: true, goToSignIn: true, pr});
         }
       });
   }
@@ -38,15 +40,18 @@ class Account extends Component {
 
 
 
-  // const getStoredFile = (e) => {
-  //   console.log('name of file clicked: ', e.target.id);
-  //   getFile(e.target.id);
-  // }
+  getStoredFile = (e) => {
+    console.log('name of file clicked: ', e.target.id);
+    this.props.getFile(e.target.id);
+    this.setState({ fileID: e.target.id, goToDisplay: true });
+  }
 
   render(){
-    const {data} = this.state;
+    const {data, goToDisplay} = this.state;
     return (
       <div>
+        {<Route path='/api/account' render={() => (goToDisplay ?
+          <Redirect to={`/api/datadisplay/${this.state.fileID}`} /> : null)}  />}
         <h3>Uploaded files</h3>
         <table>
           <thead>
@@ -61,7 +66,7 @@ class Account extends Component {
             {data.map((el, index) => (
               <tr key={el._id}>
                 <td>{index}</td>
-                <td id={el._id} onClick={getStoredFile}>{el.description}</td>
+                <td id={el._id} onClick={this.getStoredFile}>{el.description}</td>
                 <td>{el.created_at}</td>
                 <td></td>
               </tr>
@@ -69,7 +74,8 @@ class Account extends Component {
           </tbody>
         </table>
         <hr/>
-        <button type='button' onClick={handler}>Done</button>
+        {/* <button type='button' onClick={handler}>Done</button> */}
+        <NavLink to={`/api/datadisplay/${this.state.fileID}`}></NavLink>
       </div>
     );
   }

@@ -4,7 +4,7 @@ import {NavLink} from 'react-router-dom';
 
 const StartScreen = (props) => {
   console.log('start screen rendered');
-  const {optChosen, authenticated} = props;
+  const {optChosen, authenticated, userID} = props;
 
   const handler1 = (e) => {
     optChosen('uploadAnon');
@@ -32,10 +32,10 @@ const StartScreen = (props) => {
       </NavLink>
       }
       {authenticated ?
-      <button type='button' onClick={handler3} className='navLinkButton'>View account</button>
-      // <NavLink to={`/api/account/${userID}`} className='navLinkButton' onClick={handler3}>
-      //   View account
-      // </NavLink> : 
+      // <button type='button' onClick={handler3} className='navLinkButton'>View account</button>
+      <NavLink to={`/api/account/${userID}`} className='navLinkButton' onClick={handler3}>
+        View account
+      </NavLink>
       : <NavLink to='/api/users/signup' className='navLinkButton'>
         Register
       </NavLink>}
