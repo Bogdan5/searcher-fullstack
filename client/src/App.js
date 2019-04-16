@@ -1,34 +1,26 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Switch, NavLink, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
 // import uuid from "uuid";
 
-import Keyboard from './components/Keyboard';
-import ButtonGroup from './components/ButtonGroup';
+
 import DataDisplay from './components/DataDisplay';
-import DumbButton from './components/DumbButton';
-import Header from './components/Header';
+// import Header from './components/Header';
 // import Sorter from './components/Sorter';
-import ComponentEnhancer from './components/ComponentEnhancer';
-import ConditionButtonFormatter from './components/ConditionButtonFormatter';
 import ConditionButton from './components/ConditionButton';
-import DropDownMenu from './components/DropDownMenu';
-import MenuOption from './components/MenuOption';
-import Icon from './components/Icon';
-import SelectButton from './components/SelectButton';
-import ColumnSelector from './components/ColumnSelector';
-import UploadWindow from './components/UploadWindow';
+
+// import UploadWindow from './components/UploadWindow';
 import NavBar from './components/NavBar';
 // import ComponentChildAdder from './components/ComponentChildAdder';
-import Register from './components/Register.js';
+// import Register from './components/Register.js';
 import SignIn from './components/SignIn.js';
 // import SortButton from './components/SortButton';
-import BackgroundPopWindow from './components/BackgroundPopWindow';
-import Upload from './components/Upload';
+// import BackgroundPopWindow from './components/BackgroundPopWindow';
+// import Upload from './components/Upload';
 import Account from './components/Account';
 import StartScreen from './components/StartScreen';
-import SignOptions from './components/SignOptions';
-import UploadSuccess from './components/UploadSuccess';
+// import SignOptions from './components/SignOptions';
+// import UploadSuccess from './components/UploadSuccess';
 
 import './App.css';
 
@@ -76,11 +68,12 @@ class App extends Component {
       goHome: false,
       goUpload: false,
       fileID: '',
+      goToDisplay: false,
     };
   }
 
   componentDidMount() {
-    this.textInput.current.focus();
+    // this.textInput.current.focus();
 
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
@@ -88,7 +81,7 @@ class App extends Component {
     };
     axios.get('/test', conf)
       .then(async (res) => {
-        console.log('userid: ', res.data._id);
+        // console.log('userid: ', res.data._id);
         await this.setState({ authenticated: true, username: res.data.username, userID: res.data._id });
         })
       .catch(err => console.log('Error:', err.response.status));
@@ -423,7 +416,8 @@ class App extends Component {
   }
 
   getFile = (fileID) => {
-    this.setState({ fileID, windowVisible: false });
+    console.log('getFile in App');
+    this.setState({ fileID, windowVisible: false, goToDisplay: true });
   }
 
   // getUploadedData = (id = this.state.uploadedID) => {
@@ -470,22 +464,23 @@ class App extends Component {
 
   render() {
     const {
-      inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
-      data, windowVisible, uploaded, uploadedID, userID, username, uploadSuccesful, displayData,
-      accountView, accountData, startScreenDisplay, optionChosen, authenticated, anonymous,
-      goToSignIn, goHome, goUpload, fileID
+      // inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
+      // data, windowVisible, uploaded, uploadedID, userID, username, uploadSuccesful, displayData,
+      // accountView, accountData, startScreenDisplay, optionChosen, authenticated, anonymous,
+      // goToSignIn, goHome, goUpload, fileID, goToDisplay
+      authenticated, userID, username
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
-    const propertiesObj = { // properties object passed to ComponentEnhancer
-      fromButton: this.fromButton, // a handler is added to buttons in order to pass data
-      // from DumbButton chid to the App parent
-      active, // in element buttons, true greyed out
-      keywordButtonClicked: this.state, // what element button is clicked
-    };
-    const ButtonWithHandler = ComponentEnhancer(DumbButton, propertiesObj);
+    // const propertiesObj = { // properties object passed to ComponentEnhancer
+    //   fromButton: this.fromButton, // a handler is added to buttons in order to pass data
+    //   // from DumbButton chid to the App parent
+    //   active, // in element buttons, true greyed out
+    //   keywordButtonClicked: this.state, // what element button is clicked
+    // };
+    // const ButtonWithHandler = ComponentEnhancer(DumbButton, propertiesObj);
     // adds a click handler to all components of the DropDownMenu
-    const propertiesMenu = { fromMenu: this.menuClickHandler };
-    const MenuElementWithHandler = ComponentEnhancer(MenuOption, propertiesMenu);
+    // const propertiesMenu = { fromMenu: this.menuClickHandler };
+    // const MenuElementWithHandler = ComponentEnhancer(MenuOption, propertiesMenu);
 
     // adds handler to the navbar buttons
     // const navbarProps = { fromButton: this.navbarClickHandler };
@@ -501,33 +496,15 @@ class App extends Component {
 
     return (
       <div className='bodyContainer'>
-        {/* <Route exact path='/' render={() => (accountView ? <Redirect to={`/api/account/${userID}`} />: null)} />
-        <Route path='/api/account' render={() => (displayData ?
-          <Redirect to={`/api/datadisplay/${uploadedID}`} /> : null)} />
-        <Route path='/api/datadisplay' render={() => (accountView ?
-          <Redirect to={`/api/account/${userID}`} />: null)} />
-        <Route path='/api/account' render={() => (goToSignIn ? < Redirect to='/api/users/signin' /> : null )} />
-        <Route exact path='/' render={() => (goToSignIn ? < Redirect to='/api/users/signin' /> : null )} />
-        <Route path='/api/upload-csv' render={() => (accountView ? <Redirect to={`/api/account/${userID}`} />: null)} />
-        <Route path='/api/' render={() => {
-          if (goHome) { return <Redirect to='/' /> }
-          else return null;
-        }} />
-        <Route path='/api/upload-csv' render={() => (displayData ?
-          <Redirect to={`/api/datadisplay/${uploadedID}`} /> : null)} />
-        <Route path='/api/datadisplay' render={() => (goUpload ? <Redirect to='/api/upload-csv' /> : null)} />
-        <Route exact path='/' render={() => (goUpload ? <Redirect to='/api/upload-csv' /> : null)} /> */}
-        {/* -------------------------------------------NAVBAR----------------------------------------------- */}
-        {/* navigation bar with upload, sign up, and sign in buttons */}
+{/* -------------------------------------navbar---------------------------------------------------- */}
+
         <NavBar>
           <NavLink to='/api/upload-csv' onClick={this.uploadUnsigned}>Upload file without signing in</NavLink>
-          {/* <NavLink to={authenticated ? '/api/upload-csv' : '/api/users/signOptions'}
-            onClick={this.uploadSigned}>Upload file</NavLink> */}
-          <button type='button' onClick={this.uploadSigned}>Upload file</button>
+          <NavLink to={authenticated ? '/api/upload-csv' : '/api/users/signOptions'}>Upload file</NavLink>
           <Route render={() => (authenticated ? null :
-            <NavLink to='/api/users/signin' onClick={this.openSignInNav}>Sign in</NavLink>) } />
+            <NavLink to='/api/users/signin' >Sign in</NavLink>) } />
           <Route render={() => (authenticated ? null :
-            <NavLink to='/api/users/signup' onClick={this.openSignUpNav}>Sign up</NavLink>)} />         
+            <NavLink to='/api/users/signup' >Sign up</NavLink>)} />         
           <Route path='/' render={() => {
             if (authenticated) {
               return (<button type='button' onClick={this.viewAccount}>
@@ -537,164 +514,22 @@ class App extends Component {
               return null;
             }
           }} />
-          {/* <button onClick={this.openUploadWindow}>Upload files</button>
-          <button onClick={this.openUploadWindow}>Upload files</button> */}
         </NavBar>
 
-        {/* -------------------------------main application----------------------------------------------- */}
         <div className='App' ref={this.appRef}>
-          {/* the header with the description on the app */}
-          <Header title='Data display - Search and sort' />
-          { /* includes description and operator buttons */ }
-          {/* <Keyboard leftSection='Boolean operators' classProp=''>
-            <ButtonWithHandler name='AND' />
-            <ButtonWithHandler name='OR' />
-            <ButtonWithHandler name='NOT' />
-          </Keyboard> */}
-          {/* the card that constructs conditional buttons */}
-          <Keyboard
-            leftSection='Search keyword' classProp=' keyboardSearchKeyword'
-            icon='' typeContent=''
-            id={0} cardSelected={0}
-          >
-            <ButtonGroup>
-              <ButtonWithHandler name='INCLUDES' />
-              <ButtonWithHandler name='STARTS WITH' />
-              <ButtonWithHandler name='ENDS WITH' />
-            </ButtonGroup>
-            <input // the keyword used to search
-              type='text' onChange={this.textHandler}
-              placeholder='Type keyword' ref={this.textInput}
-            />
-            <div className={inputVisibility}>in position</div>
-            <input // by default, any match would satisfy condition, regardless of position
-              type='text' className={`positionInput ${inputVisibility}`}
-              onChange={this.positionHandler}
-            />
-            <ButtonWithHandler name='SUBMIT' visibility={inputVisibility} />
-            <ButtonWithHandler name='CANCEL' />
-          </Keyboard>
-          {/* an array of cards with the result of Keyword input - includes the
-          search structure based on which the uploaded data will be sorted and displayed*/}
-          {listCards.map((el, index) => {
-            // this variable determines the kinds of icons are placed on the right of these cards
-            // if the card is the last one, only the '-' one, two ('+' and '-') for the rest
-            const iconsArray = (listCards.length === index + 1) ? ['+', '-'] : ['-'];
-            // this function adds each button to the left of each card based on the array in iconsArray
-            const iconsElements = (
-              <div>
-                {iconsArray.map((item, ind) => {
-                  const ident = `${el.id}-${ind}`;
-                  return (
-                    <Icon
-                      type={item} fromIcon={this.iconClicked}
-                      keyboardNo={el.id} key={ident}
-                    />
-                  );
-                })}
-              </div>
-            );
-            // the left component of the card - determines whether card used or what columns are displayed
-            const typeContent = (
-              <div>
-                <SelectButton card={el.id} fromSelect={this.selectCard}>Select</SelectButton>
-                <br />
-                <ColumnSelector
-                  className='selector' onChange={this.setColumnSelect}
-                  card={el.id}
-                >
-                  <option value='colAll'>Selects fields</option>
-                  <option value='colAll'>All fields</option>
-                  <option value='col1'>Column 1</option>
-                  <option value='col2'>Column 2</option>
-                  <option value='col3'>Column 3</option>
-                </ColumnSelector>
-              </div>
-            );
-            return (
-              <Keyboard
-                key={el.id} leftSection={typeContent}
-                classProp='' rightSection={iconsElements}
-                cardSelected={cardSelected} id={el.id}
-              >
-                <ConditionButtonFormatter fromFormatter={this.fromFormat}>
-                  {el.listElements.map((elem) => {
-                    // extends the functionality of the element with 
-                    const copy = React.cloneElement(elem, { card: el.id });
-                    return copy;
-                  })}
-                </ConditionButtonFormatter>
-              </Keyboard>
-            );
-          })}
-          {/* buttons for sorting the data */}
-          <Route path={`/api/datadisplay/${fileID}`}
-            render={() => (<DataDisplay data={data} /> )} />
+          <Switch>
+            <Route path={`/api/account/:userID`} render={(props) => <Account {...props}
+                  userID={userID} getFile={this.getFile}/>} />
+            <Route path={`/api/datadisplay/:fileID`}
+              component={DataDisplay} />
 
-          {/* data displayed as resulted from search and sort operations ------------------------------------*/}
-          <DropDownMenu
-            menuVisible={menuVisible} mouseOutMenu={this.menuHide}
-            style={{ top: menuTop, left: menuLeft }}
-          >
-            <MenuElementWithHandler name='NOT' />
-            <MenuElementWithHandler name='AND' />
-            <MenuElementWithHandler name='OR' />
-            <MenuElementWithHandler name='DELETE' />
-          </DropDownMenu>
-        </div>
+            <Route exact path='/' render={(props) => <StartScreen {...props} authenticated={authenticated}
+              userID={userID} /> } />
 
-        {/* The modal that contains the registration, signin, and file upload ------------------------------ */}
-        <BackgroundPopWindow classInput={windowVisible}>
-          <UploadWindow classInput={windowVisible}>
-            <div className='popHeader'>
-              <button onClick={this.closeUploadWindow} >X</button>
-            </div>
-            <Switch>
-              <Route path='/api/users/signup' render={() => (authenticated ?
-                <Redirect to='/' /> : <Register registered={this.registered} />)} />
-              <Route path='/api/users/signin' render={() => (authenticated ?
-                <Redirect to='/' /> : <SignIn signedIn={this.signedIn} />)} />
-              <Route path='/api/upload-csv' render={() => (uploadSuccesful ?
-                (<UploadSuccess>
-                  <button onClick={() => this.getUploadedData(uploadedID)} className='navLinkButton'>
-                    Display data
-                  </button>
-                  <button onClick={this.viewAccount} className='navLinkButton'>View account</button>
-                  {/* <NavLink to={`/api/datadisplay/${uploadedID}`}
-                    className='navLinkButton' onClick={this.getUploadedData} >Display data</NavLink>
-                  <NavLink to={`/api/account/${userID}`}
-                    className='navLinkButton' onClick={this.uploadSuccessClicked} >View account</NavLink> */}
-                </UploadSuccess>) : 
-                <Upload uploadSuccesfulCall={this.uploadCall} anonymous={anonymous}/>)} />
-              {/* <Route path={`/api/account/${userID}`} render={() => {
-                if (accountView) {
-                  return <Account username={username} userID={userID}
-                  accountExit={this.accountExit} accData={accountData} 
-                  getFile={this.getUploadedData} />
-                } else {
-                  return null;
-                }
-              } } /> */}
-              <Route path={`/api/account/:fileID`} render={(props) => <Account {...props}
-                userID={userID} getFile={this.getFile}/>} />
-              <Route exact path='/' render={() => {
-                if (startScreenDisplay) {
-                  return <StartScreen optChosen={this.optChosen} authenticated={authenticated}
-                          userID={userID} />
-                } else {
-                  return null;
-                }
-              }} />
-              <Route path='/api/users/signOptions' render={() => (authenticated ?
-                (<SignOptions>
-                  <SignIn signedIn={this.signedIn} />
-                  <Register registered={this.registered} />
-                </SignOptions>) :
-                <Redirect to='/api/upload-csv' />
-              ) } />
-            </Switch>
-          </UploadWindow>
-        </BackgroundPopWindow>
+            <Route path='/api/users/signin' render={() => (authenticated ?
+                <Redirect to='/' /> : <SignIn />)} />
+          </Switch>
+        </div>        
       </div>
     );
   }

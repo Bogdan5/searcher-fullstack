@@ -3,13 +3,11 @@ import React from 'react';
 import '../App.css';
 
 const UploadWindow = (props) => {
-  const { classInput, children } = props;
+  const { children } = props;
   return (
-    <div className={`backgroundPopWindow ${classInput ? 'visible' : 'invisible'}`}>
-      <div className='popWindow'>
-        {children}
-        
-      </div>
+    <div className='popWindow'>
+      {children}
+      
     </div>
   );
 }

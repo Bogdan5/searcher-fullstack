@@ -1,9 +1,9 @@
 import React from 'react';
 import '../App.css';
-import {NavLink} from 'react-router-dom';
+import {NavLink, Link} from 'react-router-dom';
 
 const StartScreen = (props) => {
-  console.log('start screen rendered');
+  // console.log('start screen rendered, userID: ', props.userID);
   const {optChosen, authenticated, userID} = props;
 
   const handler1 = (e) => {
@@ -14,9 +14,9 @@ const StartScreen = (props) => {
     optChosen('uploadSign');
   }
 
-  const handler3 = (e) => {
-    optChosen('account');
-  }
+  // const handler3 = (e) => {
+  //   optChosen('account');
+  // }
 
   return (
     <div>
@@ -33,12 +33,13 @@ const StartScreen = (props) => {
       }
       {authenticated ?
       // <button type='button' onClick={handler3} className='navLinkButton'>View account</button>
-      <NavLink to={`/api/account/${userID}`} className='navLinkButton' onClick={handler3}>
+      <Link to={{ pathname: `/api/account/${userID}`, state: {userID}}}
+        className='navLinkButton'>
         View account
-      </NavLink>
-      : <NavLink to='/api/users/signup' className='navLinkButton'>
+      </Link>
+      : <Link to='/api/users/signup' className='navLinkButton'>
         Register
-      </NavLink>}
+      </Link>}
     </div>
   );
 }
