@@ -6,22 +6,27 @@ import {NavLink, Route, Redirect} from 'react-router-dom';
 class Account extends Component {
   constructor(props){
     super(props);
+    const path = this.props.location.pathname.split('/');
+    const userID = path[path.length - 1];
     this.state = {
       data: [],
-      fileID: '',
+      userID: userID,
       goToDisplay: false,
+      fileID: '',
     }
   }
 
   componentDidMount() {
+    console.log('account mount');
+    
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer },
       userID: this.state.userID,
     };
-    axios.get(`/api/account/${this.props.userID}`, conf)
+    axios.get(`/api/account/${this.state.userID}`, conf)
       .then((response) => {
-        console.log('account get response: ', response.data);
+        console.log('account get response: ', response);
         this.setState({data: response.data });
       })
       .catch((err) => {
@@ -47,11 +52,11 @@ class Account extends Component {
   }
 
   render(){
-    const {data, goToDisplay} = this.state;
+    const {data, goToDisplay, fileID} = this.state;
     return (
       <div>
-        {<Route path='/api/account' render={() => (goToDisplay ?
-          <Redirect to={`/api/datadisplay/${this.state.fileID}`} /> : null)}  />}
+        <Route path='/api/account' render={() => (goToDisplay ?
+          <Redirect to={{path: `/api/datadisplay/${this.state.fileID}`, state:{fileID}}} /> : null)}  />
         <h3>Uploaded files</h3>
         <table>
           <thead>
@@ -75,7 +80,7 @@ class Account extends Component {
         </table>
         <hr/>
         {/* <button type='button' onClick={handler}>Done</button> */}
-        <NavLink to={`/api/datadisplay/${this.state.fileID}`}></NavLink>
+        <NavLink to={`/api/datadisplay/${this.state.fileID}`}>Done</NavLink>
       </div>
     );
   }

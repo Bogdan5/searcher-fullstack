@@ -13,17 +13,19 @@ class DataDisplay extends Component {
     this.state = {
       prevPath: '',
       data: [],
+      fileID: '',
     }
   }
 
   componentDidMount() {
-    const { id } = this.props;
+    console.log('in DataDisplay props.match: ', this.props.location);
+    const { fileID } = this.state;
     console.log('datadisplay rendered');
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer }
     };
-    axios.get(`/api/datadisplay/${id}`, conf)
+    axios.get(`/api/datadisplay/${fileID}`, conf)
       .then(async (response) => {
         console.log('get data start');
         console.log('data is: ', response);
@@ -38,7 +40,6 @@ class DataDisplay extends Component {
         const newData = {
           header: newHeader,
           body: newBody,
-          id,
           description: response.data.description,
         };
         await this.setState({ data: newData });
