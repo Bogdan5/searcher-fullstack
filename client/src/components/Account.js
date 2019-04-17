@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../App.css';
 import axios from 'axios';
-import {Link, Route, Redirect, matchPath} from 'react-router-dom';
+import {Link, Route, Redirect, matchPath, withRouter} from 'react-router-dom';
 
 import BackgroundPopWindow from './BackgroundPopWindow';
 import UploadWindow from './UploadWindow';
@@ -25,7 +25,16 @@ class Account extends Component {
   }
 
   componentDidMount() {
-    console.log('account mount');    
+    console.log('account mount, authenticated: ', this.props.authenticated);
+    const { userID } = this.state;    
+    if (userID) {
+      this.getData();
+    } else {
+      this.props.history.push('/api/users/signin');      
+    }
+  }
+
+  getData = () => {
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer },
@@ -37,7 +46,8 @@ class Account extends Component {
       })
       .catch((err) => {
         if(err.response.status === 401) {
-          console.log('401 called')
+          console.log('401 called');
+          this.props.history.push('/api/users/signin');
           // this.setState({ windowVisible: true, goToSignIn: true, pr});
         }
       });
@@ -87,4 +97,6 @@ class Account extends Component {
   }
 }
 
-export default Account;
+const AccountWithRouter = withRouter(Account);
+
+export default AccountWithRouter;

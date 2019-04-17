@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
+import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
 // import uuid from "uuid";
 
 
@@ -13,17 +13,16 @@ import ConditionButton from './components/ConditionButton';
 import NavBar from './components/NavBar';
 // import ComponentChildAdder from './components/ComponentChildAdder';
 // import Register from './components/Register.js';
-import SignIn from './components/SignIn.js';
+import SignInWithRouter from './components/SignIn.js';
 // import SortButton from './components/SortButton';
 // import BackgroundPopWindow from './components/BackgroundPopWindow';
 import Upload from './components/Upload';
-import Account from './components/Account';
+import AccountWithRouter from './components/Account';
 import StartScreen from './components/StartScreen';
 // import SignOptions from './components/SignOptions';
 // import UploadSuccess from './components/UploadSuccess';
 
 import './App.css';
-
 
 class App extends Component {
   constructor(props) {
@@ -47,44 +46,52 @@ class App extends Component {
       menuVisible: false,
       mergerArray: [null, null, null],
       data: {},
-      windowVisible: true,
+      // windowVisible: true,
       windowKind: 'upload',
       email: '',
-      uploaded: false,
-      uploadedID: null,
-      uploadedData: {},
+      // uploaded: false,
+      // uploadedID: null,
+      // uploadedData: {},
       userID: null,
       username: '',
-      accountView: false,
-      accountData: null,
-      startScreenDisplay: true,
-      optionChosen: 'without',
+      // accountView: false,
+      // accountData: null,
+      // startScreenDisplay: true,
+      // optionChosen: 'without',
       authenticated: false,
       anonymous: true,
-      uploadedSuccesful: false,
-      displayData: false,
-      goToSignIn: false,
-      prevPath: null,
-      goHome: false,
-      goUpload: false,
+      // uploadedSuccesful: false,
+      // displayData: false,
+      // goToSignIn: false,
+      // goUpload: false,
       fileID: '',
       goToDisplay: false,
+      prevPath: '/',
     };
   }
 
   componentDidMount() {
     // this.textInput.current.focus();
-
+    console.log('app mount, authenticated: ', this.state.authenticated, 'userID: ', this.state.userID);
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer }
     };
     axios.get('/test', conf)
       .then(async (res) => {
-        // console.log('userid: ', res.data._id);
+        console.log('userid: ', res.data._id);
         await this.setState({ authenticated: true, username: res.data.username, userID: res.data._id });
         })
-      .catch(err => console.log('Error:', err.response.status));
+      .catch(err => {
+        console.log('Error:', err.response.status);
+        this.setState({authenticate: false});
+      });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location !== nextProps.location) {
+      this.setState({ prevPath: this.props.location});
+    }
   }
 
   textHandler = (e) => {
@@ -308,14 +315,17 @@ class App extends Component {
      }
    }
 
-  openUploadWindow = () => {
-    this.setState({ windowVisible: true });
-  }
+   ///////////////////////////////////////////////////Routing methods////////////////////////////////////////
+   isAuthenticated = (authenticated, userID) => this.setState({authenticated, userID});
 
-  closeUploadWindow = () => {
-    this.setState({ windowVisible: false, uploadSuccesful: false,
-      accountView: false, goHome: true, goUpload: false });
-  }
+  // openUploadWindow = () => {
+  //   this.setState({ windowVisible: true });
+  // }
+
+  // closeUploadWindow = () => {
+  //   this.setState({ windowVisible: false, uploadSuccesful: false,
+  //     accountView: false, goHome: true, goUpload: false });
+  // }
 
   //  navbarClickHandler = (name) => {
   //    switch (name) {
@@ -334,39 +344,39 @@ class App extends Component {
   //    }
   //  }
 
-  uploadClickedNav = () => {
-    this.setState({ uploaded: false });
-    this.openUploadWindow();
-  }
+  // uploadClickedNav = () => {
+  //   this.setState({ uploaded: false });
+  //   this.openUploadWindow();
+  // }
 
-  uploadSigned = () => {
-    this.setState({ windowVisible: true, goUpload: true, goHome: false, displayData: false });
-  }
+  // uploadSigned = () => {
+  //   this.setState({ windowVisible: true, goUpload: true, goHome: false, displayData: false });
+  // }
 
-  // called when 'Sign up' is clicked in Register component
-  registered = () => {
-    this.setState({ authenticated: true, windowVisible: false });
-  }
+  // // called when 'Sign up' is clicked in Register component
+  // registered = () => {
+  //   this.setState({ authenticated: true, windowVisible: false });
+  // }
 
-  // called when 'Sign in' is clicked in SignIn component
-  signedIn = (username, userID) => {
-    this.setState({ authenticated: true, userID, username, windowVisible: false, goToSignIn: false,
-      prevPath: null });
-  }
+  // // called when 'Sign in' is clicked in SignIn component
+  // signedIn = (username, userID) => {
+  //   this.setState({ authenticated: true, userID, username, windowVisible: false, goToSignIn: false,
+  //     prevPath: null });
+  // }
 
-  uploadCall = (id) => {
-    console.log('uploadSuccesfulCall - id: ', id);
-    this.setState({ uploadedID: id, uploadSuccesful: true });
-  }
+  // uploadCall = (id) => {
+  //   console.log('uploadSuccesfulCall - id: ', id);
+  //   this.setState({ uploadedID: id, uploadSuccesful: true });
+  // }
 
-  // after click on 'Sign in' button in the Navbar opens the 
-  openSignInNav = () => {
-    this.setState({ uploaded: false, windowVisible: true, goHome: false });
-  }
+  // // after click on 'Sign in' button in the Navbar opens the 
+  // openSignInNav = () => {
+  //   this.setState({ uploaded: false, windowVisible: true, goHome: false });
+  // }
 
-  openSignUpNav = () => {
-    this.setState({ uploaded: false, windowVisible: true, goHome: false });
-  }
+  // openSignUpNav = () => {
+  //   this.setState({ uploaded: false, windowVisible: true, goHome: false });
+  // }
 
   // viewAccount = () => {
   //   const bearer = 'Bearer ' + localStorage.getItem('token');
@@ -389,36 +399,36 @@ class App extends Component {
   //     });
   // }
 
-  accountExit = () => {
-    this.setState({ accountView: false, windowVisible: false, goHome: true, goUpload: false });
-  }
+  // accountExit = () => {
+  //   this.setState({ accountView: false, windowVisible: false, goHome: true, goUpload: false });
+  // }
 
-  getAccountFile = (id) => {
+  // getAccountFile = (id) => {
 
-  }
+  // }
 
-  optChosen = (option) => {
-    switch(option){
-      case 'uploadAnon':
-        this.setState({anonymous: true});
-        break;
-      case 'uploadSign':
-        this.setState({anonymous: false});
-        break;
-      case 'account':
-        console.log('before viewAccount fired');
-        this.viewAccount();
-        break;
-      default:
-    }
+  // optChosen = (option) => {
+  //   switch(option){
+  //     case 'uploadAnon':
+  //       this.setState({anonymous: true});
+  //       break;
+  //     case 'uploadSign':
+  //       this.setState({anonymous: false});
+  //       break;
+  //     case 'account':
+  //       console.log('before viewAccount fired');
+  //       this.viewAccount();
+  //       break;
+  //     default:
+  //   }
 
-    this.setState({ optionChosen: option, startScreenDisplay: false })
-  }
+  //   this.setState({ optionChosen: option, startScreenDisplay: false })
+  // }
 
-  getFile = (fileID) => {
-    console.log('getFile in App');
-    this.setState({ fileID, windowVisible: false, goToDisplay: true });
-  }
+  // getFile = (fileID) => {
+  //   console.log('getFile in App');
+  //   this.setState({ fileID, windowVisible: false, goToDisplay: true });
+  // }
 
   // getUploadedData = (id = this.state.uploadedID) => {
   //   console.log('get uploaded data fired - id: ', id);
@@ -468,7 +478,7 @@ class App extends Component {
       // data, windowVisible, uploaded, uploadedID, userID, username, uploadSuccesful, displayData,
       // accountView, accountData, startScreenDisplay, optionChosen, authenticated, anonymous,
       // goToSignIn, goHome, goUpload, fileID, goToDisplay
-      authenticated, userID, username
+      authenticated, userID, username, prevPath
     } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     // const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -516,16 +526,16 @@ class App extends Component {
 
         <div className='App' ref={this.appRef}>
           <Switch>
-            <Route path={`/api/account/:userID`} render={(props) => <Account {...props}
-                  userID={userID} getFile={this.getFile}/>} />
+            <Route path={`/api/account/:userID`} render={(props) => <AccountWithRouter {...props}
+                  userID={userID} getFile={this.getFile} authenticated={authenticated}/>} />
             <Route path={`/api/datadisplay/:fileID`}
               component={DataDisplay} />
 
             <Route exact path='/' render={(props) => <StartScreen {...props} authenticated={authenticated}
               userID={userID} /> } />
 
-            <Route path='/api/users/signin' render={() => (authenticated ?
-                <Redirect to='/' /> : <SignIn />)} />
+            <Route path='/api/users/signin' render={() => (<SignInWithRouter prevPath={prevPath} authenticated={authenticated}
+                isAuthenticated={this.isAuthenticated} />)} />
             
             <Route path='/api/upload-csv' component={Upload} />
           </Switch>

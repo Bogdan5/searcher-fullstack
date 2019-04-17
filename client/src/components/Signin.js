@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import '../App.js';
+import {withRouter} from 'react-router-dom';
 
 class SignIn extends Component {
   constructor(props) {
@@ -9,18 +10,21 @@ class SignIn extends Component {
       username: '',
       password: '',
       errors: {},
+      signInSuccess: false,
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.onSignIn = this.onSignIn.bind(this);
   }
 
-  handleInputChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+  componentDidMount() {
+    console.log('signin rendered, authenticated: ', this.props.authenticated);
   }
 
-  componentDidMount() {
-    console.log('signin rendered');
+
+
+  handleInputChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   onSignIn = (e) => {
@@ -29,14 +33,17 @@ class SignIn extends Component {
       username: this.state.username,
       password: this.state.password
     };
+    console.log('history: ', this.props);
     axios.post('/api/users/signin', user)
       .then((res) => {
         console.log('res from post signin', res);
         // const {username, userID} = res.data;
         if (res.data.success) {
-          console.log('if true');
-          // this.props.signedIn(username, userID);
+          console.log('if true; prevPath: ', this.props.prevPath);
+          this.props.isAuthenticated(true, res.data.userID);
+          // this.setState({ signInSuccess: true });
           localStorage.setItem('token', res.data.token);
+          this.props.history.push(this.props.prevPath);
         } else {
           console.log('if false');
           var error = new Error('Error ' + res.status + ': ' + res.statusText);
@@ -73,4 +80,6 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn;
+const SignInWithRouter = withRouter(SignIn);
+
+export default SignInWithRouter;

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { matchPath, NavLink } from 'react-router-dom';
+import { matchPath } from 'react-router-dom';
 import axios from 'axios';
 import uuid from 'uuid';
 
@@ -9,7 +9,7 @@ import ButtonGroup from './ButtonGroup';
 import ComponentEnhancer from './ComponentEnhancer';
 import ConditionButtonFormatter from './ConditionButtonFormatter';
 import DumbButton from './DumbButton';
-import MenuOption from './MenuOption';
+// import MenuOption from './MenuOption';
 // import DropDownMenu from './DropDownMenu';
 import Icon from './Icon';
 import SelectButton from './SelectButton';
@@ -88,16 +88,16 @@ class DataDisplay extends Component {
 
   render() {
     console.log('data from DataDisplay is: ', this.props.state);
-    const {data, inputVisibility, active, listCards, menuTop, menuLeft, menuVisible, cardSelected
+    const {data, inputVisibility, active, listCards, cardSelected
       } = this.state;
 
-    const {
+    // const {
       // inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
       // data, windowVisible, uploaded, uploadedID, userID, username, uploadSuccesful, displayData,
       // accountView, accountData, startScreenDisplay, optionChosen, authenticated, anonymous,
       // goToSignIn, goHome, goUpload, fileID, goToDisplay
-      authenticated, userID, username
-    } = this.state;
+      // authenticated, userID, username
+    // } = this.state;
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
       fromButton: this.fromButton, // a handler is added to buttons in order to pass data
@@ -107,8 +107,8 @@ class DataDisplay extends Component {
     };
     const ButtonWithHandler = ComponentEnhancer(DumbButton, propertiesObj);
     // adds a click handler to all components of the DropDownMenu
-    const propertiesMenu = { fromMenu: this.menuClickHandler };
-    const MenuElementWithHandler = ComponentEnhancer(MenuOption, propertiesMenu);
+    // const propertiesMenu = { fromMenu: this.menuClickHandler };
+    // const MenuElementWithHandler = ComponentEnhancer(MenuOption, propertiesMenu);
 
     // adds handler to the navbar buttons
     // const navbarProps = { fromButton: this.navbarClickHandler };

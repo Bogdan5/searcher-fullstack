@@ -12,6 +12,7 @@
     "express": "^4.16.4",
     "express-fileupload": "^1.1.1-alpha.3",
     "fast-csv": "^2.4.1",
+    "history": "^4.9.0",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.7",
