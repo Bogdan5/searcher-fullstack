@@ -235,19 +235,18 @@ body{
   }
 }
 
-.sorterClass{
-}
+// .sorterClass{
+// }
 
 // background of the pop window
 .backgroundPopWindow{
   background-color:rgba(240, 240, 234, 0.7);
   position: absolute;
-  top: 15vh;
+  top: 10vh;
   left: 0;
-  height: 85vh;
+  height: 90vh;
   width: 100vw;
   z-index: 3;
-  border: 1px solid red;
 }
 
 // center of window that becomes visible when navbar buttons are pressed
@@ -287,7 +286,7 @@ body{
 
 // navigation bar
 .navBar{
-  height: 15vh;
+  height: 10vh;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -296,8 +295,8 @@ body{
 }
 
 .dataDisplay{
-  height: 30px;
-  background-color: red;
+  // height: 30px;
+  // background-color: red;
 }
 
 .navLinkButton{

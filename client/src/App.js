@@ -16,7 +16,7 @@ import NavBar from './components/NavBar';
 import SignIn from './components/SignIn.js';
 // import SortButton from './components/SortButton';
 // import BackgroundPopWindow from './components/BackgroundPopWindow';
-// import Upload from './components/Upload';
+import Upload from './components/Upload';
 import Account from './components/Account';
 import StartScreen from './components/StartScreen';
 // import SignOptions from './components/SignOptions';
@@ -499,7 +499,7 @@ class App extends Component {
 {/* -------------------------------------navbar---------------------------------------------------- */}
 
         <NavBar>
-          <NavLink to='/api/upload-csv' onClick={this.uploadUnsigned}>Upload file without signing in</NavLink>
+          <NavLink to='/api/upload-csv' >Upload file without signing in</NavLink>
           <NavLink to={authenticated ? '/api/upload-csv' : '/api/users/signOptions'}>Upload file</NavLink>
           <Route render={() => (authenticated ? null :
             <NavLink to='/api/users/signin' >Sign in</NavLink>) } />
@@ -507,9 +507,7 @@ class App extends Component {
             <NavLink to='/api/users/signup' >Sign up</NavLink>)} />         
           <Route path='/' render={() => {
             if (authenticated) {
-              return (<button type='button' onClick={this.viewAccount}>
-                        {username}
-                      </button>)
+              return <NavLink to={`/api/account/${userID}`} >{username}</NavLink>
             } else {
               return null;
             }
@@ -528,6 +526,8 @@ class App extends Component {
 
             <Route path='/api/users/signin' render={() => (authenticated ?
                 <Redirect to='/' /> : <SignIn />)} />
+            
+            <Route path='/api/upload-csv' component={Upload} />
           </Switch>
         </div>        
       </div>

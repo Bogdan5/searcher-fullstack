@@ -179,12 +179,11 @@ body {
 .backgroundPopWindow {
   background-color: rgba(240, 240, 234, 0.7);
   position: absolute;
-  top: 15vh;
+  top: 10vh;
   left: 0;
-  height: 85vh;
+  height: 90vh;
   width: 100vw;
-  z-index: 3;
-  border: 1px solid red; }
+  z-index: 3; }
 
 .popWindow {
   box-sizing: border-box;
@@ -212,16 +211,12 @@ body {
   z-index: 5; }
 
 .navBar {
-  height: 15vh;
+  height: 10vh;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
   background-color: #0e3b31; }
-
-.dataDisplay {
-  height: 30px;
-  background-color: red; }
 
 .navLinkButton {
   display: block;

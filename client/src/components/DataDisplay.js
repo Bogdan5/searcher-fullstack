@@ -10,7 +10,7 @@ import ComponentEnhancer from './ComponentEnhancer';
 import ConditionButtonFormatter from './ConditionButtonFormatter';
 import DumbButton from './DumbButton';
 import MenuOption from './MenuOption';
-import DropDownMenu from './DropDownMenu';
+// import DropDownMenu from './DropDownMenu';
 import Icon from './Icon';
 import SelectButton from './SelectButton';
 import ColumnSelector from './ColumnSelector';
@@ -209,7 +209,7 @@ class DataDisplay extends Component {
               </Keyboard>
             );
           })}
-          <DropDownMenu
+          {/* <DropDownMenu
             menuVisible={menuVisible} mouseOutMenu={this.menuHide}
             style={{ top: menuTop, left: menuLeft }}
           >
@@ -217,7 +217,7 @@ class DataDisplay extends Component {
             <MenuElementWithHandler name='AND' />
             <MenuElementWithHandler name='OR' />
             <MenuElementWithHandler name='DELETE' />
-          </DropDownMenu>
+          </DropDownMenu> */}
         </div>
 
         <h3>{data.description}</h3>

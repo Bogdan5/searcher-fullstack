@@ -80,7 +80,7 @@ class Account extends Component {
           </div>
           <hr/>
           {/* <button type='button' onClick={handler}>Done</button> */}
-          <Link to={`/api/datadisplay/${this.state.fileID}`}>Done</Link>
+          <Link to='/'>Done</Link>
         </UploadWindow>
       </BackgroundPopWindow>
     );

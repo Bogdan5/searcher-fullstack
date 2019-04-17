@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-// import { Route, Redirect } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import '../App.css';
+import UploadWindow from './UploadWindow';
+import BackgroundPopWindow from './BackgroundPopWindow';
 
 class Upload extends Component {
   constructor(props) {
@@ -11,7 +13,8 @@ class Upload extends Component {
       file: null,
       firstRowHeader: false,
       uploadedID: '',
-      description: ''
+      description: '',
+      uploadSuccesful: false,
     }
 
     this.onChange = this.onChange.bind(this);
@@ -53,7 +56,7 @@ class Upload extends Component {
     axios.post('/api/upload-csv',formData,config)
       .then((res) => {
         alert('The file is successfully uploaded - id: ', res.data._id);
-        this.setState({ uploaded: true, uploadedID: res.data._id });
+        this.setState({ uploadSuccesful: true, uploadedID: res.data._id });
         this.props.uploadSuccesfulCall(res.data._id);
 
         // const bearer = 'Bearer ' + localStorage.getItem('token');
@@ -85,25 +88,32 @@ class Upload extends Component {
   } 
 
   render() {
-    const {uploaded} = this.state;
-    return (
-      <div>
-        {/* <Route path='/api/upload-csv' render={() => (uploaded ? 
-            (<Redirect to={`/api/datadisplay/${this.state.uploadedID}`} />) : null)
-          }/> */}
+    const {uploadedID, uploadSuccesful} = this.state;
+    const uploadForm = (
+      <form action='/api/upload-csv' encType='multipart/form-data' method='POST'
+          noValidate onSubmit={this.uploadCSV}> 
+        <input type='file' name='myFile' onChange={this.onChange} />
         <br/>
-        <form action='/api/upload-csv' encType='multipart/form-data' method='POST'
-        noValidate onSubmit={this.uploadCSV}> 
-          <input type='file' name='myFile' onChange={this.onChange} />
-          <br/>
-          <input type="checkbox" id='firstRowHeader' onChange={this.radioClicked} />
-          <label htmlFor='firstRowHeader'>The first row is the header</label>
-          <br/>
-          <label htmlFor='description'>File description</label>
-          <input type='text' name='description' onChange={this.descriptionHandler} placeholder='File description' />
-          <input type='submit' value='Upload a file'/>          
-        </form>
+        <input type="checkbox" id='firstRowHeader' onChange={this.radioClicked} />
+        <label htmlFor='firstRowHeader'>The first row is the header</label>
+        <br/>
+        <label htmlFor='description'>File description</label>
+        <input type='text' name='description' onChange={this.descriptionHandler} placeholder='File description' />
+        <input type='submit' value='Upload a file'/>          
+      </form>
+    );
+    const success = (
+      <div>
+        <NavLink to={`/api/datadisplay/${uploadedID}`} className='navLinkButton' >Display data</NavLink>
+        <NavLink to={`/api/account/${this.props.userID}`} className='navLinkButton'>View account</NavLink>
       </div>
+    )
+    return (
+      <BackgroundPopWindow>
+        <UploadWindow>
+          {uploadSuccesful ? success: uploadForm}
+        </UploadWindow>
+      </BackgroundPopWindow>
     );
   }
 }
