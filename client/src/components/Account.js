@@ -46,8 +46,9 @@ class Account extends Component {
       })
       .catch((err) => {
         if(err.response.status === 401) {
-          console.log('401 called');
-          this.props.history.push('/api/users/signin');
+          console.log('401 called; props.location.pathname: ', this.props.location.pathname);
+          this.props.history.push({pathname: '/api/users/signin',
+            appState: {prevPath: this.props.location.pathname}});
           // this.setState({ windowVisible: true, goToSignIn: true, pr});
         }
       });

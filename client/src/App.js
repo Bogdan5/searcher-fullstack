@@ -90,7 +90,8 @@ class App extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.location !== nextProps.location) {
-      this.setState({ prevPath: this.props.location});
+      console.log('app: prevPath: ', this.props.location.pathname);
+      this.setState({ prevPath: this.props.location.pathname});
     }
   }
 
@@ -509,6 +510,7 @@ class App extends Component {
 {/* -------------------------------------navbar---------------------------------------------------- */}
 
         <NavBar>
+          <NavLink to='/'>Home</NavLink>
           <NavLink to='/api/upload-csv' >Upload file without signing in</NavLink>
           <NavLink to={authenticated ? '/api/upload-csv' : '/api/users/signOptions'}>Upload file</NavLink>
           <Route render={() => (authenticated ? null :

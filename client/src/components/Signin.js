@@ -11,6 +11,7 @@ class SignIn extends Component {
       password: '',
       errors: {},
       signInSuccess: false,
+      prevPath: '/'
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -20,7 +21,6 @@ class SignIn extends Component {
   componentDidMount() {
     console.log('signin rendered, authenticated: ', this.props.authenticated);
   }
-
 
 
   handleInputChange = (e) => {
@@ -43,7 +43,7 @@ class SignIn extends Component {
           this.props.isAuthenticated(true, res.data.userID);
           // this.setState({ signInSuccess: true });
           localStorage.setItem('token', res.data.token);
-          this.props.history.push(this.props.prevPath);
+          this.props.history.push(this.props.location.appState.prevPath);
         } else {
           console.log('if false');
           var error = new Error('Error ' + res.status + ': ' + res.statusText);
