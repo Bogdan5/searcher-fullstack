@@ -81,6 +81,8 @@ class DataDisplay extends Component {
       .catch((err) => {
         if(err.response.status === 401) {
           console.log(`Error: ${err}`)
+          this.props.history.push({pathname: '/api/users/signin',
+            appState: {prevPath: this.props.location.pathname}});
           // this.setState({ windowVisible: true, goToSignIn: true, prevPath: `/api/datadisplay/${id}` });
         }
       });

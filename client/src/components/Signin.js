@@ -39,11 +39,14 @@ class SignIn extends Component {
         console.log('res from post signin', res);
         // const {username, userID} = res.data;
         if (res.data.success) {
-          console.log('if true; prevPath: ', this.props.prevPath);
+          console.log('if true; prevPath: ', this.props);
           this.props.isAuthenticated(true, res.data.userID);
-          // this.setState({ signInSuccess: true });
           localStorage.setItem('token', res.data.token);
-          this.props.history.push(this.props.location.appState.prevPath);
+          if (this.props.location.appState) {
+            this.props.history.push(this.props.location.appState.prevPath);
+          } else {
+            this.props.history.push('/');
+          }
         } else {
           console.log('if false');
           var error = new Error('Error ' + res.status + ': ' + res.statusText);
