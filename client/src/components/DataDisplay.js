@@ -140,20 +140,24 @@ class DataDisplay extends Component {
             icon='' typeContent=''
             id={0} cardSelected={0}
           >
-            <ButtonGroup>
-              <ButtonWithHandler name='INCLUDES' />
-              <ButtonWithHandler name='STARTS WITH' />
-              <ButtonWithHandler name='ENDS WITH' />
-            </ButtonGroup>
-            <input // the keyword used to search
-              type='text' onChange={this.textHandler}
-              placeholder='Type keyword' ref={this.textInput}
-            />
-            <div className={inputVisibility}>in position</div>
-            <input // by default, any match would satisfy condition, regardless of position
-              type='text' className={`positionInput ${inputVisibility}`}
-              onChange={this.positionHandler}
-            />
+            <div className='centerKeyboard'>
+              <ButtonGroup>
+                <ButtonWithHandler name='INCLUDES' />
+                <ButtonWithHandler name='STARTS WITH' />
+                <ButtonWithHandler name='ENDS WITH' />
+              </ButtonGroup>
+              <div className=''>
+                <input // the keyword used to search
+                  type='text' onChange={this.textHandler}
+                  placeholder='Type keyword' ref={this.textInput}
+                />
+                <div className={inputVisibility}>in position</div>
+                <input // by default, any match would satisfy condition, regardless of position
+                  type='text' className={`positionInput ${inputVisibility}`}
+                  onChange={this.positionHandler}
+                />
+              </div>
+            </div>
             <ButtonWithHandler name='SUBMIT' visibility={inputVisibility} />
             <ButtonWithHandler name='CANCEL' />
           </Keyboard>
