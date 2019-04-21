@@ -62,6 +62,27 @@ body {
     justify-content: center;
     align-items: center; }
 
+.centerKeyboard {
+  width: 80%;
+  border: 1px solid green; }
+
+.centerBottomKeyboard {
+  display: flex;
+  flex-direction: row; }
+  .centerBottomKeyboard > input:first-child {
+    width: 40%;
+    height: 25px; }
+  .centerBottomKeyboard > div {
+    width: 20%;
+    height: 28px;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column; }
+    .centerBottomKeyboard > div > div {
+      height: 17px; }
+  .centerBottomKeyboard > input:last-child {
+    height: 25px; }
+
 .selectedKeyboard {
   background-color: rgba(182, 181, 181, 0.671); }
 
@@ -99,7 +120,10 @@ body {
     background-color: grey; }
 
 .buttonGroup {
-  border: 1px solid red; }
+  border: 1px solid blue;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly; }
   .buttonGroup > button {
     min-width: 120px;
     display: inline-block;
@@ -115,7 +139,8 @@ body {
   visibility: hidden; }
 
 .visible {
-  visibility: visible; }
+  visibility: visible;
+  border: 1px solid red; }
 
 .dropDownMenu {
   position: absolute;

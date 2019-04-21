@@ -40,7 +40,7 @@ class DataDisplay extends Component {
       }],
       cardSelected: 0, // card that is currently selected to work on
       keyword: '', // content of the keyword input text field
-      inputVisibility: 'hidden', // in the second Keyboard, whether the position input is visible
+      inputVisibility: 'visible', // in the second Keyboard, whether the position input is visible
       keywordButtonClicked: '', // name of button clicked in the keyword(2nd) Keyboard
       active: [], // array of buttons active
       position: 0,
@@ -146,12 +146,12 @@ class DataDisplay extends Component {
                 <ButtonWithHandler name='STARTS WITH' />
                 <ButtonWithHandler name='ENDS WITH' />
               </ButtonGroup>
-              <div className=''>
+              <div className='centerBottomKeyboard'>
                 <input // the keyword used to search
                   type='text' onChange={this.textHandler}
                   placeholder='Type keyword' ref={this.textInput}
                 />
-                <div className={inputVisibility}>in position</div>
+                <div className={inputVisibility}><div>in position</div></div>
                 <input // by default, any match would satisfy condition, regardless of position
                   type='text' className={`positionInput ${inputVisibility}`}
                   onChange={this.positionHandler}

@@ -30,12 +30,14 @@ body{
   box-sizing: border-box;
 }
 
+// the div containing the whole app
 .bodyContainer{
   position: relative;
   background-color: white;
   height: 100vh;
 }
 
+//the div containing the dynamic part of the app (without the navbar)
 .App{
   width: 90%;
   margin: 0 auto;
@@ -43,6 +45,7 @@ body{
   background-color: lighten($green, 20%);
 }
 
+// the buttons used in the Keyboard component
 .dumbButtonClass{
   padding: 5px 7px;
   font-size: 12px;
@@ -54,23 +57,27 @@ body{
   min-width: 60px;
 }
 
+// text input when in focus in the Keyboard component
 .active{
   color: white;
   background-color: $dark-purple;
   cursor: pointer;
 }
 
+// 
 .inactive{
   color:black;
   background-color: $greyed-out;
 }
 
+// the title of the application
 .headerClass {
   text-align: center;
   font-size: 25px;
   padding: 20px;
 }
 
+// applies to Keyboards
 .keyboardGeneric{
   @include row-flex;
   font-size: 15px;
@@ -95,21 +102,50 @@ body{
   }
 }
 
+// the div at the center of the Keyboard
 .centerKeyboard{
-  width: 70%;
+  width: 80%;
   border: 1px solid green;
 }
 
+// bottom part of the central part of the Keyboard
+.centerBottomKeyboard{
+  @include row-flex();
+  &>input:first-child{
+    width: 40%;
+    height: 25px;
+  }
+  &>div{
+    // text-align: center;
+    width: 20%;
+    // background-color: red;
+    height: 28px;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    &>div{
+      height: 17px;
+      // border: 1px solid white;
+    }
+  }
+  &>input:last-child{
+    height: 25px;
+  }
+}
+
+// Keyboard that is selected
 .selectedKeyboard{
   background-color: rgba(182, 181, 181, 0.671);
 }
 
+// the left part of the Keybpard
 .leftSection{
   @include center-both-ways();
   &>div{
     @include center-both-ways();
   }
 }
+
 
 .keyboardSearchKeyword{
   & input{
@@ -120,6 +156,7 @@ body{
   }
 }
 
+// + and - icons on the right side of Keyboards
 .icon{
   width: 25px;
   height: 25px;
@@ -135,8 +172,11 @@ body{
   }
 }
 
+// groups of buttons in Keyboards
 .buttonGroup{
-  border: 1px solid red;
+  border: 1px solid blue;
+  @include row-flex();
+  justify-content: space-evenly;
   &>button {
     min-width: 120px;
     display: inline-block;
@@ -144,6 +184,7 @@ body{
   }
 }
 
+// the Keyboard that displays results of the search
 .formatterClass{
   // @include round-border($green);
   // background-color: rgb(200, 206, 208);
@@ -160,8 +201,10 @@ body{
 
 .visible{
   visibility: visible;
+  border: 1px solid red;
 }
 
+// the menu containing options that allows combining search parameters
 .dropDownMenu{
   position: absolute;
   transition: height 600ms ease-in-out;
@@ -175,6 +218,7 @@ body{
   }
 }
 
+// options in the dropDownMenu
 .menuOption{
   transition: height 0 ease-in-out;
   height:30px;
@@ -207,6 +251,7 @@ body{
   display: none;
 }
 
+// 
 .ConditionButton{
   padding: 3px 10px;
   border: 1px solid black;

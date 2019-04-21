@@ -17,8 +17,8 @@ const Icon = (props) => {
 };
 
 Icon.propTypes = {
-  fromIcon: PropTypes.func.isRequired,
-  keyboardNo: PropTypes.number.isRequired
+  // fromIcon: PropTypes.func.isRequired,
+  // keyboardNo: PropTypes.number.isRequired
 };
 
 export default Icon;
