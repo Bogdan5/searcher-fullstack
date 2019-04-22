@@ -285,28 +285,42 @@ body{
   display: table;
   width: 60px;
   height: 40px;
-  border: 1px solid green;
+  // border: 1px solid green;
   table-layout: fixed;
 }
 
 .sortButtonRow{
   display: table-row;
-  width: 50px;
+  width: 60px;
   height: 20px;
   &>*{
     display: table-cell;
     // border: 1px solid red;
   }
-  &>div:nth-child(2){
-    vertical-align: top;
-  }
-  &>div:first-child{
-    vertical-align: bottom;
-  }
+  // &>div:nth-child(2){
+  //   text-align: top;
+  // }
+  // &>div:first-child{
+  //   text-align: bottom;
+  // }
+}
+
+.awesomeClass-top{
+  // border: 1px solid green;
+  // padding-top: 15px;
+  box-sizing: border-box;
+  line-height: 20px;
+}
+
+.awesomeClass-bottom{
+  // border: 1px solid green;
+  // padding-bottom: 15px;
+  box-sizing: border-box;
+  line-height: 20px;
 }
 
 .sortButtonCell{
-  border: 1px solid red;
+  // border: 1px solid red;
   &:first-child{
     width: 50px;
     overflow: hidden;

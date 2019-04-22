@@ -203,28 +203,30 @@ body {
   display: table;
   width: 60px;
   height: 40px;
-  border: 1px solid green;
   table-layout: fixed; }
 
 .sortButtonRow {
   display: table-row;
-  width: 50px;
+  width: 60px;
   height: 20px; }
   .sortButtonRow > * {
     display: table-cell; }
-  .sortButtonRow > div:nth-child(2) {
-    vertical-align: top; }
-  .sortButtonRow > div:first-child {
-    vertical-align: bottom; }
 
-.sortButtonCell {
-  border: 1px solid red; }
-  .sortButtonCell:first-child {
-    width: 50px;
-    overflow: hidden;
-    font-size: 14px; }
-  .sortButtonCell > select {
-    width: 40px; }
+.awesomeClass-top {
+  box-sizing: border-box;
+  line-height: 20px; }
+
+.awesomeClass-bottom {
+  box-sizing: border-box;
+  line-height: 20px; }
+
+.sortButtonCell:first-child {
+  width: 50px;
+  overflow: hidden;
+  font-size: 14px; }
+
+.sortButtonCell > select {
+  width: 40px; }
 
 .backgroundPopWindow {
   background-color: rgba(240, 240, 234, 0.7);
