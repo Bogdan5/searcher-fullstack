@@ -88,6 +88,10 @@ class DataDisplay extends Component {
       });
   }
 
+  fromSortButton = (option) => {
+      
+  }
+
   render() {
     console.log('data from DataDisplay is: ', this.props.state);
     const {data, inputVisibility, active, listCards, cardSelected
@@ -227,7 +231,7 @@ class DataDisplay extends Component {
         </div>
 
         <h3>{data.description}</h3>
-        <Table data={data}/>
+        <Table data={data} fromSortButton={this.fromSortButton}/>
         {/* <Route render={() => (
           (prevPath !== '/upload-csv') ? <Table data={data}/> : <Redirect to='/' />
         )} /> */}

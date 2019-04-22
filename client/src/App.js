@@ -530,8 +530,6 @@ class App extends Component {
           <Switch>
             <Route path={`/api/account/:userID`} render={(props) => <AccountWithRouter {...props}
                   userID={userID} getFile={this.getFile} authenticated={authenticated}/>} />
-            <Route path={`/api/datadisplay/:fileID`}
-              component={DataDisplay} />
 
             <Route exact path='/' render={(props) => <StartScreen {...props} authenticated={authenticated}
               userID={userID} /> } />
@@ -541,7 +539,9 @@ class App extends Component {
             
             <Route path='/api/upload-csv' component={Upload} />
           </Switch>
-        </div>        
+        </div>
+        <Route path={`/api/datadisplay/:fileID`}
+              component={DataDisplay} />      
       </div>
     );
   }

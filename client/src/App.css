@@ -46,7 +46,7 @@ body {
     border-radius: 2px;
     display: flex;
     align-items: center;
-    padding: 15px; }
+    padding: 5px 10px; }
     .keyboardGeneric > div:first-child {
       width: 20%; }
     .keyboardGeneric > div:nth-child(2) {
@@ -63,16 +63,17 @@ body {
     align-items: center; }
 
 .centerKeyboard {
-  width: 80%;
-  border: 1px solid green; }
+  width: 80%; }
 
 .centerBottomKeyboard {
   display: flex;
   flex-direction: row; }
   .centerBottomKeyboard > input:first-child {
     width: 40%;
-    height: 25px; }
+    height: 25px;
+    margin-left: 15%; }
   .centerBottomKeyboard > div {
+    text-align: center;
     width: 20%;
     height: 28px;
     display: flex;
@@ -120,7 +121,6 @@ body {
     background-color: grey; }
 
 .buttonGroup {
-  border: 1px solid blue;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly; }
@@ -139,8 +139,7 @@ body {
   visibility: hidden; }
 
 .visible {
-  visibility: visible;
-  border: 1px solid red; }
+  visibility: visible; }
 
 .dropDownMenu {
   position: absolute;
@@ -200,8 +199,32 @@ body {
   border-radius: 2px 0;
   font-size: 14px; }
 
-.sortButton > div {
-  display: inline-block; }
+.sortButton {
+  display: table;
+  width: 60px;
+  height: 40px;
+  border: 1px solid green;
+  table-layout: fixed; }
+
+.sortButtonRow {
+  display: table-row;
+  width: 50px;
+  height: 20px; }
+  .sortButtonRow > * {
+    display: table-cell; }
+  .sortButtonRow > div:nth-child(2) {
+    vertical-align: top; }
+  .sortButtonRow > div:first-child {
+    vertical-align: bottom; }
+
+.sortButtonCell {
+  border: 1px solid red; }
+  .sortButtonCell:first-child {
+    width: 50px;
+    overflow: hidden;
+    font-size: 14px; }
+  .sortButtonCell > select {
+    width: 40px; }
 
 .backgroundPopWindow {
   background-color: rgba(240, 240, 234, 0.7);
