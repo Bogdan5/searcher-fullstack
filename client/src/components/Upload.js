@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
-import '../App.css';
+import '../App.scss';
 import UploadWindow from './UploadWindow';
 import BackgroundPopWindow from './BackgroundPopWindow';
 

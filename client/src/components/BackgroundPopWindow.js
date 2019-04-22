@@ -1,6 +1,6 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
-import '../App.css';
+import '../App.scss';
 
 const BackgroundPopWindow = (props) => {
   const { children } = props;

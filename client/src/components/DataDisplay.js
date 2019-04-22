@@ -16,7 +16,7 @@ import SelectButton from './SelectButton';
 import ColumnSelector from './ColumnSelector';
 
 // import PropTypes from 'prop-types';
-import '../App.css';
+import '../App.scss';
 
 class DataDisplay extends Component {
   constructor (props) {

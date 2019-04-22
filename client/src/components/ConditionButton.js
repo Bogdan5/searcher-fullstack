@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../App.css';
+import '../App.scss';
 
 // basic button pressed to construct queries
 const ConditionButton = (props) => {

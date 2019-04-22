@@ -4,7 +4,7 @@ import React from 'react';
 // import ComponentEnhancer from './ComponentEnhancer';
 // import MenuOption from './MenuOption';
 // import ConditionButton from './ConditionButton';
-import '../App.css';
+import '../App.scss';
 
 // the area where queries buttons are dislayed as they are constructed
 const ConditionButtonFormatter = (props) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
-import '../App.css';
+import '../App.scss';
 
 // this component includes a description on the left and to the right a set of\
 // buttons used to construct the query

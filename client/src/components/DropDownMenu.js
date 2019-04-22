@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../App.css';
+import '../App.scss';
 
 // this component includes a set of buttons
 const DropDownMenu = (props) => {

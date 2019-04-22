@@ -1,5 +1,5 @@
 import React from 'react';
-import '../App.css';
+import '../App.scss';
 
 const SelectButton = (props) => {
   const { fromSelect, card } = props;

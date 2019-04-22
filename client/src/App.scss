@@ -284,15 +284,31 @@ body{
 .sortButton{
   display: table;
   width: 60px;
-  height: 40px;
+  height: 45px;
   // border: 1px solid green;
   table-layout: fixed;
 }
 
-.sortButtonRow{
+.sortButtonRow-top{
   display: table-row;
   width: 60px;
   height: 20px;
+  &>*{
+    display: table-cell;
+    // border: 1px solid red;
+  }
+  // &>div:nth-child(2){
+  //   text-align: top;
+  // }
+  // &>div:first-child{
+  //   text-align: bottom;
+  // }
+}
+
+.sortButtonRow-bottom{
+  display: table-row;
+  width: 60px;
+  height: 25px;
   &>*{
     display: table-cell;
     // border: 1px solid red;
@@ -309,14 +325,20 @@ body{
   // border: 1px solid green;
   // padding-top: 15px;
   box-sizing: border-box;
-  line-height: 20px;
+  position: relative;
+  border: 1px solid green;
+  height: 20px;
+  &>*{
+    position: absolute;
+    bottom: 2px;
+  }
 }
 
 .awesomeClass-bottom{
   // border: 1px solid green;
   // padding-bottom: 15px;
   box-sizing: border-box;
-  line-height: 20px;
+  // line-height: 20px;
 }
 
 .sortButtonCell{

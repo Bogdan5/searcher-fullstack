@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import '../App.css';
+import '../App.scss';
 import axios from 'axios';
 import {Link, Route, Redirect, matchPath, withRouter} from 'react-router-dom';
 

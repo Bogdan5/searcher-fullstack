@@ -1,5 +1,5 @@
 import React from 'react';
-import '../App.css';
+import '../App.scss';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
@@ -12,11 +12,11 @@ const SortButton = props => {
   }
   return (
     <div className='sortButton'>
-      <div className='sortButtonRow'>
+      <div className='sortButtonRow-top'>
         <div className='sortButtonCell'>{props.name}</div>
         <div className='sortButtonCell awesomeClass-top'><FontAwesomeIcon icon={faSortUp} /></div>
       </div>
-      <div className='sortButtonRow'>
+      <div className='sortButtonRow-bottom'>
         <div className='sortButtonCell'>
           <select name='Type of data' onChange={handler}>
             <option value='text'>Text</option>
