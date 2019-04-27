@@ -1,7 +1,7 @@
 import React from 'react';
 import '../App.scss';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { library } from '@fortawesome/fontawesome-svg-core';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SortButton from './SortButton';
 
 const Table = (props) => {
@@ -9,12 +9,15 @@ const Table = (props) => {
   // console.log('header: ', props.data2.header);
   // console.log('body: ', props.data2.body);
 
+  let dataBody = JSON.parse(JSON.stringify(body));
+
   const handler =  (option) => { 
     props.fromSortButton(option);
   }
 
   const sorter = (direction, columnNo) => {
     console.log(direction, columnNo);
+    dataBody.sort(el => el[1][columnNo][1]);
     props.sorter(direction);
   }
 
@@ -28,6 +31,8 @@ const Table = (props) => {
             columnNo={index} />
           </div>
         ))}
+      </div>
+      <div>
 
       </div>
     </div>

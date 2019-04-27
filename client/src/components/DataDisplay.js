@@ -51,24 +51,21 @@ class DataDisplay extends Component {
   }
 
   componentDidMount() {
-    console.log('in DataDisplay props.match: ', this.props);
     const { fileID } = this.state;
-    console.log('datadisplay rendered');
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer }
     };
     axios.get(`/api/datadisplay/${fileID}`, conf)
       .then(async (response) => {
-        console.log('get data start');
         console.log('data is: ', response);
         let newHeader = [];
         let newBody = [];
-        response.data.header.map(el => newHeader.push([uuid.v4(), el]));
-        response.data.body.map(el => {
+        response.data.header.forEach(el => newHeader.push([uuid.v4(), el]));
+        response.data.body.forEach((el, index) => {
           let newRow = [];
-          el.map(elem => newRow.push([uuid.v4(), elem]));
-          return newBody.push([uuid.v4(), newRow]);
+          el.forEach(elem => newRow.push([uuid.v4(), elem]));
+          newBody.push([uuid.v4(), newRow, index]);
         });
         const newData = {
           header: newHeader,

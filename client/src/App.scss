@@ -317,7 +317,7 @@ body{
   // padding-top: 15px;
   box-sizing: border-box;
   position: relative;
-  border: 1px solid green;
+  // border: 1px solid green;
   height: 20px;
   width: 12px;
   &>*{
@@ -350,6 +350,11 @@ body{
     width: 49px;
     font-size: 12px;
   }
+}
+
+.headerSortButtons{
+  display: inline-block;
+  // border: 1px solid yellow;
 }
 
 // .sorterClass{
@@ -450,8 +455,5 @@ body{
   height: 300px;
 }
 
-.headerSortButtons{
-  display: inline-block;
-  border: 1px solid yellow;
-}
+
 

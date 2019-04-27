@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
+import { Switch, Route, NavLink } from 'react-router-dom';
 // import uuid from "uuid";
 
 
@@ -72,14 +72,12 @@ class App extends Component {
 
   componentDidMount() {
     // this.textInput.current.focus();
-    console.log('app mount, authenticated: ', this.state.authenticated, 'userID: ', this.state.userID);
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer }
     };
     axios.get('/test', conf)
       .then(async (res) => {
-        console.log('userid: ', res.data._id);
         await this.setState({ authenticated: true, username: res.data.username, userID: res.data._id });
         })
       .catch(err => {
@@ -90,7 +88,6 @@ class App extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.location !== nextProps.location) {
-      console.log('app: prevPath: ', this.props.location.pathname);
       this.setState({ prevPath: this.props.location.pathname});
     }
   }
