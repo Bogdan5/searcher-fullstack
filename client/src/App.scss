@@ -283,42 +283,33 @@ body{
 
 .sortButton{
   display: table;
-  width: 60px;
+  width: 62px;
   height: 45px;
-  // border: 1px solid green;
   table-layout: fixed;
 }
 
 .sortButtonRow-top{
   display: table-row;
-  width: 60px;
+  width: 62px;
   height: 20px;
   &>*{
     display: table-cell;
     // border: 1px solid red;
   }
-  // &>div:nth-child(2){
-  //   text-align: top;
-  // }
-  // &>div:first-child{
-  //   text-align: bottom;
-  // }
+  &>div:first-child{
+    background-color: red;
+    vertical-align: middle;
+  }
 }
 
 .sortButtonRow-bottom{
   display: table-row;
-  width: 60px;
+  width: 62px;
   height: 25px;
   &>*{
     display: table-cell;
     // border: 1px solid red;
   }
-  // &>div:nth-child(2){
-  //   text-align: top;
-  // }
-  // &>div:first-child{
-  //   text-align: bottom;
-  // }
 }
 
 .awesomeClass-top{
@@ -328,17 +319,24 @@ body{
   position: relative;
   border: 1px solid green;
   height: 20px;
+  width: 12px;
   &>*{
     position: absolute;
-    bottom: 2px;
+    bottom: 0px;
   }
 }
 
 .awesomeClass-bottom{
-  // border: 1px solid green;
   // padding-bottom: 15px;
   box-sizing: border-box;
   // line-height: 20px;
+  height: 20px;
+  width: 12px;
+  position: relative;
+  &>*{
+    position: absolute;
+    top: 0;
+  }
 }
 
 .sortButtonCell{
@@ -349,7 +347,8 @@ body{
     font-size: 14px;
   }
   &>select{
-    width: 40px;
+    width: 49px;
+    font-size: 12px;
   }
 }
 
@@ -445,3 +444,9 @@ body{
   border: 1px solid blue;
   height: 250px;
 }
+
+.scrollTable{
+  overflow: scroll;
+  height: 300px;
+}
+

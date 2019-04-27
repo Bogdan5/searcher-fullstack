@@ -88,8 +88,12 @@ class DataDisplay extends Component {
       });
   }
 
-  fromSortButton = (option) => {
-      
+  sorter = (direction) => {
+     if (direction === 'up') {
+
+     } else if (direction === 'down') {
+       
+     }
   }
 
   render() {
@@ -231,7 +235,10 @@ class DataDisplay extends Component {
         </div>
 
         <h3>{data.description}</h3>
-        <Table data={data} fromSortButton={this.fromSortButton}/>
+        <div className='scrollTable'>
+          <Table data={data} fromSortButton={this.fromSortButton}
+            sorter={this.sorter} />
+        </div>
         {/* <Route render={() => (
           (prevPath !== '/upload-csv') ? <Table data={data}/> : <Redirect to='/' />
         )} /> */}

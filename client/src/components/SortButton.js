@@ -10,11 +10,22 @@ const SortButton = props => {
   const handler = (e) => {
     props.sorted(e.target.value);
   }
+
+  const clickUp = (e) => {
+    props.sorter('up');
+  }
+
+  const clickDown = (e) => {
+    props.sorter('down');
+  }
+
   return (
     <div className='sortButton'>
       <div className='sortButtonRow-top'>
         <div className='sortButtonCell'>{props.name}</div>
-        <div className='sortButtonCell awesomeClass-top'><FontAwesomeIcon icon={faSortUp} /></div>
+        <div className='sortButtonCell awesomeClass-top'>
+          <FontAwesomeIcon icon={faSortUp} onClick={clickUp} />
+        </div>
       </div>
       <div className='sortButtonRow-bottom'>
         <div className='sortButtonCell'>
@@ -23,7 +34,9 @@ const SortButton = props => {
             <option value='number'>Number</option>
           </select>
         </div>
-        <div className='sortButtonCell awesomeClass-bottom'><FontAwesomeIcon icon={faSortDown} /></div>
+        <div className='sortButtonCell awesomeClass-bottom'>
+          <FontAwesomeIcon icon={faSortDown} onClick={clickDown} />
+        </div>
       </div>
     </div>
 );}
