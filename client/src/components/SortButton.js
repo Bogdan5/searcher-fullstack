@@ -7,16 +7,16 @@ import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 const SortButton = props => {
   library.add(faSortUp);
   library.add(faSortDown);
-  const handler = (e) => {
+  const type = (e) => {
     props.sorted(e.target.value);
   }
 
   const clickUp = (e) => {
-    props.sorter('up');
+    props.sorter('up', props.columnNo);
   }
 
   const clickDown = (e) => {
-    props.sorter('down');
+    props.sorter('down', props.columnNo);
   }
 
   return (
@@ -29,7 +29,7 @@ const SortButton = props => {
       </div>
       <div className='sortButtonRow-bottom'>
         <div className='sortButtonCell'>
-          <select name='Type of data' onChange={handler}>
+          <select name='Type of data' onChange={type}>
             <option value='text'>Text</option>
             <option value='number'>Number</option>
           </select>

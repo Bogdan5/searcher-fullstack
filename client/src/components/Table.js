@@ -13,17 +13,20 @@ const Table = (props) => {
     props.fromSortButton(option);
   }
 
-  const sorter = (direction) => {
-    console.log(direction);
+  const sorter = (direction, columnNo) => {
+    console.log(direction, columnNo);
     props.sorter(direction);
   }
 
   return (
     <div >
       <div>
-        {header.map((el) => (
-          <SortButton key={el[0]} name={el[1]}
-            handler={handler} sorter={sorter} />
+        {header.map((el, index) => (
+          <div key={el[0]} className='headerSortButtons'>
+            <SortButton key={el[0]} name={el[1]}
+            handler={handler} sorter={sorter}
+            columnNo={index} />
+          </div>
         ))}
 
       </div>
