@@ -1,24 +1,28 @@
-import React from 'react';
+import React, {Component} from 'react';
 import '../App.scss';
 // import { library } from '@fortawesome/fontawesome-svg-core';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SortButton from './SortButton';
 
-const Table = (props) => {
-  const {header, body} = props.data;
+class Table extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      data: props.data
+    }
+  }
   // console.log('header: ', props.data2.header);
   // console.log('body: ', props.data2.body);
 
-  let dataBody = JSON.parse(JSON.stringify(body));
+  // const handler =  (direction, buttonNumber) => { 
+  //   props.fromSortButton(direction, buttonNumber);
+  // }
 
-  const handler =  (option) => { 
-    props.fromSortButton(option);
-  }
-
-  const sorter = (direction, columnNo) => {
+  sorter = (direction, columnNo) => {
     console.log(direction, columnNo);
-    dataBody.sort(el => el[1][columnNo][1]);
-    props.sorter(direction);
+    let sortedArray = dataBody.sort((a,b) => (direction === 'up') ?
+      a[1][columnNo][1] - b[1][columnNo][1] : b[1][columnNo][1] - a[1][columnNo][1]);
+    this.setState({ data: sortedArray });
   }
 
   return (
@@ -27,13 +31,18 @@ const Table = (props) => {
         {header.map((el, index) => (
           <div key={el[0]} className='headerSortButtons'>
             <SortButton key={el[0]} name={el[1]}
-            handler={handler} sorter={sorter}
-            columnNo={index} />
+            sorter={sorter} columnNo={index} />
           </div>
         ))}
       </div>
-      <div>
-
+      <div className='tableData'>
+        {body.map(el => (
+          <div key={el[0]} className='rowTable'>
+            {el[1].map(elem => (
+              <div key={elem[0]} className='cellTable'>{elem[1]}</div>
+            ))}
+          </div>
+        ))}
       </div>
     </div>
 

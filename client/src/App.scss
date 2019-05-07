@@ -450,10 +450,20 @@ body{
   height: 250px;
 }
 
-.scrollTable{
+.tableData{
+  display: table;
   overflow: scroll;
   height: 300px;
 }
 
+.rowTable{
+  display: table-row;
+  height: 30px;
+}
 
+.cellTable{
+  display: table-cell;
+  width: 62px;
+  height: 30px;
+}
 

@@ -58,7 +58,6 @@ class DataDisplay extends Component {
     };
     axios.get(`/api/datadisplay/${fileID}`, conf)
       .then(async (response) => {
-        console.log('data is: ', response);
         let newHeader = [];
         let newBody = [];
         response.data.header.forEach(el => newHeader.push([uuid.v4(), el]));
@@ -94,7 +93,6 @@ class DataDisplay extends Component {
   }
 
   render() {
-    console.log('data from DataDisplay is: ', this.props.state);
     const {data, inputVisibility, active, listCards, cardSelected
       } = this.state;
 
