@@ -29,7 +29,7 @@ class DataDisplay extends Component {
       data: {
         header: [],
         body: [],
-        id: ''
+        description: ''
       },
       fileID: match.params.id,
       listCards: [{ // list of all the conditions cards that include conditional buttons
@@ -95,7 +95,7 @@ class DataDisplay extends Component {
   render() {
     const {data, inputVisibility, active, listCards, cardSelected
       } = this.state;
-
+    console.log("data: ", data);
     // const {
       // inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
       // data, windowVisible, uploaded, uploadedID, userID, username, uploadSuccesful, displayData,
