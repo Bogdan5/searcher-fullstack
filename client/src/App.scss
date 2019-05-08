@@ -453,17 +453,29 @@ body{
 .tableData{
   display: table;
   overflow: scroll;
-  height: 300px;
+  // height: 300px;
 }
 
 .rowTable{
   display: table-row;
-  height: 30px;
+  height: 20px;
+  border: 1px solid green;
+  &:nth-child(odd){
+    background: grey;
+  }
+  &:hover{
+    background: yellow;
+  }
 }
 
 .cellTable{
   display: table-cell;
   width: 62px;
-  height: 30px;
+  // height: 20px;
+  // border: 1px solid green;
+  overflow: hidden;
+  text-align: center;
+  padding: 5px;
+  box-sizing: border-box;
 }
 

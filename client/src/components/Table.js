@@ -14,16 +14,10 @@ class Table extends Component {
 
   componentDidUpdate(prevProps){
     if (this.props.data.description !== prevProps.data.description && this.props.data.description){
-      console.log('update: ', this.props.data);
+      // console.log('update: ', this.props.data);
       this.setState({ data: this.props.data });
     }
   }
-  // console.log('header: ', props.data2.header);
-  // console.log('body: ', props.data2.body);
-
-  // const handler =  (direction, buttonNumber) => { 
-  //   props.fromSortButton(direction, buttonNumber);
-  // }
 
   sorter = (direction, columnNo) => {
     let sortedArray = this.state.data.body.sort((a,b) => {
@@ -65,23 +59,6 @@ class Table extends Component {
           ))}
         </div>
       </div>
-  
-      // <table>
-      //   <thead>
-      //     <tr>
-      //       {header.map((el) => (<th key={el[0]}>{el[1]}</th>))}
-      //     </tr>
-      //   </thead>
-      //   <tbody>
-      //     {body.map(el => (
-      //       <tr key={el[0]}>
-      //         {el[1].map(elem => (
-      //           <td key={elem[0]}>{elem[1]}</td>
-      //         ))}
-      //       </tr>
-      //     ))}
-      //   </tbody>
-      // </table>
     );
   }
 }

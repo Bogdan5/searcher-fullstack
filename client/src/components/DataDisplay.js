@@ -84,18 +84,9 @@ class DataDisplay extends Component {
       });
   }
 
-  sorter = (direction) => {
-     if (direction === 'up') {
-
-     } else if (direction === 'down') {
-       
-     }
-  }
-
   render() {
     const {data, inputVisibility, active, listCards, cardSelected
       } = this.state;
-    console.log("data: ", data);
     // const {
       // inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
       // data, windowVisible, uploaded, uploadedID, userID, username, uploadSuccesful, displayData,
