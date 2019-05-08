@@ -339,6 +339,11 @@ body{
   }
 }
 
+[class *= "awesomeClass"]>*:hover{
+  cursor: pointer;
+  color: blue;
+}
+
 .sortButtonCell{
   // border: 1px solid red;
   &:first-child{
@@ -461,7 +466,7 @@ body{
   height: 20px;
   border: 1px solid green;
   &:nth-child(odd){
-    background: grey;
+    background: rgb(196, 190, 190);
   }
   &:hover{
     background: yellow;
