@@ -26,8 +26,6 @@ class Table extends Component {
   // }
 
   sorter = (direction, columnNo) => {
-    console.log(direction, columnNo);
-    console.log('state.data: ', this.state.data)
     let sortedArray = this.state.data.body.sort((a,b) => {
       let x, y;
       if (direction === 'up'){
@@ -37,18 +35,16 @@ class Table extends Component {
         x = b[1][columnNo][1];
         y = a[1][columnNo][1];
       }
-      if (x<y) { return 1 }
+      if (y < x) { return 1 }
       else if (x === y) { return 0 }
       else { return -1 }
     });
-    console.log('sortedArray: ', sortedArray);
     let newData = Object.assign({}, this.state.data, { body: sortedArray });
     this.setState({ data: newData });
   }
 
   render(){
     const {header, body} = this.state.data;
-    console.log('header: ', header);
     return (
       <div >
         <div>
