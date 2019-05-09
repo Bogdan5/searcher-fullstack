@@ -8,6 +8,7 @@ import Keyboard from './Keyboard';
 import ButtonGroup from './ButtonGroup';
 import ComponentEnhancer from './ComponentEnhancer';
 import ConditionButtonFormatter from './ConditionButtonFormatter';
+import ConditionButton from './ConditionButton';
 import DumbButton from './DumbButton';
 // import MenuOption from './MenuOption';
 // import DropDownMenu from './DropDownMenu';
@@ -82,6 +83,172 @@ class DataDisplay extends Component {
           // this.setState({ windowVisible: true, goToSignIn: true, prevPath: `/api/datadisplay/${id}` });
         }
       });
+  }
+
+  fromButton = (name) => {
+    console.log('name: ', name);
+    const {
+      keyword, keywordButtonClicked, cardSelected,
+      position, idConditional, listCards,
+    } = this.state;
+   //  const { listOperations } = listCards[cardSelected];
+
+    // function that determines whether the keyword matches the data at the required position
+    const include = (word, posit) => (data) => {
+      if (position || position === 0) {
+        return data.match(new RegExp(word)).index === posit;
+      }
+      return data.match(new RegExp(word));
+    };
+
+    // function that determines whether the data string starts with the keyword
+    const endsWith = word => (data) => {
+      const len = data.length - word.length;
+      return include(word, len);
+    };
+
+    if (name === 'INCLUDES') { this.setState({ inputVisibility: 'visible' }); }
+    // const len = currentOperation.length;
+    let chldList = [];
+    let lst = [];
+    const listCopy = [...listCards];
+    switch (name) {
+      case 'SUBMIT':
+        console.log('keywordbuttonclicked: ', keywordButtonClicked, 'keyword: ', keyword);
+        if (keywordButtonClicked && keyword) {
+          switch (keywordButtonClicked) {
+            case 'INCLUDES':
+              console.log('includes: ');
+              lst = ['Includes ', keyword, ' at position ', position];
+              listCopy[cardSelected].listOperations.push(include(keyword, position));
+              break;
+            case 'ENDS WITH':
+              lst = ['Ends with ', keyword];
+              listCopy[cardSelected].listOperations.push(endsWith(keyword));
+              break;
+            case 'STARTS WITH':
+              lst = ['Starts with ', keyword];
+              listCopy[cardSelected].listOperations.push(include(keyword));
+              break;
+            default:
+          }
+          this.setState({ listCards: listCopy });
+          chldList = lst.map((el, index) => <span key={index}>{`${el}`}</span>);
+          this.setState({ idConditional: idConditional + 1 });
+          const propsArray = { // props passed to the ConditioButton prop
+            children: chldList,
+            key: idConditional,
+            fromConditional: this.conditionalClickHandler,
+            id: idConditional,
+          };
+          const newElem = <ConditionButton {...propsArray} />;
+          const copyList = [...listCards];
+          copyList[cardSelected].listElements = listCards[cardSelected].listElements
+            .concat(newElem);
+          this.setState(
+            {
+              listCards: copyList,
+              idConditional: idConditional + 1,
+            },
+          );
+          // this.updateHistory();
+        }
+
+        break;
+      case 'INCLUDES':
+        this.setState({ keywordButtonClicked: name });
+        break;
+      case 'ENDS WITH':
+        this.setState({ keywordButtonClicked: name });
+        break;
+      case 'STARTS WITH':
+        this.setState({ keywordButtonClicked: name });
+        break;
+      case 'CANCEL':
+        this.setState({ currentOperation: [] });
+        break;
+      case 'Sign up':
+        this.setState({ windowKind: 'Sign up'});
+        break;
+      case 'Sign in':
+       this.setState({ windowKind: 'Sign in'});
+       break;
+      case 'Upload file':
+        this.setState({ windowKind: 'Upload file'});
+        break;
+      default:
+
+      if (this.state.windowVisible) {
+        this.openWindow();
+      }
+    }
+  };
+
+  textHandler = (e) => {
+    this.setState({ keyword: e.target.value });
+  };
+
+  positionHandler = (e) => {
+    this.setState({ position: e.target.value });
+  }
+
+  // handles clicks on conditional buttons; helps combine conditions
+  conditionalClickHandler = (id, clickTop, clickLeft, card) => {
+    // console.log('conditional clicked in App button' + clickTop + ' ' + clickLeft);
+    // console.log('formatter offset top' + this.formatterConditionButton.current.offsetTop);
+    const { mergerArray, cardSelected } = this.state;
+    const appTop = this.appRef.current.offsetTop;
+    const appLeft = this.appRef.current.offsetLeft;
+    // console.log('app offsets' + appTop + ' ' + appLeft);
+    if (cardSelected === card) {
+      if (mergerArray[0] === null) {
+        this.setState({
+          mergerArray: [id, null, null],
+          menuVisible: true,
+          menuTop: clickTop - appTop - 10,
+          menuLeft: clickLeft - appLeft - 15,
+        });
+      } else if (mergerArray[1] === null && mergerArray[0] !== id) {
+        this.setState({ mergerArray: [id, null, null] });
+      } else if (mergerArray[1] !== null && mergerArray[0] !== id) {
+        this.merger(mergerArray[0], mergerArray[1], id);
+        this.setState({ mergerArray: [null, null, null] });
+      }
+    }
+  };
+
+  merger = (...arr) => {
+    const { listCards, idConditional, cardSelected } = this.state;
+    const newElement = (element1, name, element2) => {
+      const newProps = { ...element2.props };
+      newProps.id = idConditional + 1;
+      newProps.key = idConditional + 1;
+      return (
+        <ConditionButton {...newProps} fromConditional={this.conditionalClickHandler}>
+          {element1}
+          <div>{name}</div>
+          {element2}
+        </ConditionButton>
+      );
+    };
+    const searcher = (id) => {
+      for (let i; i < listCards[cardSelected].listElements.length; i++) {
+        if (listCards[cardSelected].listElements[i] === id) { return i; }
+      }
+      return -1;
+    };
+    const copy = [...listCards[cardSelected].listElements];
+    const copyList = [...listCards];
+    const x = copy.splice(searcher(arr[0]), 1);
+    if (arr.length === 2 && arr[1] === 'NOT') {
+      // console.log('x props' + JSON.stringify(x));
+      copyList[cardSelected].listElements = copy.concat(newElement(null, arr[1], x));
+    } else if (arr.length === 3) {
+      const y = copy.splice(searcher(arr[2]));
+      copyList[cardSelected].listElements = copy.concat(newElement(y, arr[1], x));
+    }
+    this.setState({ listCards: copyList });
+    // this.updateHistory();
   }
 
   render() {
