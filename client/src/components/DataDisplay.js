@@ -10,8 +10,8 @@ import ComponentEnhancer from './ComponentEnhancer';
 import ConditionButtonFormatter from './ConditionButtonFormatter';
 import ConditionButton from './ConditionButton';
 import DumbButton from './DumbButton';
-// import MenuOption from './MenuOption';
-// import DropDownMenu from './DropDownMenu';
+import MenuOption from './MenuOption';
+import DropDownMenu from './DropDownMenu';
 import Icon from './Icon';
 import SelectButton from './SelectButton';
 import ColumnSelector from './ColumnSelector';
@@ -25,6 +25,8 @@ class DataDisplay extends Component {
     const match = matchPath(this.props.location.pathname,{
       path: '/api/datadisplay/:id'
     });
+    this.textInput = React.createRef();
+    this.appRef = React.createRef();
     this.state = {
       prevPath: '',
       data: {
@@ -217,6 +219,30 @@ class DataDisplay extends Component {
     }
   };
 
+  // modifies the visibility of the menu that helps merge conditional buttons
+  menuHide = () => this.setState({ menuVisible: false });
+
+  selectCard = (card) => {
+    // console.log('card selected' + card);
+    this.setState({ cardSelected: card });
+  }
+
+  // handles clicks on the menu - calls merger to merge conditional buttons
+  menuClickHandler = (name) => {
+  const { mergerArray } = this.state;
+  this.setState({ menuVisible: false });
+  if (mergerArray[0] !== null) {
+    const mer = [...mergerArray];
+    mer[1] = name;
+    // console.log('mergerArray ' + this.state.mergerArray);
+    if (name === 'NOT') {
+      this.merger(mergerArray[0], 'NOT');
+    } else {
+      this.setState({ mergerArray: mer });
+    }
+  }
+}
+
   merger = (...arr) => {
     const { listCards, idConditional, cardSelected } = this.state;
     const newElement = (element1, name, element2) => {
@@ -251,8 +277,28 @@ class DataDisplay extends Component {
     // this.updateHistory();
   }
 
+    //  // handles clicks on the two icons (+ or -) - adds or deletes cards
+   iconClicked = (type, keyboardNo) => {
+     const { listCards } = this.state;
+     if (type === '+') {
+       this.setState({
+         listCards: listCards.concat({
+           id: listCards.length,
+           listElements: [],
+           listOperations: [],
+         }),
+       });
+     } else if (type === '-' && listCards.length > 1) {
+       // console.log('deleted card ' + keyboardNo);
+       const copy = [...listCards];
+       copy.splice(keyboardNo, 1);
+       this.setState({ listCards: copy });
+     }
+   }
+
   render() {
-    const {data, inputVisibility, active, listCards, cardSelected
+    const {data, inputVisibility, active, listCards, cardSelected, menuVisible,
+      menuTop, menuLeft,
       } = this.state;
     // const {
       // inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
@@ -270,8 +316,8 @@ class DataDisplay extends Component {
     };
     const ButtonWithHandler = ComponentEnhancer(DumbButton, propertiesObj);
     // adds a click handler to all components of the DropDownMenu
-    // const propertiesMenu = { fromMenu: this.menuClickHandler };
-    // const MenuElementWithHandler = ComponentEnhancer(MenuOption, propertiesMenu);
+    const propertiesMenu = { fromMenu: this.menuClickHandler };
+    const MenuElementWithHandler = ComponentEnhancer(MenuOption, propertiesMenu);
 
     // adds handler to the navbar buttons
     // const navbarProps = { fromButton: this.navbarClickHandler };
@@ -376,7 +422,7 @@ class DataDisplay extends Component {
               </Keyboard>
             );
           })}
-          {/* <DropDownMenu
+          <DropDownMenu
             menuVisible={menuVisible} mouseOutMenu={this.menuHide}
             style={{ top: menuTop, left: menuLeft }}
           >
@@ -384,7 +430,7 @@ class DataDisplay extends Component {
             <MenuElementWithHandler name='AND' />
             <MenuElementWithHandler name='OR' />
             <MenuElementWithHandler name='DELETE' />
-          </DropDownMenu> */}
+          </DropDownMenu>
         </div>
 
         <h3>{data.description}</h3>
