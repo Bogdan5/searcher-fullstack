@@ -11,6 +11,7 @@ const ConditionButton = (props) => {
     const left = event.pageX;
     fromConditional(id, top, left, card);
   };
+  
   return (
     <div
       className='ConditionButton' onClick={handler}

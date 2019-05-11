@@ -36,12 +36,12 @@ class DataDisplay extends Component {
       },
       fileID: match.params.id,
       listCards: [{ // list of all the conditions cards that include conditional buttons
-        id: 0, // id to identify each card
+        cardId: 0, // id to identify each card
         field: 'all', // on what columns of the data the list of operations apply
         listElements: [],
         listOperations: [], // what conditions aply to the data - helps sort
       }],
-      cardSelected: 0, // card that is currently selected to work on
+      cardSelected: 0, // where conditional buttons go at one time
       keyword: '', // content of the keyword input text field
       inputVisibility: 'visible', // in the second Keyboard, whether the position input is visible
       keywordButtonClicked: '', // name of button clicked in the keyword(2nd) Keyboard
@@ -91,7 +91,7 @@ class DataDisplay extends Component {
     console.log('name: ', name);
     const {
       keyword, keywordButtonClicked, cardSelected,
-      position, idConditional, listCards,
+      position, listCards,
     } = this.state;
    //  const { listOperations } = listCards[cardSelected];
 
@@ -109,14 +109,19 @@ class DataDisplay extends Component {
       return include(word, len);
     };
 
-    if (name === 'INCLUDES') { this.setState({ inputVisibility: 'visible' }); }
     // const len = currentOperation.length;
     let chldList = [];
     let lst = [];
     const listCopy = [...listCards];
     switch (name) {
       case 'SUBMIT':
-        console.log('keywordbuttonclicked: ', keywordButtonClicked, 'keyword: ', keyword);
+        // position of the last button of a list of ConditionalButtons in a card
+        const lastConditionalButton = (card) => {
+          return listCards[listCards.length - 1].id;
+        }
+
+        let idConditional = uuid.v4();
+
         if (keywordButtonClicked && keyword) {
           switch (keywordButtonClicked) {
             case 'INCLUDES':
@@ -135,8 +140,10 @@ class DataDisplay extends Component {
             default:
           }
           this.setState({ listCards: listCopy });
-          chldList = lst.map((el, index) => <span key={index}>{`${el}`}</span>);
-          this.setState({ idConditional: idConditional + 1 });
+          chldList = lst.map((el, index) => <span key={uuid.v4()}>{`${el}`}</span>);
+          // this.setState({ idConditional: idConditional + 1 });
+
+          // adding the merged Conditional Button to the list of elements
           const propsArray = { // props passed to the ConditioButton prop
             children: chldList,
             key: idConditional,
@@ -147,18 +154,13 @@ class DataDisplay extends Component {
           const copyList = [...listCards];
           copyList[cardSelected].listElements = listCards[cardSelected].listElements
             .concat(newElem);
-          this.setState(
-            {
-              listCards: copyList,
-              idConditional: idConditional + 1,
-            },
-          );
+          this.setState({ listCards: copyList });
           // this.updateHistory();
         }
 
         break;
       case 'INCLUDES':
-        this.setState({ keywordButtonClicked: name });
+        this.setState({ keywordButtonClicked: name, inputVisibility: 'visible' });
         break;
       case 'ENDS WITH':
         this.setState({ keywordButtonClicked: name });
@@ -195,7 +197,7 @@ class DataDisplay extends Component {
   }
 
   // handles clicks on conditional buttons; helps combine conditions
-  conditionalClickHandler = (id, clickTop, clickLeft, card) => {
+  conditionalClickHandler = (conditionalButtonId, clickTop, clickLeft, card) => {
     // console.log('conditional clicked in App button' + clickTop + ' ' + clickLeft);
     // console.log('formatter offset top' + this.formatterConditionButton.current.offsetTop);
     const { mergerArray, cardSelected } = this.state;
@@ -205,15 +207,15 @@ class DataDisplay extends Component {
     if (cardSelected === card) {
       if (mergerArray[0] === null) {
         this.setState({
-          mergerArray: [id, null, null],
+          mergerArray: [conditionalButtonId, null, null],
           menuVisible: true,
           menuTop: clickTop - appTop - 10,
           menuLeft: clickLeft - appLeft - 15,
         });
-      } else if (mergerArray[1] === null && mergerArray[0] !== id) {
-        this.setState({ mergerArray: [id, null, null] });
-      } else if (mergerArray[1] !== null && mergerArray[0] !== id) {
-        this.merger(mergerArray[0], mergerArray[1], id);
+      } else if (mergerArray[1] === null && mergerArray[0] !== conditionalButtonId) {
+        this.setState({ mergerArray: [conditionalButtonId, null, null] });
+      } else if (mergerArray[1] !== null && mergerArray[0] !== conditionalButtonId) {
+        this.merger(mergerArray[0], mergerArray[1], conditionalButtonId);
         this.setState({ mergerArray: [null, null, null] });
       }
     }
@@ -258,7 +260,7 @@ class DataDisplay extends Component {
       );
     };
     const searcher = (id) => {
-      for (let i; i < listCards[cardSelected].listElements.length; i++) {
+      for (let i = 0; i < listCards[cardSelected].listElements.length; i++) {
         if (listCards[cardSelected].listElements[i] === id) { return i; }
       }
       return -1;
@@ -277,24 +279,24 @@ class DataDisplay extends Component {
     // this.updateHistory();
   }
 
-    //  // handles clicks on the two icons (+ or -) - adds or deletes cards
-   iconClicked = (type, keyboardNo) => {
-     const { listCards } = this.state;
-     if (type === '+') {
-       this.setState({
-         listCards: listCards.concat({
-           id: listCards.length,
-           listElements: [],
-           listOperations: [],
-         }),
-       });
-     } else if (type === '-' && listCards.length > 1) {
+  // handles clicks on the two icons (+ or -) - adds or deletes cards
+    iconClicked = (type, keyboardNo) => {
+      const { listCards } = this.state;
+      if (type === '+') {
+        this.setState({
+          listCards: listCards.concat({
+            cardId: listCards.length,
+            listElements: [],
+            listOperations: [],
+          }),
+        });
+      } else if (type === '-' && listCards.length > 1) {
        // console.log('deleted card ' + keyboardNo);
-       const copy = [...listCards];
-       copy.splice(keyboardNo, 1);
-       this.setState({ listCards: copy });
-     }
-   }
+        const copy = [...listCards];
+        copy.splice(keyboardNo, 1);
+        this.setState({ listCards: copy });
+      }
+    }
 
   render() {
     const {data, inputVisibility, active, listCards, cardSelected, menuVisible,
