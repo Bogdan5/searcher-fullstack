@@ -88,7 +88,6 @@ class DataDisplay extends Component {
   }
 
   fromButton = (name) => {
-    console.log('name: ', name);
     const {
       keyword, keywordButtonClicked, cardSelected,
       position, listCards,
@@ -120,12 +119,11 @@ class DataDisplay extends Component {
           return listCards[listCards.length - 1].id;
         }
 
-        let idConditional = uuid.v4();
+        let idCond = uuid.v4();
 
         if (keywordButtonClicked && keyword) {
           switch (keywordButtonClicked) {
             case 'INCLUDES':
-              console.log('includes: ');
               lst = ['Includes ', keyword, ' at position ', position];
               listCopy[cardSelected].listOperations.push(include(keyword, position));
               break;
@@ -142,13 +140,13 @@ class DataDisplay extends Component {
           this.setState({ listCards: listCopy });
           chldList = lst.map((el, index) => <span key={uuid.v4()}>{`${el}`}</span>);
           // this.setState({ idConditional: idConditional + 1 });
-
           // adding the merged Conditional Button to the list of elements
           const propsArray = { // props passed to the ConditioButton prop
             children: chldList,
-            key: idConditional,
+            key: idCond,
             fromConditional: this.conditionalClickHandler,
-            id: idConditional,
+            card: cardSelected,
+            id: idCond,   
           };
           const newElem = <ConditionButton {...propsArray} />;
           const copyList = [...listCards];
@@ -198,12 +196,9 @@ class DataDisplay extends Component {
 
   // handles clicks on conditional buttons; helps combine conditions
   conditionalClickHandler = (conditionalButtonId, clickTop, clickLeft, card) => {
-    // console.log('conditional clicked in App button' + clickTop + ' ' + clickLeft);
-    // console.log('formatter offset top' + this.formatterConditionButton.current.offsetTop);
     const { mergerArray, cardSelected } = this.state;
     const appTop = this.appRef.current.offsetTop;
     const appLeft = this.appRef.current.offsetLeft;
-    // console.log('app offsets' + appTop + ' ' + appLeft);
     if (cardSelected === card) {
       if (mergerArray[0] === null) {
         this.setState({
@@ -225,32 +220,32 @@ class DataDisplay extends Component {
   menuHide = () => this.setState({ menuVisible: false });
 
   selectCard = (card) => {
-    // console.log('card selected' + card);
     this.setState({ cardSelected: card });
   }
 
   // handles clicks on the menu - calls merger to merge conditional buttons
   menuClickHandler = (name) => {
-  const { mergerArray } = this.state;
-  this.setState({ menuVisible: false });
-  if (mergerArray[0] !== null) {
-    const mer = [...mergerArray];
-    mer[1] = name;
-    // console.log('mergerArray ' + this.state.mergerArray);
-    if (name === 'NOT') {
-      this.merger(mergerArray[0], 'NOT');
-    } else {
-      this.setState({ mergerArray: mer });
+    const { mergerArray } = this.state;
+    this.setState({ menuVisible: false });
+    if (mergerArray[0] !== null) {
+      let mer = [...mergerArray];
+      mer[1] = name;
+      if (name === 'NOT') {
+        this.merger(mergerArray[0], 'NOT');
+      } else {
+        this.setState({ mergerArray: mer });
+      }
     }
-  }
 }
 
   merger = (...arr) => {
-    const { listCards, idConditional, cardSelected } = this.state;
+    const { listCards, cardSelected } = this.state;
     const newElement = (element1, name, element2) => {
       const newProps = { ...element2.props };
-      newProps.id = idConditional + 1;
-      newProps.key = idConditional + 1;
+      const newId = uuid.v4();
+      newProps.id = newId;
+      newProps.key = newId;
+      newProps.card = cardSelected;
       return (
         <ConditionButton {...newProps} fromConditional={this.conditionalClickHandler}>
           {element1}
@@ -269,7 +264,6 @@ class DataDisplay extends Component {
     const copyList = [...listCards];
     const x = copy.splice(searcher(arr[0]), 1);
     if (arr.length === 2 && arr[1] === 'NOT') {
-      // console.log('x props' + JSON.stringify(x));
       copyList[cardSelected].listElements = copy.concat(newElement(null, arr[1], x));
     } else if (arr.length === 3) {
       const y = copy.splice(searcher(arr[2]));
@@ -291,7 +285,6 @@ class DataDisplay extends Component {
           }),
         });
       } else if (type === '-' && listCards.length > 1) {
-       // console.log('deleted card ' + keyboardNo);
         const copy = [...listCards];
         copy.splice(keyboardNo, 1);
         this.setState({ listCards: copy });
@@ -417,8 +410,9 @@ class DataDisplay extends Component {
                 <ConditionButtonFormatter fromFormatter={this.fromFormat}>
                   {el.listElements.map((elem) => {
                     // extends the functionality of the element with 
-                    const copy = React.cloneElement(elem, { card: el.id });
-                    return copy;
+                    // const copy = React.cloneElement(elem, { card: el.id });
+                    // return copy;
+                    return elem;
                   })}
                 </ConditionButtonFormatter>
               </Keyboard>

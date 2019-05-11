@@ -5,6 +5,8 @@ import '../App.scss';
 // basic button pressed to construct queries
 const ConditionButton = (props) => {
   const { children, id, fromConditional, card } = props;
+  console.log('card in ConditionButton: ', card);
+  console.log('id in ConditionButton: ', id);
   const buttonRef = React.createRef();
   const handler = (event) => {
     const top = event.pageY;
