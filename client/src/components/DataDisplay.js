@@ -115,9 +115,9 @@ class DataDisplay extends Component {
     switch (name) {
       case 'SUBMIT':
         // position of the last button of a list of ConditionalButtons in a card
-        const lastConditionalButton = (card) => {
-          return listCards[listCards.length - 1].id;
-        }
+        // const lastConditionalButton = (card) => {
+        //   return listCards[listCards.length - 1].id;
+        // }
 
         let idCond = uuid.v4();
 
@@ -403,17 +403,12 @@ class DataDisplay extends Component {
             );
             return (
               <Keyboard
-                key={el.id} leftSection={typeContent}
+                key={el.cardId} leftSection={typeContent}
                 classProp='' rightSection={iconsElements}
                 cardSelected={cardSelected} id={el.id}
               >
                 <ConditionButtonFormatter fromFormatter={this.fromFormat}>
-                  {el.listElements.map((elem) => {
-                    // extends the functionality of the element with 
-                    // const copy = React.cloneElement(elem, { card: el.id });
-                    // return copy;
-                    return elem;
-                  })}
+                  {el.listElements.map(elem => elem)}
                 </ConditionButtonFormatter>
               </Keyboard>
             );

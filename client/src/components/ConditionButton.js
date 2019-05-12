@@ -4,7 +4,7 @@ import '../App.scss';
 
 // basic button pressed to construct queries
 const ConditionButton = (props) => {
-  const { children, id, fromConditional, card } = props;
+  const { children, id, fromConditional, card, key } = props;
   console.log('card in ConditionButton: ', card);
   console.log('id in ConditionButton: ', id);
   const buttonRef = React.createRef();
@@ -19,6 +19,7 @@ const ConditionButton = (props) => {
       className='ConditionButton' onClick={handler}
       tabIndex={0} onKeyDown={handler}
       role='button' ref={buttonRef}
+      key={key}
     >
       {children}
     </div>
