@@ -87,26 +87,76 @@ class DataDisplay extends Component {
       });
   }
 
+  regExpEscape(literal_string) {
+    return literal_string.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&');
+  }
+
+
+  include (whatIsIncluded, position){
+    const reg = new RegExp(this.regExpEscape(whatIsIncluded));
+    return function(data){
+      if (position || position === 0) {
+        return data.match(reg).index === position;
+      }
+      return false;
+    }
+  }
+
+  // startsWith (whatIsIncluded){
+  //   const reg = new RegExp(this.regExpEscape(whatIsIncluded));
+  //   return function(data){
+  //     return reg.test(data);
+  //   }
+  // }
+
+  endsWith (whatIsIncluded){
+    const reg = new RegExp(this.regExpEscape(whatIsIncluded) + '$');
+    return function(data){
+      return reg.test(data);
+    }
+  }
+
+  conjunction(fn1, fn2){
+    return function(){
+      return fn1() && fn2();
+    }
+  }
+  
+  disjunction(fn1, fn2){
+    return function(){
+      return fn1() || fn2();
+    }
+  }
+  
+  negation(fn){
+    return function(){
+      return !fn();
+    }
+  }
+
   fromButton = (name) => {
     const {
       keyword, keywordButtonClicked, cardSelected,
       position, listCards,
     } = this.state;
-   //  const { listOperations } = listCards[cardSelected];
+    
+    let currentCard = cardSelected;
+    const { listOperations } = listCards[currentCard];
+    const listOperationsCopy = [...listOperations];
 
     // function that determines whether the keyword matches the data at the required position
-    const include = (word, posit) => (data) => {
-      if (position || position === 0) {
-        return data.match(new RegExp(word)).index === posit;
-      }
-      return data.match(new RegExp(word));
-    };
+    // const include = (word, posit) => (data) => {
+    //   if (position || position === 0) {
+    //     return data.match(new RegExp(word)).index === posit;
+    //   }
+    //   return data.match(new RegExp(word));
+    // };
 
-    // function that determines whether the data string starts with the keyword
-    const endsWith = word => (data) => {
-      const len = data.length - word.length;
-      return include(word, len);
-    };
+    // // function that determines whether the data string starts with the keyword
+    // const endsWith = word => (data) => {
+    //   const len = data.length - word.length;
+    //   return include(word, len);
+    // };
 
     // const len = currentOperation.length;
     let chldList = [];
@@ -122,18 +172,27 @@ class DataDisplay extends Component {
         let idCond = uuid.v4();
 
         if (keywordButtonClicked && keyword) {
+          let ob = {
+            active: true,
+            card: cardSelected,
+            whatIsIncluded: keyword
+          };
           switch (keywordButtonClicked) {
             case 'INCLUDES':
               lst = ['Includes ', keyword, ' at position ', position];
-              listCopy[cardSelected].listOperations.push(include(keyword, position));
+              ob.position = position || 0;
+              ob.func = this.include(ob.whatIsIncluded, ob.position);
+              listCopy[cardSelected].listOperations.push(ob);
               break;
             case 'ENDS WITH':
               lst = ['Ends with ', keyword];
-              listCopy[cardSelected].listOperations.push(endsWith(keyword));
+              ob.func = this.endsWith(ob.whatIsIncluded);
+              listCopy[cardSelected].listOperations.push(ob);
               break;
             case 'STARTS WITH':
               lst = ['Starts with ', keyword];
-              listCopy[cardSelected].listOperations.push(include(keyword));
+              ob.func = this.include(ob.whatIsIncluded, 0);
+              listCopy[cardSelected].listOperations.push(ob);
               break;
             default:
           }
@@ -159,6 +218,7 @@ class DataDisplay extends Component {
         break;
       case 'INCLUDES':
         this.setState({ keywordButtonClicked: name, inputVisibility: 'visible' });
+
         break;
       case 'ENDS WITH':
         this.setState({ keywordButtonClicked: name });
