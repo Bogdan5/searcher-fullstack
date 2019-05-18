@@ -302,19 +302,22 @@ class DataDisplay extends Component {
 
   merger = (...arr) => {
     const { listCards, cardSelected } = this.state;
+    console.log('arr arguments: ', arr);
 
     // merges two conditional buttons into a combined new conditional button
     const newElement = (element1, name, element2) => {
-      const newProps = { ...element2.props };
+      console.log('elem1: ', element1);
+      console.log('elem2: ', element2);
+      const newProps = {};
       const newId = uuid.v4();
       newProps.id = newId;
       newProps.key = newId;
       newProps.card = cardSelected;
       return (
         <ConditionButton {...newProps} fromConditional={this.conditionalClickHandler}>
-          {element1}
-          <div>{name}</div>
           {element2}
+          <div>{name}</div>
+          {element1}
         </ConditionButton>
       );
     };
@@ -322,7 +325,7 @@ class DataDisplay extends Component {
     // searches for the element that has a certain id
     const searcher = (id) => {
       for (let i = 0; i < listCards[cardSelected].listElements.length; i++) {
-        if (listCards[cardSelected].listElements[i] === id) { return i; }
+        if (listCards[cardSelected].listElements[i].props.id === id) { return i; }
       }
       return -1;
     };
@@ -331,25 +334,30 @@ class DataDisplay extends Component {
     //   arr.splice(Math.min(index1, index2), 1);
     // };
     const copyListElements = [...listCards[cardSelected].listElements];
+    console.log('copyListElements: ', copyListElements);
     const copyListCards = [...listCards];
     const index1 = arr[0] ? searcher(arr[0]) : null;
     const index2 = arr[2] ? searcher(arr[2]) : null;
+    console.log('index1: ', index1);
+    console.log('index2: ', index2);
+    console.log('elem1: ',  copyListElements[index1]);
+    copyListElements.push(newElement(
+      copyListElements[index1],
+      arr[1],
+      (index2 === null) ? null : copyListElements[index2]
+    ));
     // const x = copy.splice(searcher(arr[0]), 1);
     if (arr[2] === null && arr[1] === 'NOT') {
       // copyListCards[cardSelected].listElements = copyListElements.concat(newElement(...arr.reverse()));
-      arr.splice(index1, 1);
+      copyListElements.splice(index1, 1);
     } else {
       // const y = copy.splice(searcher(arr[2]));
       // copyListCards[cardSelected].listElements = copyListElements.concat(newElement(y, arr[1], x));
-      arr.splice(Math.max(index1, index2), 1);
-      arr.splice(Math.min(index1, index2), 1);
+      copyListElements.splice(Math.max(index1, index2), 1);
+      copyListElements.splice(Math.min(index1, index2), 1);
     }
+    copyListCards[cardSelected].listElements = copyListElements;
 
-    copyListCards[cardSelected].listElements = copyListElements.concat(newElement(
-      copyListElements[index1],
-      arr[1],
-      index2 ? copyListElements[index2] : null,
-    ));
     this.setState({ listCards: copyListCards });
     // this.updateHistory();
   }
