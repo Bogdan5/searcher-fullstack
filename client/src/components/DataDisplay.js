@@ -255,25 +255,27 @@ class DataDisplay extends Component {
   }
 
   // handles clicks on conditional buttons; helps combine conditions
-  conditionalClickHandler = (conditionalButtonId, clickTop, clickLeft, card) => {
+  conditionalClickHandler = async (conditionalButtonId, clickTop, clickLeft, card) => {
     const { mergerArray, cardSelected } = this.state;
     const appTop = this.appRef.current.offsetTop;
     const appLeft = this.appRef.current.offsetLeft;
     if (cardSelected === card) {
       if (mergerArray[0] === null) {
-        this.setState({
+        await this.setState({
           mergerArray: [conditionalButtonId, null, null],
           menuVisible: true,
           menuTop: clickTop - appTop - 10,
           menuLeft: clickLeft - appLeft - 15,
         });
+        console.log('first');
       } else if (mergerArray[1] === null && mergerArray[0] !== conditionalButtonId) {
-        this.setState({ mergerArray: [conditionalButtonId, null, null] });
+        await this.setState({ mergerArray: [conditionalButtonId, null, null] });
       } else if (mergerArray[1] !== null && mergerArray[0] !== conditionalButtonId) {
         this.merger(mergerArray[0], mergerArray[1], conditionalButtonId);
-        this.setState({ mergerArray: [null, null, null] });
+        await this.setState({ mergerArray: [null, null, null] });
       }
     }
+    console.log(this.state.mergerArray);
   };
 
   // modifies the visibility of the menu that helps merge conditional buttons
@@ -291,7 +293,7 @@ class DataDisplay extends Component {
       let mer = [...mergerArray];
       mer[1] = name;
       if (name === 'NOT') {
-        this.merger(mergerArray[0], 'NOT');
+        this.merger(mergerArray[0], 'NOT', null);
       } else {
         this.setState({ mergerArray: mer });
       }
@@ -300,6 +302,8 @@ class DataDisplay extends Component {
 
   merger = (...arr) => {
     const { listCards, cardSelected } = this.state;
+
+    // merges two conditional buttons into a combined new conditional button
     const newElement = (element1, name, element2) => {
       const newProps = { ...element2.props };
       const newId = uuid.v4();
@@ -314,42 +318,59 @@ class DataDisplay extends Component {
         </ConditionButton>
       );
     };
+
+    // searches for the element that has a certain id
     const searcher = (id) => {
       for (let i = 0; i < listCards[cardSelected].listElements.length; i++) {
         if (listCards[cardSelected].listElements[i] === id) { return i; }
       }
       return -1;
     };
-    const copy = [...listCards[cardSelected].listElements];
-    const copyList = [...listCards];
-    const x = copy.splice(searcher(arr[0]), 1);
-    if (arr.length === 2 && arr[1] === 'NOT') {
-      copyList[cardSelected].listElements = copy.concat(newElement(null, arr[1], x));
-    } else if (arr.length === 3) {
-      const y = copy.splice(searcher(arr[2]));
-      copyList[cardSelected].listElements = copy.concat(newElement(y, arr[1], x));
+    // const splicer = (arr, index1, index2) => {
+    //   arr.splice(Math.max(index1, index2), 1);
+    //   arr.splice(Math.min(index1, index2), 1);
+    // };
+    const copyListElements = [...listCards[cardSelected].listElements];
+    const copyListCards = [...listCards];
+    const index1 = arr[0] ? searcher(arr[0]) : null;
+    const index2 = arr[2] ? searcher(arr[2]) : null;
+    // const x = copy.splice(searcher(arr[0]), 1);
+    if (arr[2] === null && arr[1] === 'NOT') {
+      // copyListCards[cardSelected].listElements = copyListElements.concat(newElement(...arr.reverse()));
+      arr.splice(index1, 1);
+    } else {
+      // const y = copy.splice(searcher(arr[2]));
+      // copyListCards[cardSelected].listElements = copyListElements.concat(newElement(y, arr[1], x));
+      arr.splice(Math.max(index1, index2), 1);
+      arr.splice(Math.min(index1, index2), 1);
     }
-    this.setState({ listCards: copyList });
+
+    copyListCards[cardSelected].listElements = copyListElements.concat(newElement(
+      copyListElements[index1],
+      arr[1],
+      index2 ? copyListElements[index2] : null,
+    ));
+    this.setState({ listCards: copyListCards });
     // this.updateHistory();
   }
 
   // handles clicks on the two icons (+ or -) - adds or deletes cards
-    iconClicked = (type, keyboardNo) => {
-      const { listCards } = this.state;
-      if (type === '+') {
-        this.setState({
-          listCards: listCards.concat({
-            cardId: listCards.length,
-            listElements: [],
-            listOperations: [],
-          }),
-        });
-      } else if (type === '-' && listCards.length > 1) {
-        const copy = [...listCards];
-        copy.splice(keyboardNo, 1);
-        this.setState({ listCards: copy });
-      }
+  iconClicked = (type, keyboardNo) => {
+    const { listCards } = this.state;
+    if (type === '+') {
+      this.setState({
+        listCards: listCards.concat({
+          cardId: listCards.length,
+          listElements: [],
+          listOperations: [],
+        }),
+      });
+    } else if (type === '-' && listCards.length > 1) {
+      const copy = [...listCards];
+      copy.splice(keyboardNo, 1);
+      this.setState({ listCards: copy });
     }
+  }
 
   render() {
     const {data, inputVisibility, active, listCards, cardSelected, menuVisible,
