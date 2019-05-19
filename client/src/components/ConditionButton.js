@@ -27,7 +27,7 @@ const ConditionButton = (props) => {
 };
 
 ConditionButton.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   fromConditional: PropTypes.func.isRequired,
   card: PropTypes.number.isRequired
 }

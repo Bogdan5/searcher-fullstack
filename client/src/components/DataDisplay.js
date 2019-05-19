@@ -172,7 +172,7 @@ class DataDisplay extends Component {
         let idCond = uuid.v4();
 
         if (keywordButtonClicked && keyword) {
-          let ob = {
+          let conditionObj = {
             active: true,
             card: cardSelected,
             whatIsIncluded: keyword
@@ -180,19 +180,19 @@ class DataDisplay extends Component {
           switch (keywordButtonClicked) {
             case 'INCLUDES':
               lst = ['Includes ', keyword, ' at position ', position];
-              ob.position = position || 0;
-              ob.func = this.include(ob.whatIsIncluded, ob.position);
-              listCopy[cardSelected].listOperations.push(ob);
+              conditionObj.position = position || 0;
+              conditionObj.func = this.include(conditionObj.whatIsIncluded, conditionObj.position);
+              listCopy[cardSelected].listOperations.push(conditionObj);
               break;
             case 'ENDS WITH':
               lst = ['Ends with ', keyword];
-              ob.func = this.endsWith(ob.whatIsIncluded);
-              listCopy[cardSelected].listOperations.push(ob);
+              conditionObj.func = this.endsWith(conditionObj.whatIsIncluded);
+              listCopy[cardSelected].listOperations.push(conditionObj);
               break;
             case 'STARTS WITH':
               lst = ['Starts with ', keyword];
-              ob.func = this.include(ob.whatIsIncluded, 0);
-              listCopy[cardSelected].listOperations.push(ob);
+              conditionObj.func = this.include(conditionObj.whatIsIncluded, 0);
+              listCopy[cardSelected].listOperations.push(conditionObj);
               break;
             default:
           }
@@ -256,11 +256,12 @@ class DataDisplay extends Component {
 
   // handles clicks on conditional buttons; helps combine conditions
   conditionalClickHandler = async (conditionalButtonId, clickTop, clickLeft, card) => {
-    const { mergerArray, cardSelected } = this.state;
+    const { mergerArray, cardSelected, menuVisible } = this.state;
     const appTop = this.appRef.current.offsetTop;
     const appLeft = this.appRef.current.offsetLeft;
     if (cardSelected === card) {
       if (mergerArray[0] === null) {
+        console.log('menuvisible to be true');
         await this.setState({
           mergerArray: [conditionalButtonId, null, null],
           menuVisible: true,
@@ -268,6 +269,8 @@ class DataDisplay extends Component {
           menuLeft: clickLeft - appLeft - 15,
         });
         console.log('first');
+      } else if (mergerArray[1] === null && mergerArray[0] === conditionalButtonId && menuVisible === false){
+        this.setState({ menuVisible: true });
       } else if (mergerArray[1] === null && mergerArray[0] !== conditionalButtonId) {
         await this.setState({ mergerArray: [conditionalButtonId, null, null] });
       } else if (mergerArray[1] !== null && mergerArray[0] !== conditionalButtonId) {
@@ -360,6 +363,16 @@ class DataDisplay extends Component {
 
     this.setState({ listCards: copyListCards });
     // this.updateHistory();
+  }
+
+  filterExecuted = () => {
+    const {listCards, cardSelected} = this.state;
+    const {listOperations} = this.state.listCards[this.state.cardSelected];
+    for (let i = listOperations.length - 1; i>= 0; i--) {
+      if (listOperations[i].active){
+
+      }
+    }
   }
 
   // handles clicks on the two icons (+ or -) - adds or deletes cards
@@ -478,16 +491,8 @@ class DataDisplay extends Component {
               <div>
                 <SelectButton card={el.id} fromSelect={this.selectCard}>Select</SelectButton>
                 <br />
-                <ColumnSelector
-                  className='selector' onChange={this.setColumnSelect}
-                  card={el.id}
-                >
-                  <option value='colAll'>Selects fields</option>
-                  <option value='colAll'>All fields</option>
-                  <option value='col1'>Column 1</option>
-                  <option value='col2'>Column 2</option>
-                  <option value='col3'>Column 3</option>
-                </ColumnSelector>
+                <input type='text' placeholder='Input column numbers'></input>
+                <button type='button' onClick='setColumns'>Submit</button>
               </div>
             );
             return (
@@ -502,6 +507,9 @@ class DataDisplay extends Component {
               </Keyboard>
             );
           })}
+          <div>
+            <button onClick={this.filterExecuted}>Filter</button>
+          </div>
           <DropDownMenu
             menuVisible={menuVisible} mouseOutMenu={this.menuHide}
             style={{ top: menuTop, left: menuLeft }}
