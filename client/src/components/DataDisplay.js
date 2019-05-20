@@ -394,12 +394,14 @@ class DataDisplay extends Component {
   }
 
   columnSelector = (e) => {
+    const { cardSelected } = this.state;
     let columnString = e.target.value;
     let columnArray = columnString.split(',');
     let reducer = columnArray.reduce((acc, el) => {
-      if (/\d+/.test(el.trim())){
+      if (/^\d+$/.test(el.trim())){
         return acc.concat(parseInt(el, 10));
-      } else if (/\d+-\d+/.test(el.trim())){
+      } else if (/^\d+-\d+$/.test(el.trim())){
+        console.log('dash');
         let arr = el.split('-');
         let min = Math.min(parseInt(arr[0], 10), parseInt(arr[1], 10));
         let max = Math.max(parseInt(arr[0], 10), parseInt(arr[1], 10));
@@ -408,10 +410,11 @@ class DataDisplay extends Component {
       }
       return acc;
     }, []);
+    console.log('reducer ', reducer);
     let copy = [...this.state.listCards];
-    let copySelectedColumns = [...copy[this.state.cardSelected]];
-
-    this.setState({ });
+    const copySelectedColumns = Object.assign({}, copy[cardSelected], {field: [...new Set(reducer)]});
+    copy[cardSelected] = copySelectedColumns;
+    this.setState({ listCards: copy });
   }
 
   render() {
