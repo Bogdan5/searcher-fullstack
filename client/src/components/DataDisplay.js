@@ -37,7 +37,7 @@ class DataDisplay extends Component {
       fileID: match.params.id,
       listCards: [{ // list of all the conditions cards that include conditional buttons
         cardId: 0, // id to identify each card
-        field: 'all', // on what columns of the data the list of operations apply
+        field: [], // on what columns of the data the list of operations apply
         listElements: [],
         listOperations: [], // what conditions aply to the data - helps sort
       }],
@@ -393,6 +393,27 @@ class DataDisplay extends Component {
     }
   }
 
+  columnSelector = (e) => {
+    let columnString = e.target.value;
+    let columnArray = columnString.split(',');
+    let reducer = columnArray.reduce((acc, el) => {
+      if (/\d+/.test(el.trim())){
+        return acc.concat(parseInt(el, 10));
+      } else if (/\d+-\d+/.test(el.trim())){
+        let arr = el.split('-');
+        let min = Math.min(parseInt(arr[0], 10), parseInt(arr[1], 10));
+        let max = Math.max(parseInt(arr[0], 10), parseInt(arr[1], 10));
+        let result = Array.from(new Array(max - min + 1), (x, i) => i + min);
+        return acc.concat(result);
+      }
+      return acc;
+    }, []);
+    let copy = [...this.state.listCards];
+    let copySelectedColumns = [...copy[this.state.cardSelected]];
+
+    this.setState({ });
+  }
+
   render() {
     const {data, inputVisibility, active, listCards, cardSelected, menuVisible,
       menuTop, menuLeft,
@@ -491,8 +512,8 @@ class DataDisplay extends Component {
               <div>
                 <SelectButton card={el.id} fromSelect={this.selectCard}>Select</SelectButton>
                 <br />
-                <input type='text' placeholder='Input column numbers'></input>
-                <button type='button' onClick='setColumns'>Submit</button>
+                <input type='text' placeholder='Input column numbers' onChange={this.columnSelector}></input>
+                <button type='button' onClick={this.columnSelectorSubmit}>Submit</button>
               </div>
             );
             return (
