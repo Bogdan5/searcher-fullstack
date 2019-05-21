@@ -91,7 +91,6 @@ class DataDisplay extends Component {
     return literal_string.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&');
   }
 
-
   include (whatIsIncluded, position){
     const reg = new RegExp(this.regExpEscape(whatIsIncluded));
     return function(data){
@@ -101,13 +100,6 @@ class DataDisplay extends Component {
       return false;
     }
   }
-
-  // startsWith (whatIsIncluded){
-  //   const reg = new RegExp(this.regExpEscape(whatIsIncluded));
-  //   return function(data){
-  //     return reg.test(data);
-  //   }
-  // }
 
   endsWith (whatIsIncluded){
     const reg = new RegExp(this.regExpEscape(whatIsIncluded) + '$');
@@ -134,29 +126,24 @@ class DataDisplay extends Component {
     }
   }
 
+  searchCardIndex = (arr, card) => {
+    for (let i in arr) {
+      if (arr[i].card === card) { return i}
+    }
+    return -1;
+  }
+
   fromButton = (name) => {
     const {
       keyword, keywordButtonClicked, cardSelected,
       position, listCards,
     } = this.state;
     
-    let currentCard = cardSelected;
-    const { listOperations } = listCards[currentCard];
-    const listOperationsCopy = [...listOperations];
+    const copyListCards = [...listCards];
+    const currentCardIndex = this.searchCardIndex(copyListCards, cardSelected);
+    // const copyListElements = [...copyListCards[currentCardIndex].listElements];
+    const copyListOperations = [...copyListCards[currentCardIndex].listOperations];
 
-    // function that determines whether the keyword matches the data at the required position
-    // const include = (word, posit) => (data) => {
-    //   if (position || position === 0) {
-    //     return data.match(new RegExp(word)).index === posit;
-    //   }
-    //   return data.match(new RegExp(word));
-    // };
-
-    // // function that determines whether the data string starts with the keyword
-    // const endsWith = word => (data) => {
-    //   const len = data.length - word.length;
-    //   return include(word, len);
-    // };
 
     // const len = currentOperation.length;
     let chldList = [];
@@ -164,10 +151,6 @@ class DataDisplay extends Component {
     const listCopy = [...listCards];
     switch (name) {
       case 'SUBMIT':
-        // position of the last button of a list of ConditionalButtons in a card
-        // const lastConditionalButton = (card) => {
-        //   return listCards[listCards.length - 1].id;
-        // }
 
         let idCond = uuid.v4();
 
@@ -182,21 +165,22 @@ class DataDisplay extends Component {
               lst = ['Includes ', keyword, ' at position ', position];
               conditionObj.position = position || 0;
               conditionObj.func = this.include(conditionObj.whatIsIncluded, conditionObj.position);
-              listCopy[cardSelected].listOperations.push(conditionObj);
+              // listCopy[cardSelected].listOperations.push(conditionObj);
               break;
             case 'ENDS WITH':
               lst = ['Ends with ', keyword];
               conditionObj.func = this.endsWith(conditionObj.whatIsIncluded);
-              listCopy[cardSelected].listOperations.push(conditionObj);
+              // listCopy[cardSelected].listOperations.push(conditionObj);
               break;
             case 'STARTS WITH':
               lst = ['Starts with ', keyword];
               conditionObj.func = this.include(conditionObj.whatIsIncluded, 0);
-              listCopy[cardSelected].listOperations.push(conditionObj);
+              // listCopy[cardSelected].listOperations.push(conditionObj);
               break;
             default:
           }
-          this.setState({ listCards: listCopy });
+          copyListOperations.push(conditionObj);
+          copyListCards[currentCardIndex].listOperations = copyListOperations;
           chldList = lst.map((el, index) => <span key={uuid.v4()}>{`${el}`}</span>);
           // this.setState({ idConditional: idConditional + 1 });
           // adding the merged Conditional Button to the list of elements
@@ -208,11 +192,11 @@ class DataDisplay extends Component {
             id: idCond,   
           };
           const newElem = <ConditionButton {...propsArray} />;
-          const copyList = [...listCards];
-          copyList[cardSelected].listElements = listCards[cardSelected].listElements
+          copyListCards[currentCardIndex].listElements = listCards[cardSelected].listElements
             .concat(newElem);
-          this.setState({ listCards: copyList });
-          // this.updateHistory();
+
+          this.setState({ listCards: copyListCards });
+          
         }
 
         break;
@@ -261,14 +245,12 @@ class DataDisplay extends Component {
     const appLeft = this.appRef.current.offsetLeft;
     if (cardSelected === card) {
       if (mergerArray[0] === null) {
-        console.log('menuvisible to be true');
         await this.setState({
           mergerArray: [conditionalButtonId, null, null],
           menuVisible: true,
           menuTop: clickTop - appTop - 10,
           menuLeft: clickLeft - appLeft - 15,
         });
-        console.log('first');
       } else if (mergerArray[1] === null && mergerArray[0] === conditionalButtonId && menuVisible === false){
         this.setState({ menuVisible: true });
       } else if (mergerArray[1] === null && mergerArray[0] !== conditionalButtonId) {
@@ -278,7 +260,6 @@ class DataDisplay extends Component {
         await this.setState({ mergerArray: [null, null, null] });
       }
     }
-    console.log(this.state.mergerArray);
   };
 
   // modifies the visibility of the menu that helps merge conditional buttons
@@ -305,12 +286,9 @@ class DataDisplay extends Component {
 
   merger = (...arr) => {
     const { listCards, cardSelected } = this.state;
-    console.log('arr arguments: ', arr);
 
     // merges two conditional buttons into a combined new conditional button
     const newElement = (element1, name, element2) => {
-      console.log('elem1: ', element1);
-      console.log('elem2: ', element2);
       const newProps = {};
       const newId = uuid.v4();
       newProps.id = newId;
@@ -337,13 +315,9 @@ class DataDisplay extends Component {
     //   arr.splice(Math.min(index1, index2), 1);
     // };
     const copyListElements = [...listCards[cardSelected].listElements];
-    console.log('copyListElements: ', copyListElements);
     const copyListCards = [...listCards];
     const index1 = arr[0] ? searcher(arr[0]) : null;
     const index2 = arr[2] ? searcher(arr[2]) : null;
-    console.log('index1: ', index1);
-    console.log('index2: ', index2);
-    console.log('elem1: ',  copyListElements[index1]);
     copyListElements.push(newElement(
       copyListElements[index1],
       arr[1],
@@ -363,16 +337,6 @@ class DataDisplay extends Component {
 
     this.setState({ listCards: copyListCards });
     // this.updateHistory();
-  }
-
-  filterExecuted = () => {
-    const {listCards, cardSelected} = this.state;
-    const {listOperations} = this.state.listCards[this.state.cardSelected];
-    for (let i = listOperations.length - 1; i>= 0; i--) {
-      if (listOperations[i].active){
-
-      }
-    }
   }
 
   // handles clicks on the two icons (+ or -) - adds or deletes cards
@@ -401,7 +365,6 @@ class DataDisplay extends Component {
       if (/^\d+$/.test(el.trim())){
         return acc.concat(parseInt(el, 10));
       } else if (/^\d+-\d+$/.test(el.trim())){
-        console.log('dash');
         let arr = el.split('-');
         let min = Math.min(parseInt(arr[0], 10), parseInt(arr[1], 10));
         let max = Math.max(parseInt(arr[0], 10), parseInt(arr[1], 10));
@@ -410,7 +373,6 @@ class DataDisplay extends Component {
       }
       return acc;
     }, []);
-    console.log('reducer ', reducer);
     let copy = [...this.state.listCards];
     const copySelectedColumns = Object.assign({}, copy[cardSelected], {field: [...new Set(reducer)]});
     copy[cardSelected] = copySelectedColumns;
@@ -548,7 +510,7 @@ class DataDisplay extends Component {
         <h3>{data.description}</h3>
         <div className='scrollTable'>
           <Table data={data} fromSortButton={this.fromSortButton}
-            sorter={this.sorter} />
+            listCards={listCards} sorter={this.sorter} />
         </div>
         {/* <Route render={() => (
           (prevPath !== '/upload-csv') ? <Table data={data}/> : <Redirect to='/' />

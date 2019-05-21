@@ -37,6 +37,19 @@ class Table extends Component {
     this.setState({ data: newData });
   }
 
+  filterExecuted = (arr) => {
+    const {listCards} = this.state;
+    for (let i of listCards){
+      for (let j = i.listOperations.length - 1; j>= 0; j--) {
+        for (let k of arr){
+          if (j.func(k)) { return true }
+        }
+      }
+    }
+    return false;
+    
+  }
+
   render(){
     const {header, body} = this.state.data;
     return (
@@ -50,13 +63,17 @@ class Table extends Component {
           ))}
         </div>
         <div className='tableData'>
-          {body.map(el => (
-            <div key={el[0]} className='rowTable'>
-              {el[1].map(elem => (
-                <div key={elem[0]} className='cellTable'>{elem[1]}</div>
-              ))}
-            </div>
-          ))}
+          {body.map(el => {
+            if (this.filterExecuted(el[1])){
+              return (
+                <div key={el[0]} className='rowTable'>
+                  {el[1].map(elem => (
+                    <div key={elem[0]} className='cellTable'>{elem[1]}</div>
+                  ))}
+                </div>
+              );
+            }
+          })}
         </div>
       </div>
     );
