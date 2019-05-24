@@ -38,15 +38,19 @@ class Table extends Component {
   }
 
   filterExecuted = (arr) => {
-    const {listCards} = this.state;
-    for (let i of listCards){
-      for (let j = i.listOperations.length - 1; j>= 0; j--) {
-        for (let k of arr){
-          if (j.func(k)) { return true }
+    const {listCards} = this.props;
+    if (listCards.length > 0){
+      for (let i of listCards){
+        for (let j = i.listOperations.length - 1; j>= 0; j--) {
+          for (let k of arr){
+            if (j.func(k)) { return true }
+          }
         }
       }
+      return false;
+    } else {
+      return true;
     }
-    return false;
     
   }
 
@@ -73,6 +77,7 @@ class Table extends Component {
                 </div>
               );
             }
+            return null;
           })}
         </div>
       </div>
