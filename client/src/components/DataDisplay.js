@@ -14,7 +14,7 @@ import MenuOption from './MenuOption';
 import DropDownMenu from './DropDownMenu';
 import Icon from './Icon';
 import SelectButton from './SelectButton';
-import ColumnSelector from './ColumnSelector';
+// import ColumnSelector from './ColumnSelector';
 
 // import PropTypes from 'prop-types';
 import '../App.scss';
@@ -139,18 +139,29 @@ class DataDisplay extends Component {
       position, listCards,
     } = this.state;
     
-    const copyListCards = [...listCards];
-    const currentCardIndex = this.searchCardIndex(copyListCards, cardSelected);
-    // const copyListElements = [...copyListCards[currentCardIndex].listElements];
-    const copyListOperations = [...copyListCards[currentCardIndex].listOperations];
-
-
     // const len = currentOperation.length;
     let chldList = [];
     let lst = [];
     const listCopy = [...listCards];
     switch (name) {
       case 'SUBMIT':
+        let copyListCards, currentCardIndex, copyListOperations;
+        if (listCards[0].listOperations.length === 0) {
+          copyListCards = [{
+            id: 0,
+            field: 'all',
+            listElements: [],
+            listOperations: [],
+          }];
+          currentCardIndex = 0;
+          copyListOperations = [];
+        } else {
+          copyListCards = [...listCards];
+          currentCardIndex = this.searchCardIndex(copyListCards, cardSelected);
+          console.log('currentCardIndex in DataDisplay: ', currentCardIndex);
+          // const copyListElements = [...copyListCards[currentCardIndex].listElements];
+          copyListOperations = [...copyListCards[currentCardIndex].listOperations];
+        }
 
         let idCond = uuid.v4();
 

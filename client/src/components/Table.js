@@ -39,7 +39,9 @@ class Table extends Component {
 
   filterExecuted = (arr) => {
     const {listCards} = this.props;
-    if (listCards.length > 0){
+    // console.log('listCards in table: ', listCards[0].listOperations.length);
+    if (listCards[0].listOperations.length > 0){
+      // console.log('greater than 0')
       for (let i of listCards){
         for (let j = i.listOperations.length - 1; j>= 0; j--) {
           for (let k of arr){
@@ -49,6 +51,7 @@ class Table extends Component {
       }
       return false;
     } else {
+      // console.log('smaller than 0');
       return true;
     }
     
