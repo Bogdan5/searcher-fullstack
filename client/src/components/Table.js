@@ -45,7 +45,8 @@ class Table extends Component {
       for (let i of listCards){
         for (let j = i.listOperations.length - 1; j>= 0; j--) {
           for (let k of arr){
-            if (j.func(k)) { return true }
+            console.log('obj ', JSON.stringify(i.listOperations[j]));
+            if (i.listOperations[j].func(k[1])) { return true }
           }
         }
       }

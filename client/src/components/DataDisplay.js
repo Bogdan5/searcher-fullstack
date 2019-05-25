@@ -78,7 +78,7 @@ class DataDisplay extends Component {
         // console.log('new Data is: ', this.state.data);
       })
       .catch((err) => {
-        if(!err || !err.response || err.response.status === 401) {
+        if(err.response.status === 401) {
           console.log(`Error: ${err}`)
           this.props.history.push({pathname: '/api/users/signin',
             appState: {prevPath: this.props.location.pathname}});
@@ -94,7 +94,9 @@ class DataDisplay extends Component {
   include (whatIsIncluded, position){
     const reg = new RegExp(this.regExpEscape(whatIsIncluded));
     return function(data){
-      if (position || position === 0) {
+      console.log('data in include: ', data);
+      const matcher = data.match(reg);
+      if (matcher && (position || position === 0)) {
         return data.match(reg).index === position;
       }
       return false;
@@ -145,23 +147,11 @@ class DataDisplay extends Component {
     const listCopy = [...listCards];
     switch (name) {
       case 'SUBMIT':
-        let copyListCards, currentCardIndex, copyListOperations;
-        if (listCards[0].listOperations.length === 0) {
-          copyListCards = [{
-            id: 0,
-            field: 'all',
-            listElements: [],
-            listOperations: [],
-          }];
-          currentCardIndex = 0;
-          copyListOperations = [];
-        } else {
-          copyListCards = [...listCards];
-          currentCardIndex = this.searchCardIndex(copyListCards, cardSelected);
-          console.log('currentCardIndex in DataDisplay: ', currentCardIndex);
-          // const copyListElements = [...copyListCards[currentCardIndex].listElements];
-          copyListOperations = [...copyListCards[currentCardIndex].listOperations];
-        }
+        const copyListCards = [...listCards];
+        const currentCardIndex = copyListCards[0].listOperations.length ?
+          this.searchCardIndex(copyListCards, cardSelected) : 0;
+        // const copyListElements = [...copyListCards[currentCardIndex].listElements];
+        const copyListOperations = [...copyListCards[currentCardIndex].listOperations];
 
         let idCond = uuid.v4();
 
