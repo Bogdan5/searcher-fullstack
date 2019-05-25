@@ -157,6 +157,7 @@ class DataDisplay extends Component {
 
         if (keywordButtonClicked && keyword) {
           let conditionObj = {
+            id: idCond,
             active: true,
             card: cardSelected,
             whatIsIncluded: keyword
@@ -287,11 +288,11 @@ class DataDisplay extends Component {
 
   merger = (...arr) => {
     const { listCards, cardSelected } = this.state;
+    const newId = uuid.v4();
 
     // merges two conditional buttons into a combined new conditional button
     const newElement = (element1, name, element2) => {
       const newProps = {};
-      const newId = uuid.v4();
       newProps.id = newId;
       newProps.key = newId;
       newProps.card = cardSelected;
@@ -311,12 +312,13 @@ class DataDisplay extends Component {
       }
       return -1;
     };
-    // const splicer = (arr, index1, index2) => {
-    //   arr.splice(Math.max(index1, index2), 1);
-    //   arr.splice(Math.min(index1, index2), 1);
-    // };
-    const copyListElements = [...listCards[cardSelected].listElements];
+
+    // make copies of the list of cards to maintain immutability
     const copyListCards = [...listCards];
+    const copyListElements = [...copyListCards[cardSelected].listElements];
+    const copyListOperations = [...copyListCards[cardSelected].listOperations];
+
+    // adding a new element to the list of elements
     const index1 = arr[0] ? searcher(arr[0]) : null;
     const index2 = arr[2] ? searcher(arr[2]) : null;
     copyListElements.push(newElement(
@@ -324,17 +326,33 @@ class DataDisplay extends Component {
       arr[1],
       (index2 === null) ? null : copyListElements[index2]
     ));
-    // const x = copy.splice(searcher(arr[0]), 1);
     if (arr[2] === null && arr[1] === 'NOT') {
-      // copyListCards[cardSelected].listElements = copyListElements.concat(newElement(...arr.reverse()));
       copyListElements.splice(index1, 1);
     } else {
-      // const y = copy.splice(searcher(arr[2]));
-      // copyListCards[cardSelected].listElements = copyListElements.concat(newElement(y, arr[1], x));
       copyListElements.splice(Math.max(index1, index2), 1);
       copyListElements.splice(Math.min(index1, index2), 1);
     }
     copyListCards[cardSelected].listElements = copyListElements;
+
+    // adding a new operation to the list of operations
+    let newOperation = { id: newId };
+    switch (arr[1]){
+      case 'NOT':
+        newOperation.func = this.negation(copyListOperations[index2]);
+        break;
+      case 'AND':
+        newOperation.func = this.conjunction(copyListOperations[index1], copyListOperations[index2]);
+        break;
+      case 'OR':
+        newOperation.func = this.disunction(copyListOperations[index1], copyListOperations[index2]);
+        break;
+      default:
+        newOperation.func = function(){}
+    }
+    copyListOperations.push(newOperation)
+    copyListOperations.splice(Math.max(index1, index2), 1);
+    if (arr[0]) { copyListOperations.splice(Math.min(index1, index2), 1); }
+
 
     this.setState({ listCards: copyListCards });
     // this.updateHistory();
