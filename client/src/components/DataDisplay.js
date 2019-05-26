@@ -349,10 +349,10 @@ class DataDisplay extends Component {
       default:
         newOperation.func = function(){}
     }
-    copyListOperations.push(newOperation)
+    copyListOperations.push(newOperation);
     copyListOperations.splice(Math.max(index1, index2), 1);
     if (arr[0]) { copyListOperations.splice(Math.min(index1, index2), 1); }
-
+    copyListCards[cardSelected].listOperations = copyListOperations;
 
     this.setState({ listCards: copyListCards });
     // this.updateHistory();

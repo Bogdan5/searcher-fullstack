@@ -41,12 +41,12 @@ class Table extends Component {
     const {listCards} = this.props;
     // console.log('listCards in table: ', listCards[0].listOperations.length);
     if (listCards[0].listOperations.length > 0){
-      // console.log('greater than 0')
       for (let i of listCards){
         for (let j = i.listOperations.length - 1; j>= 0; j--) {
           for (let k of arr){
-            console.log('obj ', JSON.stringify(i.listOperations[j]));
-            if (i.listOperations[j].func(k[1])) { return true }
+            for (let l of i.filterExecuted){
+              if (i.listOperations[j].func(k[1][l])) { return true }
+            }
           }
         }
       }
@@ -55,7 +55,6 @@ class Table extends Component {
       // console.log('smaller than 0');
       return true;
     }
-    
   }
 
   render(){
