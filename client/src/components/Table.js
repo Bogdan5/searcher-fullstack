@@ -38,21 +38,23 @@ class Table extends Component {
   }
 
   filterExecuted = (arr) => {
-    const {listCards} = this.props;
+    const { listCards, filtering } = this.props;
+    const { data } = this.state;
     // console.log('listCards in table: ', listCards[0].listOperations.length);
-    if (listCards[0].listOperations.length > 0){
+    if (listCards[0].listOperations.length > 0 && filtering){
       for (let i of listCards){
         for (let j = i.listOperations.length - 1; j>= 0; j--) {
-          for (let k of arr){
-            for (let l of i.filterExecuted){
-              if (i.listOperations[j].func(k[1][l])) { return true }
-            }
+          let filteredColumns = [...i.field];
+          if (i.field.length === 0) {
+            filteredColumns = Array.from(new Array(data.header.length), (x, i) => i);
+          }
+          for (let k of filteredColumns){
+            if (i.listOperations[j].func(arr[k][1])) { return true }
           }
         }
       }
       return false;
     } else {
-      // console.log('smaller than 0');
       return true;
     }
   }

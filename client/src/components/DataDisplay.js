@@ -50,6 +50,7 @@ class DataDisplay extends Component {
       idConditional: 0,
       menuVisible: false,
       mergerArray: [null, null, null],
+      filtering: false,
     }
   }
 
@@ -197,8 +198,7 @@ class DataDisplay extends Component {
           copyListCards[currentCardIndex].listElements = listCards[cardSelected].listElements
             .concat(newElem);
 
-          this.setState({ listCards: copyListCards });
-          
+          this.setState({ listCards: copyListCards, filtering: false });
         }
 
         break;
@@ -395,12 +395,29 @@ class DataDisplay extends Component {
     let copy = [...this.state.listCards];
     const copySelectedColumns = Object.assign({}, copy[cardSelected], {field: [...new Set(reducer)]});
     copy[cardSelected] = copySelectedColumns;
-    this.setState({ listCards: copy });
+    this.setState({ listCards: copy, filtering: false });
+  }
+
+  executeFilter = () => {
+    this.setState({ filtering: true });
+  }
+
+  clear = () => {
+    this.setState({ listCards: [{
+      cardId: 0,
+      field: [],
+      listElements: [],
+      listOperations: [],
+      idConditional: 0,
+      menuVisible: false,
+      mergerArray: [null, null, null],
+      filtering: false,
+    }]});
   }
 
   render() {
     const {data, inputVisibility, active, listCards, cardSelected, menuVisible,
-      menuTop, menuLeft,
+      menuTop, menuLeft, filtering,
       } = this.state;
     // const {
       // inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
@@ -513,7 +530,8 @@ class DataDisplay extends Component {
             );
           })}
           <div>
-            <button onClick={this.filterExecuted}>Filter</button>
+            <button onClick={this.executeFilter}>Filter</button>
+            <button onClick={this.clear} >Clear</button>
           </div>
           <DropDownMenu
             menuVisible={menuVisible} mouseOutMenu={this.menuHide}
@@ -529,7 +547,8 @@ class DataDisplay extends Component {
         <h3>{data.description}</h3>
         <div className='scrollTable'>
           <Table data={data} fromSortButton={this.fromSortButton}
-            listCards={listCards} sorter={this.sorter} />
+            listCards={listCards} sorter={this.sorter}
+            filtering={filtering}/>
         </div>
         {/* <Route render={() => (
           (prevPath !== '/upload-csv') ? <Table data={data}/> : <Redirect to='/' />
