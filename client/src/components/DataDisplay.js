@@ -130,8 +130,9 @@ class DataDisplay extends Component {
   }
 
   searchCardIndex = (arr, card) => {
-    for (let i in arr) {
-      if (arr[i].card === card) { return i}
+    console.log('in SearchIndex: ', arr);
+    for (let i = 0; i<arr.length; i++) {
+      if (arr[i].cardId === card) { return i}
     }
     return -1;
   }
@@ -149,8 +150,8 @@ class DataDisplay extends Component {
     switch (name) {
       case 'SUBMIT':
         const copyListCards = [...listCards];
-        const currentCardIndex = copyListCards[0].listOperations.length ?
-          this.searchCardIndex(copyListCards, cardSelected) : 0;
+        const currentCardIndex = this.searchCardIndex(copyListCards, cardSelected);
+        console.log('currentCardIndex: ', currentCardIndex);
         // const copyListElements = [...copyListCards[currentCardIndex].listElements];
         const copyListOperations = [...copyListCards[currentCardIndex].listOperations];
 
@@ -344,7 +345,7 @@ class DataDisplay extends Component {
         newOperation.func = this.conjunction(copyListOperations[index1], copyListOperations[index2]);
         break;
       case 'OR':
-        newOperation.func = this.disunction(copyListOperations[index1], copyListOperations[index2]);
+        newOperation.func = this.disjunction(copyListOperations[index1], copyListOperations[index2]);
         break;
       default:
         newOperation.func = function(){}
