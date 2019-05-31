@@ -339,13 +339,13 @@ class DataDisplay extends Component {
     let newOperation = { id: newId };
     switch (arr[1]){
       case 'NOT':
-        newOperation.func = this.negation(copyListOperations[index2]);
+        newOperation.func = this.negation(copyListOperations[index2].func);
         break;
       case 'AND':
-        newOperation.func = this.conjunction(copyListOperations[index1], copyListOperations[index2]);
+        newOperation.func = this.conjunction(copyListOperations[index1].func, copyListOperations[index2].func);
         break;
       case 'OR':
-        newOperation.func = this.disjunction(copyListOperations[index1], copyListOperations[index2]);
+        newOperation.func = this.disjunction(copyListOperations[index1].func, copyListOperations[index2].func);
         break;
       default:
         newOperation.func = function(){}
