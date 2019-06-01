@@ -40,7 +40,6 @@ class Table extends Component {
   filterExecuted = (arr) => {
     const { listCards, filtering } = this.props;
     const { data } = this.state;
-    // console.log('listCards in table: ', listCards[0].listOperations.length);
     if (listCards[0].listOperations.length > 0 && filtering){
       for (let i of listCards){
         for (let j = i.listOperations.length - 1; j>= 0; j--) {
@@ -49,6 +48,7 @@ class Table extends Component {
             filteredColumns = Array.from(new Array(data.header.length), (x, i) => i);
           }
           for (let k of filteredColumns){
+            console.log('arr k', arr[k][1]);
             if (i.listOperations[j].func(arr[k][1])) { return true }
           }
         }

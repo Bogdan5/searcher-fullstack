@@ -112,20 +112,20 @@ class DataDisplay extends Component {
   }
 
   conjunction(fn1, fn2){
-    return function(){
-      return fn1() && fn2();
+    return function(data){
+      return fn1(data) && fn2(data);
     }
   }
   
   disjunction(fn1, fn2){
-    return function(){
-      return fn1() || fn2();
+    return function(data){
+      return fn1(data) || fn2(data);
     }
   }
   
   negation(fn){
-    return function(){
-      return !fn();
+    return function(data){
+      return !fn(data);
     }
   }
 
