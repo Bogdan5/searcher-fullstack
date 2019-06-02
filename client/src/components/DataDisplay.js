@@ -94,7 +94,6 @@ class DataDisplay extends Component {
   include (whatIsIncluded, position){
     const reg = new RegExp(this.regExpEscape(whatIsIncluded));
     return function(data){
-      console.log('data in include: ', data);
       const matcher = data.match(reg);
       if (matcher && (position || position === 0)) {
         return data.match(reg).index === position;
@@ -190,6 +189,7 @@ class DataDisplay extends Component {
             fromConditional: this.conditionalClickHandler,
             card: cardSelected,
             id: idCond,
+            active: true,
           };
           const newElem = <ConditionButton {...propsArray} />;
           conditionObj.element = newElem;
@@ -307,12 +307,14 @@ class DataDisplay extends Component {
     const { listCards, cardSelected } = this.state;
     const newId = uuid.v4();
 
-    const index1 = arr[0] ? this.buttonSearcher(arr[0]) : null;
+    const index1 = this.buttonSearcher(arr[0]);
     const index2 = arr[2] ? this.buttonSearcher(arr[2]) : null;
+    const currentCardIndex = this.cardSearcher(cardSelected);
 
     // make copies of the list of cards to maintain immutability
     const copyListCards = [...listCards];
-    const copyListOperations = [...copyListCards[cardSelected].listOperations];
+    const copyListOperations = [...copyListCards[currentCardIndex].listOperations];
+
 
     // adding a new operation to the list of operations
     let newOperation = {
@@ -321,7 +323,7 @@ class DataDisplay extends Component {
     };
     switch (arr[1]){
       case 'NOT':
-        newOperation.func = this.negation(copyListOperations[index2].func);
+        newOperation.func = this.negation(copyListOperations[index1].func);
         break;
       case 'AND':
         newOperation.func = this.conjunction(copyListOperations[index1].func, copyListOperations[index2].func);

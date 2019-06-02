@@ -48,7 +48,6 @@ class Table extends Component {
             filteredColumns = Array.from(new Array(data.header.length), (x, i) => i);
           }
           for (let k of filteredColumns){
-            console.log('arr k', arr[k][1]);
             if (i.listOperations[j].func(arr[k][1])) { return true }
           }
         }
