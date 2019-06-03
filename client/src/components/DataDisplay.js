@@ -181,6 +181,14 @@ class DataDisplay extends Component {
             default:
           }
           chldList = lst.map((el, index) => <span key={uuid.v4()}>{`${el}`}</span>);
+
+          let buttonIndex = this.buttonSearcher(idCond);
+          let isActive;
+          if (buttonIndex === -1) {
+            isActive = true;
+          } else {
+            isActive = listCards[currentCardIndex].listOperations[buttonIndex];
+          }
           // this.setState({ idConditional: idConditional + 1 });
           // adding the merged Conditional Button to the list of elements
           const propsArray = { // props passed to the ConditioButton prop
@@ -189,7 +197,7 @@ class DataDisplay extends Component {
             fromConditional: this.conditionalClickHandler,
             card: cardSelected,
             id: idCond,
-            active: true,
+            active: isActive,
           };
           const newElem = <ConditionButton {...propsArray} />;
           conditionObj.element = newElem;
@@ -310,6 +318,13 @@ class DataDisplay extends Component {
     const index1 = this.buttonSearcher(arr[0]);
     const index2 = arr[2] ? this.buttonSearcher(arr[2]) : null;
     const currentCardIndex = this.cardSearcher(cardSelected);
+    let buttonIndex = this.buttonSearcher(newId);
+    let isActive;
+    if (buttonIndex === -1) {
+      isActive = true;
+    } else {
+      isActive = listCards[currentCardIndex].listOperations[buttonIndex];
+    }
 
     // make copies of the list of cards to maintain immutability
     const copyListCards = [...listCards];
@@ -317,10 +332,7 @@ class DataDisplay extends Component {
 
 
     // adding a new operation to the list of operations
-    let newOperation = {
-      id: newId,
-      active: true,
-    };
+    let newOperation = { id: newId, active: isActive };
     switch (arr[1]){
       case 'NOT':
         newOperation.func = this.negation(copyListOperations[index1].func);
@@ -336,7 +348,9 @@ class DataDisplay extends Component {
     }
     copyListOperations[index1].active = false;
 
-    const isActive = listCards[this.cardSearcher(cardSelected)].listOperations[this.buttonSearcher(newId)];
+    console.log('button index: ', this.buttonSearcher(newId));
+    console.log('current card index: ', currentCardIndex);
+    console.log('isActive: ', isActive);
 
     // merges two conditional buttons into a combined new conditional button
     const newElement = (element1, name, element2) => {
@@ -361,11 +375,12 @@ class DataDisplay extends Component {
       (index2 === null) ? null : copyListOperations[index2].element
     );
     
+    copyListOperations[index1].active = false;
     if (arr[2]) { copyListOperations[index2].active = false }
     copyListOperations.push(newOperation);
 
-    copyListCards[cardSelected].listOperations = copyListOperations;
-
+    copyListCards[currentCardIndex].listOperations = copyListOperations;
+    console.log(copyListCards[currentCardIndex]);
     this.setState({ listCards: copyListCards });
     // this.updateHistory();
   }
