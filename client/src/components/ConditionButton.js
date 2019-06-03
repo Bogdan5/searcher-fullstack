@@ -5,8 +5,6 @@ import '../App.scss';
 // basic button pressed to construct queries
 const ConditionButton = (props) => {
   const { children, id, fromConditional, card, key, active } = props;
-  console.log('active in ConditionButton: ', active);
-  console.log('id in ConditionButton: ', id);
   const buttonRef = React.createRef();
   const handler = (event) => {
     if (active) {

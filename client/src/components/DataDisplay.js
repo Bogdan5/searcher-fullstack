@@ -94,10 +94,13 @@ class DataDisplay extends Component {
   include (whatIsIncluded, position){
     const reg = new RegExp(this.regExpEscape(whatIsIncluded));
     return function(data){
+      // console.log('data to test: ', data);
       const matcher = data.match(reg);
       if (matcher && (position || position === 0)) {
+        // console.log('result: ', data.match(reg).index === position);
         return data.match(reg).index === position;
       }
+      // console.log('result is false');
       return false;
     }
   }
@@ -105,12 +108,18 @@ class DataDisplay extends Component {
   endsWith (whatIsIncluded){
     const reg = new RegExp(this.regExpEscape(whatIsIncluded) + '$');
     return function(data){
+      // console.log('data in ends: ', data);
+      // console.log('result for endsWith: ', reg.test(data));
       return reg.test(data);
     }
   }
 
   conjunction(fn1, fn2){
     return function(data){
+      console.log('data: ', data);
+      console.log('fn1: ', fn1(data));
+      console.log('fn2: ', fn2(data));
+      console.log('fn1 && fn2', fn1(data) && fn2(data));
       return fn1(data) && fn2(data);
     }
   }
@@ -148,7 +157,6 @@ class DataDisplay extends Component {
       case 'SUBMIT':
         const copyListCards = [...listCards];
         const currentCardIndex = this.cardSearcher(cardSelected);
-        console.log('currentCardIndex: ', currentCardIndex);
         // const copyListElements = [...copyListCards[currentCardIndex].listElements];
         const copyListOperations = [...copyListCards[currentCardIndex].listOperations];
 
@@ -346,11 +354,6 @@ class DataDisplay extends Component {
       default:
         newOperation.func = function(){}
     }
-    copyListOperations[index1].active = false;
-
-    console.log('button index: ', this.buttonSearcher(newId));
-    console.log('current card index: ', currentCardIndex);
-    console.log('isActive: ', isActive);
 
     // merges two conditional buttons into a combined new conditional button
     const newElement = (element1, name, element2) => {
@@ -380,7 +383,7 @@ class DataDisplay extends Component {
     copyListOperations.push(newOperation);
 
     copyListCards[currentCardIndex].listOperations = copyListOperations;
-    console.log(copyListCards[currentCardIndex]);
+    // console.log(copyListCards[currentCardIndex]);
     this.setState({ listCards: copyListCards });
     // this.updateHistory();
   }
