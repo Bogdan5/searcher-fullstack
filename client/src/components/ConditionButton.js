@@ -4,13 +4,17 @@ import '../App.scss';
 
 // basic button pressed to construct queries
 const ConditionButton = (props) => {
-  const { children, id, fromConditional, card, key, active } = props;
+  const { children, id, fromConditional, card, active, condObj } = props;
   const buttonRef = React.createRef();
+  console.log('conditional object', condObj);
   const handler = (event) => {
-    if (active) {
+    if (condObj.active) {
+      console.log(id, ' is active');
       const top = event.pageY;
       const left = event.pageX;
       fromConditional(id, top, left, card);
+    } else {
+      console.log(id, ' is not active');
     }
   };
   
@@ -19,7 +23,7 @@ const ConditionButton = (props) => {
       className='ConditionButton' onClick={handler}
       tabIndex={0} onKeyDown={handler}
       role='button' ref={buttonRef}
-      key={key}
+      key={id}
     >
       {children}
     </div>

@@ -14,7 +14,6 @@ import MenuOption from './MenuOption';
 import DropDownMenu from './DropDownMenu';
 import Icon from './Icon';
 import SelectButton from './SelectButton';
-// import ColumnSelector from './ColumnSelector';
 
 // import PropTypes from 'prop-types';
 import '../App.scss';
@@ -39,6 +38,7 @@ class DataDisplay extends Component {
         cardId: 0, // id to identify each card
         field: [], // on what columns of the data the list of operations apply
         listOperations: [], // what conditions aply to the data - helps sort
+        listElements: []
       }],
       cardSelected: 0, // where conditional buttons go at one time
       keyword: '', // content of the keyword input text field
@@ -94,13 +94,10 @@ class DataDisplay extends Component {
   include (whatIsIncluded, position){
     const reg = new RegExp(this.regExpEscape(whatIsIncluded));
     return function(data){
-      // console.log('data to test: ', data);
       const matcher = data.match(reg);
       if (matcher && (position || position === 0)) {
-        // console.log('result: ', data.match(reg).index === position);
         return data.match(reg).index === position;
       }
-      // console.log('result is false');
       return false;
     }
   }
@@ -108,18 +105,12 @@ class DataDisplay extends Component {
   endsWith (whatIsIncluded){
     const reg = new RegExp(this.regExpEscape(whatIsIncluded) + '$');
     return function(data){
-      // console.log('data in ends: ', data);
-      // console.log('result for endsWith: ', reg.test(data));
       return reg.test(data);
     }
   }
 
   conjunction(fn1, fn2){
     return function(data){
-      console.log('data: ', data);
-      console.log('fn1: ', fn1(data));
-      console.log('fn2: ', fn2(data));
-      console.log('fn1 && fn2', fn1(data) && fn2(data));
       return fn1(data) && fn2(data);
     }
   }
@@ -136,14 +127,7 @@ class DataDisplay extends Component {
     }
   }
 
-  // searchCardIndex = (arr, card) => {
-  //   for (let i = 0; i<arr.length; i++) {
-  //     if (arr[i].cardId === card) { return i}
-  //   }
-  //   return -1;
-  // }
-
-  fromButton = (name) => {
+  fromButton = async (name) => {
     const {
       keyword, keywordButtonClicked, cardSelected,
       position, listCards,
@@ -152,13 +136,14 @@ class DataDisplay extends Component {
     // const len = currentOperation.length;
     let chldList = [];
     let lst = [];
-    const listCopy = [...listCards];
+    // const listCopy = [...listCards];
     switch (name) {
       case 'SUBMIT':
         const copyListCards = [...listCards];
         const currentCardIndex = this.cardSearcher(cardSelected);
         // const copyListElements = [...copyListCards[currentCardIndex].listElements];
         const copyListOperations = [...copyListCards[currentCardIndex].listOperations];
+        const copyListElements = [...copyListCards[currentCardIndex].listElements];
 
         let idCond = uuid.v4();
 
@@ -189,31 +174,36 @@ class DataDisplay extends Component {
             default:
           }
           chldList = lst.map((el, index) => <span key={uuid.v4()}>{`${el}`}</span>);
+          copyListOperations.push(conditionObj);
+          copyListCards[currentCardIndex].listOperations = copyListOperations;
+          await this.setState({ listCards: copyListCards });
 
           let buttonIndex = this.buttonSearcher(idCond);
-          let isActive;
-          if (buttonIndex === -1) {
-            isActive = true;
-          } else {
-            isActive = listCards[currentCardIndex].listOperations[buttonIndex];
-          }
+          let len = this.state.listCards[currentCardIndex].listOperations.length;
+          // let isActive;
+          // if (buttonIndex === -1) {
+          //   isActive = true;
+          // } else {
+          //   isActive = listCards[currentCardIndex].listOperations[buttonIndex];
+          // }
           // this.setState({ idConditional: idConditional + 1 });
           // adding the merged Conditional Button to the list of elements
           const propsArray = { // props passed to the ConditioButton prop
             children: chldList,
-            key: idCond,
             fromConditional: this.conditionalClickHandler,
             card: cardSelected,
             id: idCond,
-            active: isActive,
+            active: true,
+            condObj: this.state.listCards[currentCardIndex].listOperations[len - 1]
           };
-          const newElem = <ConditionButton {...propsArray} />;
-          conditionObj.element = newElem;
-          copyListOperations.push(conditionObj);
+          const newElem = <ConditionButton {...propsArray} key={idCond} />;
+          copyListElements.push(newElem);
           copyListCards[currentCardIndex].listOperations = copyListOperations;
+          copyListCards[currentCardIndex].listElements = copyListElements;
+
           // copyListCards[currentCardIndex].listElements = listCards[cardSelected].listElements
           //   .concat(newElem);
-
+          console.log(copyListOperations);
           this.setState({ listCards: copyListCards, filtering: false });
         }
 
@@ -276,6 +266,8 @@ class DataDisplay extends Component {
       } else if (mergerArray[1] !== null && mergerArray[0] !== conditionalButtonId) {
         this.merger(mergerArray[0], mergerArray[1], conditionalButtonId);
         await this.setState({ mergerArray: [null, null, null] });
+      } else if (mergerArray[1] !== null && mergerArray[0] === conditionalButtonId) {
+        this.setState({ mergerArray: [mergerArray[0], null, null], menuVisible: true });
       }
     }
   };
@@ -319,7 +311,7 @@ class DataDisplay extends Component {
     return -1;
   }
 
-  merger = (...arr) => {
+  merger = async (...arr) => {
     const { listCards, cardSelected } = this.state;
     const newId = uuid.v4();
 
@@ -327,20 +319,24 @@ class DataDisplay extends Component {
     const index2 = arr[2] ? this.buttonSearcher(arr[2]) : null;
     const currentCardIndex = this.cardSearcher(cardSelected);
     let buttonIndex = this.buttonSearcher(newId);
-    let isActive;
-    if (buttonIndex === -1) {
-      isActive = true;
-    } else {
-      isActive = listCards[currentCardIndex].listOperations[buttonIndex];
-    }
+    // console.log('card index: ', currentCardIndex);
+    // console.log('button index: ', buttonIndex);
+    // let isActive;
+    // if (buttonIndex === -1) {
+    //   isActive = [true];
+    // } else {
+    //   isActive = listCards[currentCardIndex].listOperations[buttonIndex].active;
+    // }
+
+    // console.log('listOperations: ', listCards[currentCardIndex].listOperations[buttonIndex]);
 
     // make copies of the list of cards to maintain immutability
     const copyListCards = [...listCards];
     const copyListOperations = [...copyListCards[currentCardIndex].listOperations];
-
+    const copyListElements = [...copyListCards[currentCardIndex].listElements];
 
     // adding a new operation to the list of operations
-    let newOperation = { id: newId, active: isActive };
+    let newOperation = { id: newId, active: true };
     switch (arr[1]){
       case 'NOT':
         newOperation.func = this.negation(copyListOperations[index1].func);
@@ -355,13 +351,25 @@ class DataDisplay extends Component {
         newOperation.func = function(){}
     }
 
+    copyListOperations.push(newOperation);
+
+    copyListOperations[index1].active = false;
+    if (arr[2]) { copyListOperations[index2].active = false }
+
+    copyListCards[currentCardIndex].listOperations = copyListOperations;
+    await this.setState({listCards: copyListCards});
+
+    // await this.setState({ active: listCards[currentCardIndex].listOperations[buttonIndex].active})
+
+    let len = this.state.listCards[currentCardIndex].listOperations.length;
+
     // merges two conditional buttons into a combined new conditional button
     const newElement = (element1, name, element2) => {
       const newProps = {
         id: newId,
         key: newId,
         card: cardSelected,
-        active: isActive,
+        condObj: listCards[currentCardIndex].listOperations[len - 1],
       };
       return (
         <ConditionButton {...newProps} fromConditional={this.conditionalClickHandler}>
@@ -372,17 +380,32 @@ class DataDisplay extends Component {
       );
     };
 
-    newOperation.element = newElement(
-      copyListOperations[index1].element,
+    const newEl = newElement(
+      copyListElements[index1],
       arr[1],
-      (index2 === null) ? null : copyListOperations[index2].element
+      (index2 === null) ? null : copyListElements[index2]
     );
     
-    copyListOperations[index1].active = false;
-    if (arr[2]) { copyListOperations[index2].active = false }
-    copyListOperations.push(newOperation);
+    copyListElements.push(newEl);
+    copyListCards[currentCardIndex].listElements = copyListElements;
 
-    copyListCards[currentCardIndex].listOperations = copyListOperations;
+    // chaging the active status of the elements
+    // const newProps1 = Object.assign({}, copyListOperations[index1].element.props, {active: false});
+    // const newElement1 = Object.assign({}, copyListOperations[index1].element, {props: newProps1});
+    // const newOperation1 = Object.assign({}, copyListOperations[index1], {element: newElement1});
+    // copyListOperations.splice(index1, 1, newOperation1)
+    // if (arr[2]){
+    //   const newProps2 = Object.assign({}, copyListOperations[index2].element.props, {active: false});
+    //   const newElement2 = Object.assign({}, copyListOperations[index2].element, {props: newProps2});
+    //   const newOperation2 = Object.assign({}, copyListOperations[index2], {element: newElement2});
+    //   copyListOperations.splice(index2, 1, newOperation2)
+    // }
+
+    // console.log(newOperation);
+
+    // console.log('list operations: ', copyListOperations);
+
+    
     // console.log(copyListCards[currentCardIndex]);
     this.setState({ listCards: copyListCards });
     // this.updateHistory();
@@ -552,7 +575,7 @@ class DataDisplay extends Component {
                 cardSelected={cardSelected} id={el.id}
               >
                 <ConditionButtonFormatter fromFormatter={this.fromFormat}>
-                  {el.listOperations.map(elem => (elem.active ? elem.element : null))}
+                  {el.listElements.map(elem => (elem.active ? elem.element : null))}
                 </ConditionButtonFormatter>
               </Keyboard>
             );
