@@ -141,7 +141,6 @@ class DataDisplay extends Component {
       case 'SUBMIT':
         const copyListCards = [...listCards];
         const currentCardIndex = this.cardSearcher(cardSelected);
-        // const copyListElements = [...copyListCards[currentCardIndex].listElements];
         const copyListOperations = [...copyListCards[currentCardIndex].listOperations];
         const copyListElements = [...copyListCards[currentCardIndex].listElements];
 
@@ -159,17 +158,14 @@ class DataDisplay extends Component {
               lst = ['Includes ', keyword, ' at position ', position];
               conditionObj.position = position || 0;
               conditionObj.func = this.include(conditionObj.whatIsIncluded, conditionObj.position);
-              // listCopy[cardSelected].listOperations.push(conditionObj);
               break;
             case 'ENDS WITH':
               lst = ['Ends with ', keyword];
               conditionObj.func = this.endsWith(conditionObj.whatIsIncluded);
-              // listCopy[cardSelected].listOperations.push(conditionObj);
               break;
             case 'STARTS WITH':
               lst = ['Starts with ', keyword];
               conditionObj.func = this.include(conditionObj.whatIsIncluded, 0);
-              // listCopy[cardSelected].listOperations.push(conditionObj);
               break;
             default:
           }
@@ -201,9 +197,7 @@ class DataDisplay extends Component {
           copyListCards[currentCardIndex].listOperations = copyListOperations;
           copyListCards[currentCardIndex].listElements = copyListElements;
 
-          // copyListCards[currentCardIndex].listElements = listCards[cardSelected].listElements
-          //   .concat(newElem);
-          console.log(copyListOperations);
+          // console.log(copyListOperations);
           this.setState({ listCards: copyListCards, filtering: false });
         }
 
@@ -252,7 +246,9 @@ class DataDisplay extends Component {
     const appTop = this.appRef.current.offsetTop;
     const appLeft = this.appRef.current.offsetLeft;
     if (cardSelected === card) {
+      console.log('merger array: ', mergerArray);
       if (mergerArray[0] === null) {
+        console.log("option 1");
         await this.setState({
           mergerArray: [conditionalButtonId, null, null],
           menuVisible: true,
@@ -260,13 +256,17 @@ class DataDisplay extends Component {
           menuLeft: clickLeft - appLeft - 15,
         });
       } else if (mergerArray[1] === null && mergerArray[0] === conditionalButtonId && menuVisible === false){
+        console.log("option 2");
         this.setState({ menuVisible: true });
       } else if (mergerArray[1] === null && mergerArray[0] !== conditionalButtonId) {
-        await this.setState({ mergerArray: [conditionalButtonId, null, null] });
+        console.log("option 3");
+        await this.setState({ mergerArray: [conditionalButtonId, null, null], menuVisible: true });
       } else if (mergerArray[1] !== null && mergerArray[0] !== conditionalButtonId) {
+        console.log('this is clicked 4');
         this.merger(mergerArray[0], mergerArray[1], conditionalButtonId);
         await this.setState({ mergerArray: [null, null, null] });
       } else if (mergerArray[1] !== null && mergerArray[0] === conditionalButtonId) {
+        console.log("option 5");
         this.setState({ mergerArray: [mergerArray[0], null, null], menuVisible: true });
       }
     }
@@ -459,6 +459,7 @@ class DataDisplay extends Component {
       cardId: 0,
       field: [],
       listOperations: [],
+      listElements: [],
       idConditional: 0,
       menuVisible: false,
       mergerArray: [null, null, null],
@@ -488,6 +489,9 @@ class DataDisplay extends Component {
     // adds a click handler to all components of the DropDownMenu
     const propertiesMenu = { fromMenu: this.menuClickHandler };
     const MenuElementWithHandler = ComponentEnhancer(MenuOption, propertiesMenu);
+
+    const currentCardIndex = this.cardSearcher(cardSelected);
+
 
     // adds handler to the navbar buttons
     // const navbarProps = { fromButton: this.navbarClickHandler };
@@ -575,7 +579,8 @@ class DataDisplay extends Component {
                 cardSelected={cardSelected} id={el.id}
               >
                 <ConditionButtonFormatter fromFormatter={this.fromFormat}>
-                  {el.listElements.map(elem => (elem.active ? elem.element : null))}
+                  {el.listElements.map((elem, index) =>
+                    (listCards[currentCardIndex].listOperations[index].active ? elem : null))}
                 </ConditionButtonFormatter>
               </Keyboard>
             );
