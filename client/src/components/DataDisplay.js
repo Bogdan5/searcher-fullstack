@@ -1,22 +1,22 @@
-import React, {Component} from 'react';
-import { matchPath } from 'react-router-dom';
 import axios from 'axios';
+import React, { Component } from 'react';
+import { matchPath } from 'react-router-dom';
 import uuid from 'uuid';
-
-import Table from './Table';
-import Keyboard from './Keyboard';
-import ButtonGroup from './ButtonGroup';
-import ComponentEnhancer from './ComponentEnhancer';
-import ConditionButtonFormatter from './ConditionButtonFormatter';
-import ConditionButton from './ConditionButton';
-import DumbButton from './DumbButton';
-import MenuOption from './MenuOption';
-import DropDownMenu from './DropDownMenu';
-import Icon from './Icon';
-import SelectButton from './SelectButton';
-
 // import PropTypes from 'prop-types';
 import '../App.scss';
+import ButtonGroup from './ButtonGroup';
+import ComponentEnhancer from './ComponentEnhancer';
+import ConditionButton from './ConditionButton';
+import ConditionButtonFormatter from './ConditionButtonFormatter';
+import DropDownMenu from './DropDownMenu';
+import DumbButton from './DumbButton';
+import Icon from './Icon';
+import Keyboard from './Keyboard';
+import MenuOption from './MenuOption';
+import SelectButton from './SelectButton';
+import Table from './Table';
+
+
 
 class DataDisplay extends Component {
   constructor (props) {
@@ -131,7 +131,7 @@ class DataDisplay extends Component {
   fromButton = async (name) => {
     const {
       keyword, keywordButtonClicked, cardSelected,
-      position, listCards,
+      position, listCards, currentCardIndex
     } = this.state;
     
     let chldList = [];
@@ -139,8 +139,7 @@ class DataDisplay extends Component {
     switch (name) {
       case 'SUBMIT':
         const copyListCards = [...listCards];
-        const currentCardIndex = this.cardSearcher(cardSelected);
-        console.log('cardIndex: ', currentCardIndex);
+        // const currentCardIndex = this.cardSearcher(cardSelected);
         const copyListOperations = [...copyListCards[currentCardIndex].listOperations];
         const copyListElements = [...copyListCards[currentCardIndex].listElements];
 
@@ -190,7 +189,6 @@ class DataDisplay extends Component {
           copyListCards[currentCardIndex].listOperations = copyListOperations;
           copyListCards[currentCardIndex].listElements = copyListElements;
 
-          // console.log(copyListOperations);
           this.setState({ listCards: copyListCards, filtering: false });
         }
 
@@ -273,7 +271,7 @@ class DataDisplay extends Component {
   menuHide = () => this.setState({ menuVisible: false });
 
   selectCard = (card) => {
-    this.setState({ cardSelected: card });
+    this.setState({ cardSelected: card, currentCardIndex: this.cardSearcher(card) });
   }
 
   // handles clicks on the menu - calls merger to merge conditional buttons
@@ -302,7 +300,7 @@ class DataDisplay extends Component {
 
   cardSearcher = (cardId) => {
     const { listCards } = this.state;
-    console.log('list cards', listCards);
+    console.log('cardSearcher');
     for (let i in listCards) {
       if (listCards[i].cardId === cardId) { return i; }
     }
@@ -310,12 +308,12 @@ class DataDisplay extends Component {
   }
 
   merger = async (...arr) => {
-    const { listCards, cardSelected } = this.state;
+    const { listCards, cardSelected, currentCardIndex } = this.state;
     const newId = uuid.v4();
 
     const index1 = this.buttonSearcher(arr[0]);
     const index2 = arr[2] ? this.buttonSearcher(arr[2]) : null;
-    const currentCardIndex = this.cardSearcher(cardSelected);
+    // const currentCardIndex = this.cardSearcher(cardSelected);
 
     // make copies of the list of cards to maintain immutability
     const copyListCards = [...listCards];
@@ -387,13 +385,16 @@ class DataDisplay extends Component {
           cardId: listCards.length,
           listOperations: [],
           listElements: [],
-          currentCardIndex: listCards.length
         }),
+        currentCardIndex: listCards.length,
       });
     } else if (type === '-' && listCards.length > 1) {
       const copy = [...listCards];
       copy.splice(keyboardNo, 1);
-      this.setState({ listCards: copy });
+      this.setState({
+        listCards: copy,
+        currentCardIndex: 0,
+      });
     }
   }
 
@@ -433,6 +434,7 @@ class DataDisplay extends Component {
       menuVisible: false,
       mergerArray: [null, null, null],
       filtering: false,
+      currentCardIndex: 0,
     }]});
   }
 
@@ -453,7 +455,7 @@ class DataDisplay extends Component {
     const propertiesMenu = { fromMenu: this.menuClickHandler };
     const MenuElementWithHandler = ComponentEnhancer(MenuOption, propertiesMenu);
 
-    const currentCardIndex = this.cardSearcher(cardSelected);
+    // const currentCardIndex = this.cardSearcher(cardSelected);
 
     return (
       <div className='dataDisplay'>
@@ -516,7 +518,7 @@ class DataDisplay extends Component {
             // the left component of the card - determines whether card used or what columns are displayed
             const typeContent = (
               <div>
-                <SelectButton card={el.id} fromSelect={this.selectCard}>Select</SelectButton>
+                <SelectButton card={el.cardId} fromSelect={this.selectCard}>Select</SelectButton>
                 <br />
                 <input type='text' placeholder='Input column numbers' onChange={this.columnSelector}></input>
                 <button type='button' onClick={this.columnSelectorSubmit}>Submit</button>
@@ -529,8 +531,10 @@ class DataDisplay extends Component {
                 cardSelected={cardSelected} id={el.id}
               >
                 <ConditionButtonFormatter fromFormatter={this.fromFormat}>
-                  {el.listElements.map((elem, index) =>
-                    (listCards[currentCardIndex].listOperations[index].active ? elem : null))}
+                  {el.listElements.map((elem, indx) => {
+                    return (listCards[index].listOperations[indx] &&
+                    listCards[index].listOperations[indx].active) ? elem : null
+                  })}
                 </ConditionButtonFormatter>
               </Keyboard>
             );
