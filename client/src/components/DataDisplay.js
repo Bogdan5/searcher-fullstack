@@ -41,6 +41,7 @@ class DataDisplay extends Component {
         listElements: []
       }],
       cardSelected: 0, // where conditional buttons go at one time
+      currentCardIndex: 0,
       keyword: '', // content of the keyword input text field
       inputVisibility: 'visible', // in the second Keyboard, whether the position input is visible
       keywordButtonClicked: '', // name of button clicked in the keyword(2nd) Keyboard
@@ -133,14 +134,13 @@ class DataDisplay extends Component {
       position, listCards,
     } = this.state;
     
-    // const len = currentOperation.length;
     let chldList = [];
     let lst = [];
-    // const listCopy = [...listCards];
     switch (name) {
       case 'SUBMIT':
         const copyListCards = [...listCards];
         const currentCardIndex = this.cardSearcher(cardSelected);
+        console.log('cardIndex: ', currentCardIndex);
         const copyListOperations = [...copyListCards[currentCardIndex].listOperations];
         const copyListElements = [...copyListCards[currentCardIndex].listElements];
 
@@ -174,15 +174,8 @@ class DataDisplay extends Component {
           copyListCards[currentCardIndex].listOperations = copyListOperations;
           await this.setState({ listCards: copyListCards });
 
-          let buttonIndex = this.buttonSearcher(idCond);
           let len = this.state.listCards[currentCardIndex].listOperations.length;
-          // let isActive;
-          // if (buttonIndex === -1) {
-          //   isActive = true;
-          // } else {
-          //   isActive = listCards[currentCardIndex].listOperations[buttonIndex];
-          // }
-          // this.setState({ idConditional: idConditional + 1 });
+
           // adding the merged Conditional Button to the list of elements
           const propsArray = { // props passed to the ConditioButton prop
             children: chldList,
@@ -246,9 +239,7 @@ class DataDisplay extends Component {
     const appTop = this.appRef.current.offsetTop;
     const appLeft = this.appRef.current.offsetLeft;
     if (cardSelected === card) {
-      console.log('merger array: ', mergerArray);
       if (mergerArray[0] === null) {
-        console.log("option 1");
         await this.setState({
           mergerArray: [conditionalButtonId, null, null],
           menuVisible: true,
@@ -256,18 +247,24 @@ class DataDisplay extends Component {
           menuLeft: clickLeft - appLeft - 15,
         });
       } else if (mergerArray[1] === null && mergerArray[0] === conditionalButtonId && menuVisible === false){
-        console.log("option 2");
-        this.setState({ menuVisible: true });
+        this.setState({
+          menuVisible: true,
+          menuTop: clickTop - appTop - 10,
+          menuLeft: clickLeft - appLeft - 15, });
       } else if (mergerArray[1] === null && mergerArray[0] !== conditionalButtonId) {
-        console.log("option 3");
-        await this.setState({ mergerArray: [conditionalButtonId, null, null], menuVisible: true });
+        await this.setState({
+          mergerArray: [conditionalButtonId, null, null],
+          menuVisible: true,
+          menuTop: clickTop - appTop - 10,
+          menuLeft: clickLeft - appLeft - 15, });
       } else if (mergerArray[1] !== null && mergerArray[0] !== conditionalButtonId) {
-        console.log('this is clicked 4');
         this.merger(mergerArray[0], mergerArray[1], conditionalButtonId);
         await this.setState({ mergerArray: [null, null, null] });
       } else if (mergerArray[1] !== null && mergerArray[0] === conditionalButtonId) {
-        console.log("option 5");
-        this.setState({ mergerArray: [mergerArray[0], null, null], menuVisible: true });
+        this.setState({ mergerArray: [mergerArray[0], null, null],
+          menuVisible: true,
+          menuTop: clickTop - appTop - 10,
+          menuLeft: clickLeft - appLeft - 15, });
       }
     }
   };
@@ -305,7 +302,8 @@ class DataDisplay extends Component {
 
   cardSearcher = (cardId) => {
     const { listCards } = this.state;
-    for (let i = 0; i < listCards.length; i++) {
+    console.log('list cards', listCards);
+    for (let i in listCards) {
       if (listCards[i].cardId === cardId) { return i; }
     }
     return -1;
@@ -318,17 +316,6 @@ class DataDisplay extends Component {
     const index1 = this.buttonSearcher(arr[0]);
     const index2 = arr[2] ? this.buttonSearcher(arr[2]) : null;
     const currentCardIndex = this.cardSearcher(cardSelected);
-    let buttonIndex = this.buttonSearcher(newId);
-    // console.log('card index: ', currentCardIndex);
-    // console.log('button index: ', buttonIndex);
-    // let isActive;
-    // if (buttonIndex === -1) {
-    //   isActive = [true];
-    // } else {
-    //   isActive = listCards[currentCardIndex].listOperations[buttonIndex].active;
-    // }
-
-    // console.log('listOperations: ', listCards[currentCardIndex].listOperations[buttonIndex]);
 
     // make copies of the list of cards to maintain immutability
     const copyListCards = [...listCards];
@@ -359,8 +346,6 @@ class DataDisplay extends Component {
     copyListCards[currentCardIndex].listOperations = copyListOperations;
     await this.setState({listCards: copyListCards});
 
-    // await this.setState({ active: listCards[currentCardIndex].listOperations[buttonIndex].active})
-
     let len = this.state.listCards[currentCardIndex].listOperations.length;
 
     // merges two conditional buttons into a combined new conditional button
@@ -389,24 +374,6 @@ class DataDisplay extends Component {
     copyListElements.push(newEl);
     copyListCards[currentCardIndex].listElements = copyListElements;
 
-    // chaging the active status of the elements
-    // const newProps1 = Object.assign({}, copyListOperations[index1].element.props, {active: false});
-    // const newElement1 = Object.assign({}, copyListOperations[index1].element, {props: newProps1});
-    // const newOperation1 = Object.assign({}, copyListOperations[index1], {element: newElement1});
-    // copyListOperations.splice(index1, 1, newOperation1)
-    // if (arr[2]){
-    //   const newProps2 = Object.assign({}, copyListOperations[index2].element.props, {active: false});
-    //   const newElement2 = Object.assign({}, copyListOperations[index2].element, {props: newProps2});
-    //   const newOperation2 = Object.assign({}, copyListOperations[index2], {element: newElement2});
-    //   copyListOperations.splice(index2, 1, newOperation2)
-    // }
-
-    // console.log(newOperation);
-
-    // console.log('list operations: ', copyListOperations);
-
-    
-    // console.log(copyListCards[currentCardIndex]);
     this.setState({ listCards: copyListCards });
     // this.updateHistory();
   }
@@ -419,6 +386,8 @@ class DataDisplay extends Component {
         listCards: listCards.concat({
           cardId: listCards.length,
           listOperations: [],
+          listElements: [],
+          currentCardIndex: listCards.length
         }),
       });
     } else if (type === '-' && listCards.length > 1) {
@@ -471,13 +440,7 @@ class DataDisplay extends Component {
     const {data, inputVisibility, active, listCards, cardSelected, menuVisible,
       menuTop, menuLeft, filtering,
       } = this.state;
-    // const {
-      // inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
-      // data, windowVisible, uploaded, uploadedID, userID, username, uploadSuccesful, displayData,
-      // accountView, accountData, startScreenDisplay, optionChosen, authenticated, anonymous,
-      // goToSignIn, goHome, goUpload, fileID, goToDisplay
-      // authenticated, userID, username
-    // } = this.state;
+
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
       fromButton: this.fromButton, // a handler is added to buttons in order to pass data
@@ -491,19 +454,6 @@ class DataDisplay extends Component {
     const MenuElementWithHandler = ComponentEnhancer(MenuOption, propertiesMenu);
 
     const currentCardIndex = this.cardSearcher(cardSelected);
-
-
-    // adds handler to the navbar buttons
-    // const navbarProps = { fromButton: this.navbarClickHandler };
-    // const NavbarButtons = ComponentEnhancer(DumbButton, navbarProps);
-
-    // adds a closing button to all the pop-up windows (upload, signup, and signin)
-    // const closingButton = (
-    //   <div className='popHeader'>
-    //     <div onClick={this.closeUploadWindow}>X</div>
-    //   </div>
-    // );
-    // const PopupWindowEnhanced = ComponentChildAdder(UploadWindow, closingButton, 0);
 
     return (
       <div className='dataDisplay'>
