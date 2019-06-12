@@ -16,29 +16,27 @@ import MenuOption from './MenuOption';
 import SelectButton from './SelectButton';
 import Table from './Table';
 
-
-
 class DataDisplay extends Component {
   constructor (props) {
     super(props);
     const match = matchPath(this.props.location.pathname,{
       path: '/api/datadisplay/:id'
     });
-    this.textInput = React.createRef();
-    this.appRef = React.createRef();
+    this.textInput = React.createRef(); // ref used to autofocus the keyword input
+    this.appRef = React.createRef(); // ref used to measure the position of the App div
     this.state = {
       prevPath: '',
       data: {
-        header: [],
-        body: [],
-        description: ''
+        header: [], // header of the csv data file
+        body: [], // data of the csv data file
+        description: '' // string describing each file
       },
       fileID: match.params.id,
       listCards: [{ // list of all the conditions cards that include conditional buttons
         cardId: 0, // id to identify each card
         field: [], // on what columns of the data the list of operations apply
         listOperations: [], // what conditions aply to the data - helps sort
-        listElements: []
+        listElements: [] // the list of conditional elements
       }],
       cardSelected: 0, // where conditional buttons go at one time
       currentCardIndex: 0,
@@ -48,9 +46,9 @@ class DataDisplay extends Component {
       active: [], // array of buttons active
       position: 0,
       idConditional: 0,
-      menuVisible: false,
-      mergerArray: [null, null, null],
-      filtering: false,
+      menuVisible: false, // true if the menu is visible when a conditional button is clicked
+      mergerArray: [null, null, null], // the array composed of 2 conditional buttons and an operation
+      filtering: false, // true if filtering is taking place
     }
   }
 
