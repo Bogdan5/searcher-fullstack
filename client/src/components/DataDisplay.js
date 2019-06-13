@@ -39,7 +39,7 @@ class DataDisplay extends Component {
         listElements: [] // the list of conditional elements
       }],
       cardSelected: 0, // where conditional buttons go at one time
-      currentCardIndex: 0,
+      currentCardIndex: 0, // on the array of cards what position is the current card
       keyword: '', // content of the keyword input text field
       inputVisibility: 'visible', // in the second Keyboard, whether the position input is visible
       keywordButtonClicked: '', // name of button clicked in the keyword(2nd) Keyboard
@@ -58,6 +58,7 @@ class DataDisplay extends Component {
     const conf = {
       headers: { 'Authorization': bearer }
     };
+    // retrieves data from csv files uploaded in the database
     axios.get(`/api/datadisplay/${fileID}`, conf)
       .then(async (response) => {
         let newHeader = [];
@@ -86,10 +87,12 @@ class DataDisplay extends Component {
       });
   }
 
+  // escapes the special characters to be able to translate string to RegExp
   regExpEscape(literal_string) {
     return literal_string.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&');
   }
 
+  // returns a function that returns true if the data checked matches a regex
   include (whatIsIncluded, position){
     const reg = new RegExp(this.regExpEscape(whatIsIncluded));
     return function(data){
@@ -101,6 +104,7 @@ class DataDisplay extends Component {
     }
   }
 
+  // returns a function that returns true if the data checked ends in a regex
   endsWith (whatIsIncluded){
     const reg = new RegExp(this.regExpEscape(whatIsIncluded) + '$');
     return function(data){
@@ -108,24 +112,28 @@ class DataDisplay extends Component {
     }
   }
 
+  // boolean merger of two operations with AND
   conjunction(fn1, fn2){
     return function(data){
       return fn1(data) && fn2(data);
     }
   }
   
+  // boolean merger of two operations with OR
   disjunction(fn1, fn2){
     return function(data){
       return fn1(data) || fn2(data);
     }
   }
   
+  // boolean opposite of an operation
   negation(fn){
     return function(data){
       return !fn(data);
     }
   }
 
+  // builds conditional elements and operations from clicking the buttons in the conditional constructor card
   fromButton = async (name) => {
     const {
       keyword, keywordButtonClicked, cardSelected,
@@ -221,10 +229,12 @@ class DataDisplay extends Component {
     }
   };
 
+  // sets the keyword used in conditional operations and elements from the text input html component
   textHandler = (e) => {
     this.setState({ keyword: e.target.value });
   };
 
+  // 
   positionHandler = (e) => {
     this.setState({ position: e.target.value });
   }
