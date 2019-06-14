@@ -3,24 +3,18 @@ import axios from 'axios';
 import { Switch, Route, NavLink } from 'react-router-dom';
 // import uuid from "uuid";
 
-
+// component that displays the data retrieved from server
 import DataDisplay from './components/DataDisplay';
-// import Header from './components/Header';
-// import Sorter from './components/Sorter';
-// import ConditionButton from './components/ConditionButton';
-
-// import UploadWindow from './components/UploadWindow';
+// navigation bar
 import NavBar from './components/NavBar';
-// import ComponentChildAdder from './components/ComponentChildAdder';
-// import Register from './components/Register.js';
+// sign in form
 import SignInWithRouter from './components/SignIn.js';
-// import SortButton from './components/SortButton';
-// import BackgroundPopWindow from './components/BackgroundPopWindow';
+// upload file form
 import Upload from './components/Upload';
+// shows the uploaded files by an user
 import AccountWithRouter from './components/Account';
+// initial options
 import StartScreen from './components/StartScreen';
-// import SignOptions from './components/SignOptions';
-// import UploadSuccess from './components/UploadSuccess';
 
 import './App.scss';
 
@@ -76,6 +70,7 @@ class App extends Component {
     const conf = {
       headers: { 'Authorization': bearer }
     };
+    // tests if the user is signed in - if not, redirects to sign in
     axios.get('/test', conf)
       .then(async (res) => {
         await this.setState({ authenticated: true, username: res.data.username, userID: res.data._id });
@@ -92,29 +87,32 @@ class App extends Component {
     }
   }
 
+  // retrieves the keyword from the input form
   textHandler = (e) => {
     this.setState({ keyword: e.target.value });
   };
 
+  // retrieves the position number
   positionHandler = (e) => {
     this.setState({ position: e.target.value });
   }
 
-   // modifies the visibility of the menu that helps merge conditional buttons
-   menuHide = () => this.setState({ menuVisible: false });
+  // modifies the visibility of the menu that helps merge conditional buttons
+  menuHide = () => this.setState({ menuVisible: false });
 
+   // changes the card when the 'select' button clicked
    selectCard = (card) => {
-     // console.log('card selected' + card);
      this.setState({ cardSelected: card });
    }
  
-   searchObject = (obj, searchPropName, searchProp, targetProp) => {
-     let result = null;
-     Object.keys(obj).forEach((el) => {
-       if (el[searchPropName] === searchProp) { result = obj[targetProp]; }
-     });
-     return result;
-   }
+   // 
+  //  searchObject = (obj, searchPropName, searchProp, targetProp) => {
+  //    let result = null;
+  //    Object.keys(obj).forEach((el) => {
+  //      if (el[searchPropName] === searchProp) { result = obj[targetProp]; }
+  //    });
+  //    return result;
+  //  }
  
    // sets the kind of colum the condition in the respective card will apply
    setColumnSelect = (event) => {
@@ -132,46 +130,46 @@ class App extends Component {
    // merges two conditional buttons in a larger conditional button
    
  
-   // handles clicks on conditional buttons; helps combine conditions
-   conditionalClickHandler = (id, clickTop, clickLeft, card) => {
-     // console.log('conditional clicked in App button' + clickTop + ' ' + clickLeft);
-     // console.log('formatter offset top' + this.formatterConditionButton.current.offsetTop);
-     const { mergerArray, cardSelected } = this.state;
-     const appTop = this.appRef.current.offsetTop;
-     const appLeft = this.appRef.current.offsetLeft;
-     // console.log('app offsets' + appTop + ' ' + appLeft);
-     if (cardSelected === card) {
-       if (mergerArray[0] === null) {
-         this.setState({
-           mergerArray: [id, null, null],
-           menuVisible: true,
-           menuTop: clickTop - appTop - 10,
-           menuLeft: clickLeft - appLeft - 15,
-         });
-       } else if (mergerArray[1] === null && mergerArray[0] !== id) {
-         this.setState({ mergerArray: [id, null, null] });
-       } else if (mergerArray[1] !== null && mergerArray[0] !== id) {
-         this.merger(mergerArray[0], mergerArray[1], id);
-         this.setState({ mergerArray: [null, null, null] });
-       }
-     }
-   };
- 
-   // handles clicks on the menu - calls merger to merge conditional buttons
-   menuClickHandler = (name) => {
-     const { mergerArray } = this.state;
-     this.setState({ menuVisible: false });
-     if (mergerArray[0] !== null) {
-       const mer = [...mergerArray];
-       mer[1] = name;
-       // console.log('mergerArray ' + this.state.mergerArray);
-       if (name === 'NOT') {
-         this.merger(mergerArray[0], 'NOT');
-       } else {
-         this.setState({ mergerArray: mer });
-       }
-     }
-   }
+  // handles clicks on conditional buttons; helps combine conditions
+  conditionalClickHandler = (id, clickTop, clickLeft, card) => {
+    // console.log('conditional clicked in App button' + clickTop + ' ' + clickLeft);
+    // console.log('formatter offset top' + this.formatterConditionButton.current.offsetTop);
+    const { mergerArray, cardSelected } = this.state;
+    const appTop = this.appRef.current.offsetTop;
+    const appLeft = this.appRef.current.offsetLeft;
+    // console.log('app offsets' + appTop + ' ' + appLeft);
+    if (cardSelected === card) {
+      if (mergerArray[0] === null) {
+        this.setState({
+          mergerArray: [id, null, null],
+          menuVisible: true,
+          menuTop: clickTop - appTop - 10,
+          menuLeft: clickLeft - appLeft - 15,
+        });
+      } else if (mergerArray[1] === null && mergerArray[0] !== id) {
+        this.setState({ mergerArray: [id, null, null] });
+      } else if (mergerArray[1] !== null && mergerArray[0] !== id) {
+        this.merger(mergerArray[0], mergerArray[1], id);
+        this.setState({ mergerArray: [null, null, null] });
+      }
+    }
+  };
+
+  // handles clicks on the menu - calls merger to merge conditional buttons
+  menuClickHandler = (name) => {
+    const { mergerArray } = this.state;
+    this.setState({ menuVisible: false });
+    if (mergerArray[0] !== null) {
+      const mer = [...mergerArray];
+      mer[1] = name;
+      // console.log('mergerArray ' + this.state.mergerArray);
+      if (name === 'NOT') {
+        this.merger(mergerArray[0], 'NOT');
+      } else {
+        this.setState({ mergerArray: mer });
+      }
+    }
+  }
  
    // function that passes data from DumbButton
   //  fromButton = (name) => {
