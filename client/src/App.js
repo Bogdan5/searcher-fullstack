@@ -96,28 +96,6 @@ class App extends Component {
   positionHandler = (e) => {
     this.setState({ position: e.target.value });
   }
-
-  // modifies the visibility of the menu that helps merge conditional buttons
-  menuHide = () => this.setState({ menuVisible: false });
-
-   // changes the card when the 'select' button clicked
-   selectCard = (card) => {
-     this.setState({ cardSelected: card });
-   }
- 
-   // 
-  //  searchObject = (obj, searchPropName, searchProp, targetProp) => {
-  //    let result = null;
-  //    Object.keys(obj).forEach((el) => {
-  //      if (el[searchPropName] === searchProp) { result = obj[targetProp]; }
-  //    });
-  //    return result;
-  //  }
- 
-   // sets the kind of colum the condition in the respective card will apply
-   setColumnSelect = (event) => {
-     console.log(event.target.value);
-   }
  
    // updateHistory = () => {
    //   const { historyElements, historyOperations, listElements, listOperations } = this.state;
@@ -130,30 +108,6 @@ class App extends Component {
    // merges two conditional buttons in a larger conditional button
    
  
-  // handles clicks on conditional buttons; helps combine conditions
-  conditionalClickHandler = (id, clickTop, clickLeft, card) => {
-    // console.log('conditional clicked in App button' + clickTop + ' ' + clickLeft);
-    // console.log('formatter offset top' + this.formatterConditionButton.current.offsetTop);
-    const { mergerArray, cardSelected } = this.state;
-    const appTop = this.appRef.current.offsetTop;
-    const appLeft = this.appRef.current.offsetLeft;
-    // console.log('app offsets' + appTop + ' ' + appLeft);
-    if (cardSelected === card) {
-      if (mergerArray[0] === null) {
-        this.setState({
-          mergerArray: [id, null, null],
-          menuVisible: true,
-          menuTop: clickTop - appTop - 10,
-          menuLeft: clickLeft - appLeft - 15,
-        });
-      } else if (mergerArray[1] === null && mergerArray[0] !== id) {
-        this.setState({ mergerArray: [id, null, null] });
-      } else if (mergerArray[1] !== null && mergerArray[0] !== id) {
-        this.merger(mergerArray[0], mergerArray[1], id);
-        this.setState({ mergerArray: [null, null, null] });
-      }
-    }
-  };
 
   // handles clicks on the menu - calls merger to merge conditional buttons
   menuClickHandler = (name) => {
@@ -169,115 +123,7 @@ class App extends Component {
         this.setState({ mergerArray: mer });
       }
     }
-  }
- 
-   // function that passes data from DumbButton
-  //  fromButton = (name) => {
-  //    const {
-  //      keyword, keywordButtonClicked, cardSelected,
-  //      position, idConditional, listCards,
-  //    } = this.state;
-  //   //  const { listOperations } = listCards[cardSelected];
- 
-  //    // function that determines whether the keyword matches the data at the required position
-  //    const include = (word, posit) => (data) => {
-  //      if (position || position === 0) {
-  //        return data.match(new RegExp(word)).index === posit;
-  //      }
-  //      return data.match(new RegExp(word));
-  //    };
- 
-  //    // function that determines whether the data string starts with the keyword
-  //    const endsWith = word => (data) => {
-  //      const len = data.length - word.length;
-  //      return include(word, len);
-  //    };
- 
-  //    this.setState({ keywordButtonClicked: name });
-  //    if (name === 'INCLUDES') { this.setState({ inputVisibility: 'visible' }); }
-  //    // const len = currentOperation.length;
-  //    let chldList = [];
-  //    let lst = [];
-  //    const listCopy = [...listCards];
-  //    switch (name) {
-  //      case 'SUBMIT':
-  //        if (keywordButtonClicked && keyword) {
-  //          switch (keywordButtonClicked) {
-  //            case 'INCLUDES':
-  //              lst = ['Includes ', keyword, ' at position ', position];
-  //              listCopy[cardSelected].listOperations.push(include(keyword, position));
-  //              break;
-  //            case 'ENDS WITH':
-  //              lst = ['Ends with ', keyword];
-  //              listCopy[cardSelected].listOperations.push(endsWith(keyword));
-  //              break;
-  //            case 'STARTS WITH':
-  //              lst = ['Starts with ', keyword];
-  //              listCopy[cardSelected].listOperations.push(include(keyword));
-  //              break;
-  //            default:
-  //          }
-  //          this.setState({ listCards: listCopy });
-  //          chldList = lst.map((el, index) => <span key={index}>{`${el}`}</span>);
-  //          this.setState({ idConditional: idConditional + 1 });
-  //          const propsArray = { // props passed to the ConditioButton prop
-  //            children: chldList,
-  //            key: idConditional,
-  //            fromConditional: this.conditionalClickHandler,
-  //            id: idConditional,
-  //          };
-  //          const newElem = <ConditionButton {...propsArray} />;
-  //          const copyList = [...listCards];
-  //          copyList[cardSelected].listElements = listCards[cardSelected].listElements
-  //            .concat(newElem);
-  //          this.setState(
-  //            {
-  //              listCards: copyList,
-  //              idConditional: idConditional + 1,
-  //            },
-  //          );
-  //          // this.updateHistory();
-  //        }
- 
-  //        break;
-  //      case 'CANCEL':
-  //        this.setState({ currentOperation: [] });
-  //        break;
-  //      case 'Sign up':
-  //        this.setState({ windowKind: 'Sign up'});
-  //        break;
-  //      case 'Sign in':
-  //       this.setState({ windowKind: 'Sign in'});
-  //       break;
-  //      case 'Upload file':
-  //        this.setState({ windowKind: 'Upload file'});
-  //        break;
-  //      default:
-
-  //      if (this.state.windowVisible) {
-  //        this.openWindow();
-  //      }
-  //    }
-  //  };
- 
-  //  // handles clicks on the two icons (+ or -) - adds or deletes cards
-  //  iconClicked = (type, keyboardNo) => {
-  //    const { listCards } = this.state;
-  //    if (type === '+') {
-  //      this.setState({
-  //        listCards: listCards.concat({
-  //          id: listCards.length,
-  //          listElements: [],
-  //          listOperations: [],
-  //        }),
-  //      });
-  //    } else if (type === '-' && listCards.length > 1) {
-  //      // console.log('deleted card ' + keyboardNo);
-  //      const copy = [...listCards];
-  //      copy.splice(keyboardNo, 1);
-  //      this.setState({ listCards: copy });
-  //    }
-  //  }
+  } 
 
    ///////////////////////////////////////////////////Routing methods////////////////////////////////////////
    isAuthenticated = (authenticated, userID) => this.setState({authenticated, userID});
@@ -342,33 +188,8 @@ class App extends Component {
   //   this.setState({ uploaded: false, windowVisible: true, goHome: false });
   // }
 
-  // viewAccount = () => {
-  //   const bearer = 'Bearer ' + localStorage.getItem('token');
-  //   const conf = {
-  //     headers: { 'Authorization': bearer },
-  //     userID: this.state.userID,
-  //   };
-  //   axios.get(`/api/account/${this.state.userID}`, conf)
-  //     .then((response) => {
-  //       console.log('account get response: ', response.data);
-  //       this.setState({accountData: response.data, accountView: true, windowVisible: true, displayData: false,
-  //         goHome: false, goToSignIn: false });
-  //     })
-  //     .catch((err) => {
-  //       console.log('err', typeof err.response.status);
-  //       if(err.response.status === 401) {
-  //         console.log('401 called')
-  //         this.setState({ windowVisible: true, goToSignIn: true, prevPath: '/api/account' });
-  //       }
-  //     });
-  // }
-
   // accountExit = () => {
   //   this.setState({ accountView: false, windowVisible: false, goHome: true, goUpload: false });
-  // }
-
-  // getAccountFile = (id) => {
-
   // }
 
   // optChosen = (option) => {
@@ -388,47 +209,6 @@ class App extends Component {
 
   //   this.setState({ optionChosen: option, startScreenDisplay: false })
   // }
-
-  // getFile = (fileID) => {
-  //   console.log('getFile in App');
-  //   this.setState({ fileID, windowVisible: false, goToDisplay: true });
-  // }
-
-  // getUploadedData = (id = this.state.uploadedID) => {
-  //   console.log('get uploaded data fired - id: ', id);
-  //   const bearer = 'Bearer ' + localStorage.getItem('token');
-  //   const conf = {
-  //     headers: { 'Authorization': bearer }
-  //   };
-  //   axios.get(`/api/datadisplay/${id}`, conf)
-  //     .then(async (response) => {
-  //       console.log('get data start');
-  //       console.log('data is: ', response);
-  //       let newHeader = [];
-  //       let newBody = [];
-  //       response.data.header.map(el => newHeader.push([uuid.v4(), el]));
-  //       response.data.body.map(el => {
-  //         let newRow = [];
-  //         el.map(elem => newRow.push([uuid.v4(), elem]));
-  //         return newBody.push([uuid.v4(), newRow]);
-  //       });
-  //       const newData = {
-  //         header: newHeader,
-  //         body: newBody,
-  //         id,
-  //         description: response.data.description,
-  //       };
-  //       await this.setState({ data: newData, windowVisible: false, uploadedID: id,
-  //         uploadSuccesful: false, displayData: true, accountView: false, goUpload: false });
-  //       // console.log('new Data is: ', this.state.data);
-  //     })
-  //     .catch((err) => {
-  //       if(err.response.status === 401) {
-  //         console.log(`Error: ${err}`)
-  //         this.setState({ windowVisible: true, goToSignIn: true, prevPath: `/api/datadisplay/${id}` });
-  //       }
-  //     });
-      // this.setState({ uploadSuccesful: false });
 
   // }
 
