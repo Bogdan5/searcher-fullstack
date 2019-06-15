@@ -40,24 +40,12 @@ class App extends Component {
       menuVisible: false,
       mergerArray: [null, null, null],
       data: {},
-      // windowVisible: true,
       windowKind: 'upload',
       email: '',
-      // uploaded: false,
-      // uploadedID: null,
-      // uploadedData: {},
       userID: null,
       username: '',
-      // accountView: false,
-      // accountData: null,
-      // startScreenDisplay: true,
-      // optionChosen: 'without',
       authenticated: false,
       anonymous: true,
-      // uploadedSuccesful: false,
-      // displayData: false,
-      // goToSignIn: false,
-      // goUpload: false,
       fileID: '',
       goToDisplay: false,
       prevPath: '/',
@@ -104,10 +92,6 @@ class App extends Component {
    //     historyOperations: historyOperations.concat(listOperations),
    //   });
    // }
- 
-   // merges two conditional buttons in a larger conditional button
-   
- 
 
   // handles clicks on the menu - calls merger to merge conditional buttons
   menuClickHandler = (name) => {
@@ -217,36 +201,7 @@ class App extends Component {
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   render() {
-    const {
-      // inputVisibility, menuVisible, active, listCards, menuTop, menuLeft, cardSelected,
-      // data, windowVisible, uploaded, uploadedID, userID, username, uploadSuccesful, displayData,
-      // accountView, accountData, startScreenDisplay, optionChosen, authenticated, anonymous,
-      // goToSignIn, goHome, goUpload, fileID, goToDisplay
-      authenticated, userID, username, prevPath
-    } = this.state;
-    // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
-    // const propertiesObj = { // properties object passed to ComponentEnhancer
-    //   fromButton: this.fromButton, // a handler is added to buttons in order to pass data
-    //   // from DumbButton chid to the App parent
-    //   active, // in element buttons, true greyed out
-    //   keywordButtonClicked: this.state, // what element button is clicked
-    // };
-    // const ButtonWithHandler = ComponentEnhancer(DumbButton, propertiesObj);
-    // adds a click handler to all components of the DropDownMenu
-    // const propertiesMenu = { fromMenu: this.menuClickHandler };
-    // const MenuElementWithHandler = ComponentEnhancer(MenuOption, propertiesMenu);
-
-    // adds handler to the navbar buttons
-    // const navbarProps = { fromButton: this.navbarClickHandler };
-    // const NavbarButtons = ComponentEnhancer(DumbButton, navbarProps);
-
-    // adds a closing button to all the pop-up windows (upload, signup, and signin)
-    // const closingButton = (
-    //   <div className='popHeader'>
-    //     <div onClick={this.closeUploadWindow}>X</div>
-    //   </div>
-    // );
-    // const PopupWindowEnhanced = ComponentChildAdder(UploadWindow, closingButton, 0);
+    const { authenticated, userID, username, prevPath } = this.state;
 
     return (
       <div className='bodyContainer'>
