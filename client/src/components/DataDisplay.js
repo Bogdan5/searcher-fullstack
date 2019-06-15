@@ -234,7 +234,7 @@ class DataDisplay extends Component {
     this.setState({ keyword: e.target.value });
   };
 
-  // 
+  // sets the position where the keyword is located
   positionHandler = (e) => {
     this.setState({ position: e.target.value });
   }
@@ -278,6 +278,7 @@ class DataDisplay extends Component {
   // modifies the visibility of the menu that helps merge conditional buttons
   menuHide = () => this.setState({ menuVisible: false });
 
+  // sets the current card with the select button
   selectCard = (card) => {
     this.setState({ cardSelected: card, currentCardIndex: this.cardSearcher(card) });
   }
@@ -297,6 +298,7 @@ class DataDisplay extends Component {
     }
   }
 
+  // returns the index in the list operations of the conditional button with id
   buttonSearcher = (id) => {
     const { listCards, cardSelected } = this.state;
     const cardIndex = this.cardSearcher(cardSelected);
@@ -306,15 +308,16 @@ class DataDisplay extends Component {
     return -1;
   };
 
+  // returns the index of the current card
   cardSearcher = (cardId) => {
     const { listCards } = this.state;
-    console.log('cardSearcher');
     for (let i in listCards) {
       if (listCards[i].cardId === cardId) { return i; }
     }
     return -1;
   }
 
+  // merges conditional buttons into a combined button through the 'and', 'or', 'not' operations
   merger = async (...arr) => {
     const { listCards, cardSelected, currentCardIndex } = this.state;
     const newId = uuid.v4();
