@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import '../App.scss';
 import axios from 'axios';
 import {Link, Route, Redirect, matchPath, withRouter} from 'react-router-dom';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import BackgroundPopWindow from './BackgroundPopWindow';
 import UploadWindow from './UploadWindow';
@@ -26,6 +29,7 @@ class Account extends Component {
 
   componentDidMount() {
     console.log('account mount, authenticated: ', this.props.authenticated);
+    library.add(faTrashAlt);
     const { userID } = this.state;    
     if (userID) {
       this.getData();
@@ -52,6 +56,10 @@ class Account extends Component {
           // this.setState({ windowVisible: true, goToSignIn: true, pr});
         }
       });
+  }
+
+  deleteFile = (e) => {
+    // delete file
   }
 
   getStoredFile = (e) => {
@@ -83,7 +91,7 @@ class Account extends Component {
                     <td>{index}</td>
                     <td id={el._id} onClick={this.getStoredFile}>{el.description}</td>
                     <td>{el.created_at}</td>
-                    <td></td>
+                    <td><FontAwesomeIcon icon={ faTrashAlt } onClick={ this.deleteFile } /></td>
                   </tr>
                 ))}
               </tbody>
