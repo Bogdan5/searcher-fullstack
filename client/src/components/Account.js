@@ -8,6 +8,7 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import BackgroundPopWindow from './BackgroundPopWindow';
 import UploadWindow from './UploadWindow';
+import ConfirmationWindow from './ConfirmationWindow';
 
 class Account extends Component {
   constructor(props){
@@ -24,6 +25,7 @@ class Account extends Component {
       userID: match.params.id,
       goToDisplay: false,
       fileID: '',
+      confirmationVisible: false
     }
   }
 
@@ -63,13 +65,26 @@ class Account extends Component {
 
   }
 
+  confirm = (name) => {
+    if (name === 'yes') {
+      const bearer = 'Bearer ' + localStorage.getItem('token');
+      const conf = {
+        headers: { 'Authorization': bearer }
+      };
+      // retrieves data from csv files uploaded in the database
+      axios.get(`/api/datadisplay/${fileID}`, conf)
+    } else if (name === 'false') {
+
+    }
+  }
+
   getStoredFile = (e) => {
     // this.props.getFile(e.target.id);
     this.setState({ fileID: e.target.id, goToDisplay: true });
   }
 
   render(){
-    const {data, goToDisplay, fileID} = this.state;
+    const {data, goToDisplay, fileID, confirmationVisible} = this.state;
     return (
       <BackgroundPopWindow>
         <UploadWindow>
@@ -102,7 +117,9 @@ class Account extends Component {
           {/* <button type='button' onClick={handler}>Done</button> */}
           <Link to='/'>Done</Link>
         </UploadWindow>
-        
+        <ConfirmationWindow
+          classProp={confirmationVisible} confirmationHandler={this.confirm}
+        />
       </BackgroundPopWindow>
     );
   }

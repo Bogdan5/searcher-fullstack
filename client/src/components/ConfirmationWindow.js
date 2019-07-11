@@ -1,19 +1,15 @@
 import React from 'react';
 import '../App.js';
 
-const ConfirmationWindow = () => {
+const ConfirmationWindow = (props) => {
   const confirm = (e) => {
-
-  }
-
-  const refuse = (e) => {
-
+    props.confirmationHandler(e.target.name);
   }
 
   return (
-    <div>
+    <div className={`${props.classProp}`}>
       <button type="button" onClick={confirm} name="yes">Yes</button>
-      <button type="button" onClick={refuse} name="no">No</button>
+      <button type="button" onClick={confirm} name="no">No</button>
     </div>
   )
 };
