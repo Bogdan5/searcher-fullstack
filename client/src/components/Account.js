@@ -60,6 +60,7 @@ class Account extends Component {
 
   deleteFile = (e) => {
     // delete file
+
   }
 
   getStoredFile = (e) => {
@@ -101,6 +102,7 @@ class Account extends Component {
           {/* <button type='button' onClick={handler}>Done</button> */}
           <Link to='/'>Done</Link>
         </UploadWindow>
+        
       </BackgroundPopWindow>
     );
   }

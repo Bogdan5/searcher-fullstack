@@ -7,7 +7,6 @@ const UploadWindow = (props) => {
   return (
     <div className='popWindow'>
       {children}
-      
     </div>
   );
 }
