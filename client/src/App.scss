@@ -484,3 +484,16 @@ body{
   box-sizing: border-box;
 }
 
+.confirmationWindow{
+  height: 300px;
+  width: 500px;
+  
+}
+
+.visiblePrime{
+  z-index: 10;
+}
+
+.invisiblePrime{
+  z-index: -10;
+}

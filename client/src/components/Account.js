@@ -64,20 +64,22 @@ class Account extends Component {
   deleteHandler = (e) => {
     // delete file
     e.stopPropagation();
-    this.setState({ deletedId: e.target.id});
+    this.setState({ deletedId: e.target.id, confirmationVisible: true });
   }
 
   confirm = (name) => {
+    const {deletedId} = this.state;
     if (name === 'yes') {
       const bearer = 'Bearer ' + localStorage.getItem('token');
       const conf = {
         headers: { 'Authorization': bearer }
       };
       // retrieves data from csv files uploaded in the database
-      axios.delete(`/api/datadisplay/${fileID}`, conf)
-    } else if (name === 'false') {
-
+      axios.delete(`/api/datadisplay/${deletedId}`, conf)
+        .then(response => this.getData())
+        .catch(err => console.log('Delete unsuccessful ', err));
     }
+    this.setState({ confirmationVisible: false})
   }
 
   getStoredFile = (e) => {
@@ -86,7 +88,7 @@ class Account extends Component {
   }
 
   render(){
-    const {data, goToDisplay, fileID, confirmationVisible} = this.state;
+    const {data, goToDisplay, fileID, confirmationVisible, deletedId} = this.state;
     return (
       <BackgroundPopWindow>
         <UploadWindow>
@@ -125,8 +127,8 @@ class Account extends Component {
           <Link to='/'>Done</Link>
         </UploadWindow>
         <ConfirmationWindow
-          classProp={confirmationVisible} confirmationHandler={this.confirm}
-          fileId=
+          visibility={confirmationVisible} confirmationHandler={this.confirm}
+          fileId={deletedId}
         />
       </BackgroundPopWindow>
     );

@@ -7,7 +7,8 @@ const ConfirmationWindow = (props) => {
   }
 
   return (
-    <div className={`${props.classProp}`}>
+    <div className={`confirmationWindow ${props.visibility? 'visiblePrime': 'invisiblePrime'}`}>
+      <p>Are you sure you want to delete file?</p>
       <button type="button" onClick={confirm} name="yes">Yes</button>
       <button type="button" onClick={confirm} name="no">No</button>
     </div>
