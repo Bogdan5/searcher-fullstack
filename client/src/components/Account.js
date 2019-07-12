@@ -25,7 +25,8 @@ class Account extends Component {
       userID: match.params.id,
       goToDisplay: false,
       fileID: '',
-      confirmationVisible: false
+      confirmationVisible: false,
+      deletedId: false
     }
   }
 
@@ -60,9 +61,10 @@ class Account extends Component {
       });
   }
 
-  deleteFile = (e) => {
+  deleteHandler = (e) => {
     // delete file
-
+    e.stopPropagation();
+    this.setState({ deletedId: e.target.id});
   }
 
   confirm = (name) => {
@@ -72,7 +74,7 @@ class Account extends Component {
         headers: { 'Authorization': bearer }
       };
       // retrieves data from csv files uploaded in the database
-      axios.get(`/api/datadisplay/${fileID}`, conf)
+      axios.delete(`/api/datadisplay/${fileID}`, conf)
     } else if (name === 'false') {
 
     }
@@ -107,7 +109,12 @@ class Account extends Component {
                     <td>{index}</td>
                     <td id={el._id} onClick={this.getStoredFile}>{el.description}</td>
                     <td>{el.created_at}</td>
-                    <td><FontAwesomeIcon icon={ faTrashAlt } onClick={ this.deleteFile } /></td>
+                    <td>
+                      <FontAwesomeIcon
+                        icon={ faTrashAlt } onClick={ this.deleteHandler }
+                        id={el.id}
+                      />
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -119,6 +126,7 @@ class Account extends Component {
         </UploadWindow>
         <ConfirmationWindow
           classProp={confirmationVisible} confirmationHandler={this.confirm}
+          fileId=
         />
       </BackgroundPopWindow>
     );
