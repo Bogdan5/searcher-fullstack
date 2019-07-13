@@ -40,9 +40,11 @@ body{
 //the div containing the dynamic part of the app (without the navbar)
 .App{
   width: 90%;
+  height: 90vh;
   margin: 0 auto;
   // position: relative;
-  background-color: lighten($green, 20%);
+  background-color: pink;
+  // border: 1px solid yellow;
 }
 
 // the buttons used in the Keyboard component
@@ -368,12 +370,11 @@ body{
 // background of the pop window
 .backgroundPopWindow{
   background-color:rgba(240, 240, 234, 0.7);
-  position: absolute;
-  top: 10vh;
+  position: relative;
+  top: 5vh;
   left: 0;
   height: 90vh;
   width: 100vw;
-  z-index: 3;
 }
 
 // center of window that becomes visible when navbar buttons are pressed
@@ -485,15 +486,23 @@ body{
 }
 
 .confirmationWindow{
-  height: 300px;
-  width: 500px;
-  
+  background-color: lightblue;
+  height: 150px;
+  width: 280px;
+  position: absolute;
+  top: calc(50% - 37px);
+  left: calc(50%- 75px);
+  &>p{
+    text-align: center;
+  }
 }
 
 .visiblePrime{
   z-index: 10;
+  visibility: visible;
 }
 
 .invisiblePrime{
   z-index: -10;
+  visibility: hidden;
 }
