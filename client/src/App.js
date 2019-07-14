@@ -206,7 +206,6 @@ class App extends Component {
     return (
       <div className='bodyContainer'>
 {/* -------------------------------------navbar---------------------------------------------------- */}
-
         <NavBar>
           <NavLink to='/'>Home</NavLink>
           <NavLink to='/api/upload-csv' >Upload file without signing in</NavLink>
@@ -223,7 +222,6 @@ class App extends Component {
             }
           }} />
         </NavBar>
-
         <div className='App' ref={this.appRef}>
           <Switch>
             <Route path={`/api/account/:userID`} render={(props) => <AccountWithRouter {...props}

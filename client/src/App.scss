@@ -26,15 +26,22 @@ $greyed-out: rgb(196, 188, 198);
 
 body{
   font-family: Roboto Condensed, sans-serif;
-  background-color: white;
+  background-color: green;
   box-sizing: border-box;
+  overflow: auto;
+}
+
+html {
+  margin: 0;
+  padding: 0;
 }
 
 // the div containing the whole app
 .bodyContainer{
-  position: relative;
-  background-color: white;
+  // position: relative;
+  background-color: yellow;
   height: 100vh;
+  margin-top: 0;
 }
 
 //the div containing the dynamic part of the app (without the navbar)
@@ -43,8 +50,9 @@ body{
   height: 90vh;
   margin: 0 auto;
   // position: relative;
-  background-color: pink;
+  background-color: palevioletred;
   // border: 1px solid yellow;
+  box-sizing: border-box;
 }
 
 // the buttons used in the Keyboard component
@@ -438,7 +446,7 @@ body{
   background-color: $green;
   text-align: center;
   line-height: 50px;
-  margin: 20px auto;
+  margin: 0 auto;
   text-decoration: none;
   box-shadow: 3px 5px 5px rgba(184,182,207,1);
   &:active{
