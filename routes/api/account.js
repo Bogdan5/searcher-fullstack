@@ -22,9 +22,17 @@ router.delete('/:userID', authenticate.verifyUser, (req, res, next) => {
   File.findByIdAndDelete(req.params.userID)
     .then((err, data) => {
       if (error) {
-        
+        res.statusCode = 404;
+        console.log('Delete not successful');
+        next(err);
+      } else {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        console.log('delete is successful');
+        res.json(data);
       }
     })
+    .catch(err => next(err));
 });
 
 module.exports = router;
