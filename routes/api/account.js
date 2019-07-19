@@ -18,4 +18,13 @@ router.get('/:userID', authenticate.verifyUser, (req, res, next) =>{
     .catch(err => console.log('Error: ', err));
 });
 
+router.delete('/:userID', authenticate.verifyUser, (req, res, next) => {
+  File.findByIdAndDelete(req.params.userID)
+    .then((err, data) => {
+      if (error) {
+        
+      }
+    })
+});
+
 module.exports = router;

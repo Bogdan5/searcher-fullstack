@@ -39,7 +39,7 @@ html {
 // the div containing the whole app
 .bodyContainer{
   // position: relative;
-  background-color: yellow;
+  background-color: whitesmoke;
   height: 100vh;
   margin-top: 0;
 }
@@ -50,9 +50,10 @@ html {
   height: 90vh;
   margin: 0 auto;
   // position: relative;
-  background-color: palevioletred;
+  background-color: rgb(187, 226, 214);
   // border: 1px solid yellow;
   box-sizing: border-box;
+  padding-top: 30vh;
 }
 
 // the buttons used in the Keyboard component
@@ -437,7 +438,7 @@ html {
 
 .navLinkButton{
   display: block;
-  height: 50px;
+  height: 8vh;
   width: 350px;
   font-size: 20px;
   border: 1px solid black;
@@ -446,7 +447,7 @@ html {
   background-color: $green;
   text-align: center;
   line-height: 50px;
-  margin: 0 auto;
+  margin: 1vh auto;
   text-decoration: none;
   box-shadow: 3px 5px 5px rgba(184,182,207,1);
   &:active{

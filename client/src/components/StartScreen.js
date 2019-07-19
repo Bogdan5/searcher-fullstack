@@ -20,7 +20,7 @@ const StartScreen = (props) => {
   // }
 
   return (
-    <div>
+    <div className='startScreen'>
       <NavLink to='/api/upload-csv' className='navLinkButton' onClick={handler1}>
         Upload without signin
       </NavLink>
