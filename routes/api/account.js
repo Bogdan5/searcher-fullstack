@@ -19,6 +19,7 @@ router.get('/:userID', authenticate.verifyUser, (req, res, next) =>{
 });
 
 router.delete('/:userID', authenticate.verifyUser, (req, res, next) => {
+  console.log(req);
   File.findByIdAndDelete(req.params.userID)
     .then((err, data) => {
       if (error) {

@@ -64,6 +64,7 @@ class Account extends Component {
   deleteHandler = (e) => {
     // delete file
     e.stopPropagation();
+    console.log('id of file deleted ', e.target.id)
     this.setState({ deletedId: e.target.id, confirmationVisible: true });
   }
 
@@ -72,10 +73,10 @@ class Account extends Component {
     if (name === 'yes') {
       const bearer = 'Bearer ' + localStorage.getItem('token');
       const conf = {
-        headers: { 'Authorization': bearer }
+        headers: { 'Authorization': bearer, deletedId }
       };
       // retrieves data from csv files uploaded in the database
-      axios.delete(`/api/datadisplay/${deletedId}`, conf)
+      axios.delete(`/api/account/${this.state.userID}`, conf)
         .then(response => this.getData())
         .catch(err => console.log('Delete unsuccessful ', err));
     }
