@@ -19,10 +19,10 @@ router.get('/:userID', authenticate.verifyUser, (req, res, next) =>{
 });
 
 router.delete('/:userID', authenticate.verifyUser, (req, res, next) => {
-  console.log(req);
-  File.findByIdAndDelete(req.params.userID)
+  console.log('headers id: ', req.headers.deletedid);
+  File.findByIdAndDelete(req.headers.deletedid)
     .then((err, data) => {
-      if (error) {
+      if (err) {
         res.statusCode = 404;
         console.log('Delete not successful');
         next(err);

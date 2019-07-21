@@ -5,6 +5,7 @@ import {Link, Route, Redirect, matchPath, withRouter} from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import TrashIcon from './TrashIcon';
 
 import BackgroundPopWindow from './BackgroundPopWindow';
 import UploadWindow from './UploadWindow';
@@ -61,11 +62,10 @@ class Account extends Component {
       });
   }
 
-  deleteHandler = (e) => {
+  deleteHandler = (id) => {
     // delete file
-    e.stopPropagation();
-    console.log('id of file deleted ', e.target.id)
-    this.setState({ deletedId: e.target.id, confirmationVisible: true });
+    console.log('id of file deleted ', id)
+    this.setState({ deletedId: id, confirmationVisible: true });
   }
 
   confirm = (name) => {
@@ -113,10 +113,11 @@ class Account extends Component {
                     <td id={el._id} onClick={this.getStoredFile}>{el.description}</td>
                     <td>{el.created_at}</td>
                     <td>
-                      <FontAwesomeIcon
+                      <TrashIcon id={el._id} deleteHandler={this.deleteHandler} />
+                      {/* <FontAwesomeIcon
                         icon={ faTrashAlt } onClick={ this.deleteHandler }
                         id={el.id}
-                      />
+                      /> */}
                     </td>
                   </tr>
                 ))}
