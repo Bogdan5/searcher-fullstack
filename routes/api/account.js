@@ -19,19 +19,14 @@ router.get('/:userID', authenticate.verifyUser, (req, res, next) =>{
 });
 
 router.delete('/:userID', authenticate.verifyUser, (req, res, next) => {
-  console.log('headers id: ', req.headers.deletedid);
+  // console.log('headers id: ', req.headers.deletedid);
   File.findByIdAndDelete(req.headers.deletedid)
-    .then((err, data) => {
-      if (err) {
-        res.statusCode = 404;
-        console.log('Delete not successful');
-        next(err);
-      } else {
-        res.statusCode = 200;
+    .then((data) => {
+      res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         console.log('delete is successful');
+        console.log('data is: ', data);
         res.json(data);
-      }
     })
     .catch(err => next(err));
 });

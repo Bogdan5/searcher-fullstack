@@ -32,7 +32,6 @@ class Account extends Component {
   }
 
   componentDidMount() {
-    console.log('account mount, authenticated: ', this.props.authenticated);
     library.add(faTrashAlt);
     const { userID } = this.state;    
     if (userID) {
@@ -43,6 +42,7 @@ class Account extends Component {
   }
 
   getData = () => {
+    console.log('getting data');
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer },
