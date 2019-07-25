@@ -50,10 +50,11 @@ html {
   height: 90vh;
   margin: 0 auto;
   // position: relative;
-  background-color: rgb(187, 226, 214);
+  // background-color: rgb(187, 226, 214);
+  background-color: black;
   // border: 1px solid yellow;
   box-sizing: border-box;
-  padding-top: 30vh;
+  // padding-top: 30vh;
 }
 
 // the buttons used in the Keyboard component
@@ -378,18 +379,16 @@ html {
 
 // background of the pop window
 .backgroundPopWindow{
-  background-color:rgba(240, 240, 234, 0.7);
-  position: relative;
-  top: 5vh;
-  left: 0;
-  height: 90vh;
+  // background-color:rgba(240, 240, 234, 0.7);
+  background-color:yellow;
+  height: 80vh;
   width: 100vw;
 }
 
 // center of window that becomes visible when navbar buttons are pressed
 .popWindow{
   box-sizing: border-box;
-  margin-top: 10vh;
+  // margin-top: 10vh;
   margin-left: 15vw;
   height: 65vh;
   width: 70vw;
@@ -407,7 +406,10 @@ html {
       }
     }
   }
-  padding: 20px;
+  &>h3{
+    padding: 0;
+  }
+  // padding: 20px;
   border-radius: 3px;
   z-index: 5;
 }
@@ -462,7 +464,7 @@ html {
 .tableDiv{
   overflow: scroll;
   border: 1px solid blue;
-  height: 250px;
+  height: 70vh;
 }
 
 .tableData{
