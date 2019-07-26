@@ -407,7 +407,9 @@ html {
     }
   }
   &>h3{
-    padding: 0;
+    padding-top: 10px;
+    background-color: teal;
+    margin-block-start: 0;
   }
   // padding: 20px;
   border-radius: 3px;
