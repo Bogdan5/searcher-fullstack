@@ -92,7 +92,7 @@ class Account extends Component {
     const {data, goToDisplay, fileID, confirmationVisible, deletedId} = this.state;
     return (
       <BackgroundPopWindow>
-        <UploadWindow>
+        {/* <UploadWindow> */}
           <Route path='/api/account' render={() => (goToDisplay ?
             <Redirect to={{pathname: `/api/datadisplay/${this.state.fileID}`, state:{fileID}}} /> : null)} />
           <h3>Uploaded files</h3>
@@ -127,7 +127,7 @@ class Account extends Component {
           <hr/>
           {/* <button type='button' onClick={handler}>Done</button> */}
           <Link to='/'>Done</Link>
-        </UploadWindow>
+        {/* </UploadWindow> */}
         <ConfirmationWindow
           visibility={confirmationVisible} confirmationHandler={this.confirm}
           fileId={deletedId}
