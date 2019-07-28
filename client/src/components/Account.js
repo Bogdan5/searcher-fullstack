@@ -100,15 +100,15 @@ class Account extends Component {
             <table>
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>File name</th>
-                  <th>Upload date</th>
-                  <th>Delete file?</th>
+                  <th className='number'>#</th>
+                  <th className='name'>File name</th>
+                  <th className='date'>Upload date</th>
+                  <th className='delete'>Delete file?</th>
                 </tr>
               </thead>
               <tbody>
                 {data.map((el, index) => (
-                  <tr key={el._id}>
+                  <tr className='rowParent' key={el._id}>
                     <td>{index}</td>
                     <td id={el._id} onClick={this.getStoredFile}>{el.description}</td>
                     <td>{el.created_at}</td>
@@ -126,7 +126,7 @@ class Account extends Component {
           </div>
           <hr/>
           {/* <button type='button' onClick={handler}>Done</button> */}
-          <Link to='/'>Done</Link>
+          <div className='linkButton'><Link to='/'>Done</Link></div>
         {/* </UploadWindow> */}
         <ConfirmationWindow
           visibility={confirmationVisible} confirmationHandler={this.confirm}

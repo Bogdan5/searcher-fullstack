@@ -381,8 +381,16 @@ html {
 .backgroundPopWindow{
   // background-color:rgba(240, 240, 234, 0.7);
   background-color:yellow;
+  margin: 0 auto;
   height: 80vh;
-  width: 90%;
+  width: 80vw;
+  padding: 3vh;
+  box-sizing: border-box;
+  &>h3{
+    margin: 0;
+    text-align: center;
+    padding-bottom: 3vh;
+  }
 }
 
 // center of window that becomes visible when navbar buttons are pressed
@@ -464,9 +472,12 @@ html {
 }
 
 .tableDiv{
-  overflow: scroll;
+  overflow-y: scroll;
   border: 1px solid blue;
   height: 50vh;
+  width: 70%;
+  margin: 0 auto;
+  // margin: 10px auto;
 }
 
 .tableData{
@@ -518,4 +529,59 @@ html {
 .invisiblePrime{
   z-index: -10;
   visibility: hidden;
+}
+
+.linkButton{
+  display: block;
+  width: 5vw;
+  margin-left: 60vw;
+  height: 5vh;
+  background-color: white;
+  border: 1px solid red;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  &:before {
+    content:'';
+    height:100%;
+    display:inline-block;
+    vertical-align: middle;
+  }
+  &>*{
+    vertical-align: middle;
+    text-decoration: none;
+  }
+}
+
+.number{
+  width: 10%;
+  border: 1px solid green;
+}
+
+.name{
+  border: 1px solid green;
+  width: 40%;
+}
+
+.date{
+  border: 1px solid green;
+  width: 35%;
+}
+
+.delete{
+  border: 1px solid green;
+  width: 15%;
+}
+
+table{
+  border: 1px solid orange;
+  width: 100%;
+}
+
+// .trashIcon{
+//   padding-left: 3px;
+// }
+
+.rowParent>*{
+  padding-left: 15px;
 }

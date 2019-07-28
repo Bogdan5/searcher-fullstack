@@ -13,7 +13,7 @@ const TrashIcon = (props) => {
     deleteHandler(id);
   }
   return (
-    <div>
+    <div className='trashIcon'>
       <FontAwesomeIcon icon={ faTrashAlt } onClick={ deleter }/>
     </div>
   );
