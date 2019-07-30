@@ -35,6 +35,7 @@ class Account extends Component {
     library.add(faTrashAlt);
     const { userID } = this.state;    
     if (userID) {
+      console.log('data: ', this.state.data);
       this.getData();
     } else {
       this.props.history.push('/api/users/signin');      
@@ -111,7 +112,10 @@ class Account extends Component {
                   <tr className='rowParent' key={el._id}>
                     <td>{index}</td>
                     <td id={el._id} onClick={this.getStoredFile}>{el.description}</td>
-                    <td>{el.created_at}</td>
+                    <td>{new Date(el.created_at).toLocaleDateString('en-US', {
+                      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+                      hour: '2-digit', minute: '2-digit', second: '2-digit'
+                    })}</td>
                     <td>
                       <TrashIcon id={el._id} deleteHandler={this.deleteHandler} />
                       {/* <FontAwesomeIcon
