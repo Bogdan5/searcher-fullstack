@@ -471,7 +471,7 @@ class DataDisplay extends Component {
     return (
       <div className='dataDisplay'>
         {/* -------------------------------main application----------------------------------------------- */}
-        <div className='App' ref={this.appRef}>
+        {/* <div className='App' ref={this.appRef}> */}
           { /* includes description and operator buttons */ }
           <Keyboard leftSection='Boolean operators' classProp=''>
             <ButtonWithHandler name='AND' />
@@ -563,7 +563,7 @@ class DataDisplay extends Component {
             <MenuElementWithHandler name='OR' />
             <MenuElementWithHandler name='DELETE' />
           </DropDownMenu>
-        </div>
+        {/* </div> */}
 
         <h3>{data.description}</h3>
         <div className='scrollTable'>
