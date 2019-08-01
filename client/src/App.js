@@ -234,11 +234,9 @@ class App extends Component {
                 isAuthenticated={this.isAuthenticated} />)} />
             
             <Route path='/api/upload-csv' component={Upload} />
-            <Route path={`/api/datadisplay/:fileID`}
-              component={DataDisplay} /> 
+            <Route path={`/api/datadisplay/:fileID`} component={DataDisplay} /> 
           </Switch>
         </div>
-             
       </div>
     );
   }

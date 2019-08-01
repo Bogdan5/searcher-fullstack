@@ -66,7 +66,7 @@ class Table extends Component {
   render(){
     const {header, body} = this.state.data;
     return (
-      <div >
+      <div className='Table'>
         <div>
           {header.map((el, index) => (
             <div key={el[0]} className='headerSortButtons'>

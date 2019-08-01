@@ -471,13 +471,13 @@ class DataDisplay extends Component {
     return (
       <div className='dataDisplay'>
         {/* -------------------------------main application----------------------------------------------- */}
-        {/* <div className='App' ref={this.appRef}> */}
+        <div className='keyboards' ref={this.appRef}>
           { /* includes description and operator buttons */ }
-          <Keyboard leftSection='Boolean operators' classProp=''>
+          {/* <Keyboard leftSection='Boolean operators' classProp=''>
             <ButtonWithHandler name='AND' />
             <ButtonWithHandler name='OR' />
             <ButtonWithHandler name='NOT' />
-          </Keyboard>
+          </Keyboard> */}
           {/* the card that constructs conditional buttons */}
           <Keyboard
             leftSection='Search keyword' classProp=' keyboardSearchKeyword'
@@ -563,14 +563,14 @@ class DataDisplay extends Component {
             <MenuElementWithHandler name='OR' />
             <MenuElementWithHandler name='DELETE' />
           </DropDownMenu>
-        {/* </div> */}
-
-        <h3>{data.description}</h3>
-        <div className='scrollTable'>
-          <Table data={data} fromSortButton={this.fromSortButton}
-            listCards={listCards} sorter={this.sorter}
-            filtering={filtering}/>
         </div>
+
+        <h3 className='displayTitle'>{data.description}</h3>
+        <Table data={data} fromSortButton={this.fromSortButton}
+          listCards={listCards} sorter={this.sorter}
+          filtering={filtering}
+        />
+
         {/* <Route render={() => (
           (prevPath !== '/upload-csv') ? <Table data={data}/> : <Redirect to='/' />
         )} /> */}

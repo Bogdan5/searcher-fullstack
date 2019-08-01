@@ -26,7 +26,7 @@ $greyed-out: rgb(196, 188, 198);
 
 body{
   font-family: Roboto Condensed, sans-serif;
-  background-color: green;
+  background-color: whitesmoke;
   box-sizing: border-box;
   overflow: auto;
 }
@@ -45,17 +45,17 @@ html {
 }
 
 //the div containing the dynamic part of the app (without the navbar)
-.App{
-  width: 90%;
-  // height: 90vh;
-  margin: 0 auto;
-  // position: relative;
-  // background-color: rgb(187, 226, 214);
-  background-color: whitesmoke;
-  // border: 1px solid yellow;
-  box-sizing: border-box;
-  // padding-top: 30vh;
-}
+// .App{
+//   // width: 90%;
+//   // height: 90vh;
+//   margin: 0 auto;
+//   // position: relative;
+//   // background-color: rgb(187, 226, 214);
+//   background-color: whitesmoke;
+//   // border: 1px solid yellow;
+//   box-sizing: border-box;
+//   // padding-top: 30vh;
+// }
 
 // the buttons used in the Keyboard component
 .dumbButtonClass{
@@ -445,7 +445,7 @@ html {
 
 .dataDisplay{
   // height: 30px;
-  background-color: lighten($green);
+  // background-color: lighten($green, 20%);
 }
 
 .navLinkButton{
@@ -584,4 +584,21 @@ table{
 
 .rowParent>*{
   padding-left: 15px;
+}
+
+.keyboards{
+  width: 90vw;
+  background-color: whitesmoke;
+  margin: 0 auto;
+}
+
+.Table{
+  width: 95vw;
+  margin: 0 auto;
+  overflow-y: scroll;
+  height: 80vh;
+}
+
+.displayTitle{
+  margin-left: 20vw;
 }
