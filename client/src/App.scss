@@ -93,6 +93,7 @@ html {
 .keyboardGeneric{
   @include row-flex;
   font-size: 15px;
+  // background-color: $green;
   &>div{
     @include round-border($green);
     @include vertical-center-flex;
@@ -154,6 +155,7 @@ html {
 // the left part of the Keybpard
 .leftSection{
   @include center-both-ways();
+  background-color: lighten($green, 15%);
   &>div{
     @include center-both-ways();
   }
@@ -202,6 +204,7 @@ html {
   // @include round-border($green);
   // background-color: rgb(200, 206, 208);
   min-height: 100px;
+  // background-color: lighten($green, 20%);
 }
 
 .positionInput{
@@ -597,8 +600,13 @@ table{
   margin: 0 auto;
   overflow-y: scroll;
   height: 80vh;
+  border: 1px solid black;
 }
 
 .displayTitle{
   margin-left: 20vw;
+}
+
+.keyboardRight{
+  background-color: lighten($green, 20%);
 }

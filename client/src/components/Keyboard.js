@@ -11,7 +11,7 @@ const Keyboard = (props) => {
   return (
     <div className={`keyboardGeneric${classProp}`}>
       <div className={`leftSection${isSelected}`}>{leftSection}</div>
-      <div className={isSelected}>{children}</div>
+      <div className={`keyboardRight${isSelected}`}>{children}</div>
       <section>{rightSection}</section>
     </div>
   );
