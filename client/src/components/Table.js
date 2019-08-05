@@ -67,34 +67,57 @@ class Table extends Component {
     const {header, body} = this.state.data;
     return (
       <table>
-        
-      </table>
-
-
-      <div className='Table'>
-        <div>
-          {header.map((el, index) => (
-            <div key={el[0]} className='headerSortButtons'>
-              <SortButton key={el[0]} name={el[1]}
-              sorter={this.sorter} columnNo={index} />
-            </div>
-          ))}
-        </div>
-        <div className='tableData'>
+        <thead>
+          <tr>
+            {header.map((el, index) => (
+              <th key={el[0]} className='headerSortButtons'>
+                <SortButton key={el[0]} name={el[1]}
+                sorter={this.sorter} columnNo={index} />
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
           {body.map(el => {
             if (this.filterExecuted(el[1])){
               return (
-                <div key={el[0]} className='rowTable'>
+                <tr key={el[0]} className='rowTable'>
                   {el[1].map(elem => (
-                    <div key={elem[0]} className='cellTable'>{elem[1]}</div>
+                    <td key={elem[0]} className='cellTable'>{elem[1]}</td>
                   ))}
-                </div>
+                </tr>
               );
             }
             return null;
           })}
-        </div>
-      </div>
+        </tbody>
+      </table>
+
+
+      // <div className='Table'>
+      //   <div>
+      //     {header.map((el, index) => (
+      //       <div key={el[0]} className='headerSortButtons'>
+      //         <SortButton key={el[0]} name={el[1]}
+      //         sorter={this.sorter} columnNo={index} />
+      //       </div>
+      //     ))}
+      //   </div>
+      //   <div className='tableData'>
+      //     {body.map(el => {
+      //       if (this.filterExecuted(el[1])){
+      //         return (
+      //           <div key={el[0]} className='rowTable'>
+      //             {el[1].map(elem => (
+      //               <div key={elem[0]} className='cellTable'>{elem[1]}</div>
+      //             ))}
+      //           </div>
+      //         );
+      //       }
+      //       return null;
+      //     })}
+      //   </div>
+      // </div>
     );
   }
 }
