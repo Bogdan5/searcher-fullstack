@@ -21,7 +21,19 @@ const SortButton = props => {
 
   return (
     <div className='sortButton'>
-      <div className='sortButtonRow-top'>
+      <div >{props.name}</div>
+      <div className='awesomeIcons'>
+        <FontAwesomeIcon icon={faSortUp} onClick={clickUp} />
+        <FontAwesomeIcon icon={faSortDown} onClick={clickDown} />
+        {/* <div className='sortButtonCell awesomeClass-top'>
+          <FontAwesomeIcon icon={faSortUp} onClick={clickUp} />
+        </div>
+        <div className='sortButtonCell awesomeClass-bottom'>
+          <FontAwesomeIcon icon={faSortDown} onClick={clickDown} />
+        </div> */}
+      </div>
+
+      {/* <div className='sortButtonRow-top'>
         <div className='sortButtonCell'>{props.name}</div>
         <div className='sortButtonCell awesomeClass-top'>
           <FontAwesomeIcon icon={faSortUp} onClick={clickUp} />
@@ -37,7 +49,7 @@ const SortButton = props => {
         <div className='sortButtonCell awesomeClass-bottom'>
           <FontAwesomeIcon icon={faSortDown} onClick={clickDown} />
         </div>
-      </div>
+      </div> */}
     </div>
 );}
 

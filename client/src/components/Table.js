@@ -66,7 +66,7 @@ class Table extends Component {
   render(){
     const {header, body} = this.state.data;
     return (
-      <table>
+      <table className='dataTable'>
         <thead>
           <tr>
             {header.map((el, index) => (
