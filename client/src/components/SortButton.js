@@ -23,8 +23,16 @@ const SortButton = props => {
     <div className='sortButton'>
       <div >{props.name}</div>
       <div className='awesomeIcons'>
-        <FontAwesomeIcon icon={faSortUp} onClick={clickUp} />
-        <FontAwesomeIcon icon={faSortDown} onClick={clickDown} />
+        {/* <FontAwesomeIcon icon={faSortUp} onClick={clickUp} />
+        <FontAwesomeIcon icon={faSortDown} onClick={clickDown} /> */}
+        <svg height='10' width='10'>
+          <polygon points='5,0 0,8 10,8'
+          style={{fill:'black', stroke:'black',strokeWidth:1}} />
+        </svg>
+        <svg height='10' width='10'>
+          <polygon points='5,10 0,2 10,2'
+          style={{fill:'black', stroke:'black',strokeWidth:1}} />
+        </svg>
         {/* <div className='sortButtonCell awesomeClass-top'>
           <FontAwesomeIcon icon={faSortUp} onClick={clickUp} />
         </div>
