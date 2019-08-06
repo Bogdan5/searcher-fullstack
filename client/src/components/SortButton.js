@@ -25,7 +25,7 @@ const SortButton = props => {
       <div className='awesomeIcons'>
         {/* <FontAwesomeIcon icon={faSortUp} onClick={clickUp} />
         <FontAwesomeIcon icon={faSortDown} onClick={clickDown} /> */}
-        <svg height='10' width='10'>
+        <svg height='10' width='10' className='sortTop'>
           <polygon points='5,0 0,8 10,8'
           style={{fill:'black', stroke:'black',strokeWidth:1}} />
         </svg>

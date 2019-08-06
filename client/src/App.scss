@@ -329,6 +329,13 @@ html {
   width: 20px;
 }
 
+.sortTop:hover polygon{
+  fill: blue;
+  stroke: blue;
+  stroke-width: 1;
+  cursor: pointer;
+}
+
 // .sortButtonRow-top{
 //   // display: table-row;
 //   width: 62px;
