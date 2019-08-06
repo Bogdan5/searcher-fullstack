@@ -23,41 +23,13 @@ const SortButton = props => {
     <div className='sortButton'>
       <div >{props.name}</div>
       <div className='awesomeIcons'>
-        {/* <FontAwesomeIcon icon={faSortUp} onClick={clickUp} />
-        <FontAwesomeIcon icon={faSortDown} onClick={clickDown} /> */}
-        <svg height='10' width='10' className='sortTop'>
-          <polygon points='5,0 0,8 10,8'
-          style={{fill:'black', stroke:'black',strokeWidth:1}} />
+        <svg height='10' width='10' className='sortTop' onClick={this.clickUp}>
+          <polygon className='triangle' points='5,0 0,8 10,8' />
         </svg>
-        <svg height='10' width='10'>
-          <polygon points='5,10 0,2 10,2'
-          style={{fill:'black', stroke:'black',strokeWidth:1}} />
+        <svg height='10' width='10'onClick={this.clickDown}>
+          <polygon className='triangle' points='5,10 0,2 10,2' />
         </svg>
-        {/* <div className='sortButtonCell awesomeClass-top'>
-          <FontAwesomeIcon icon={faSortUp} onClick={clickUp} />
-        </div>
-        <div className='sortButtonCell awesomeClass-bottom'>
-          <FontAwesomeIcon icon={faSortDown} onClick={clickDown} />
-        </div> */}
       </div>
-
-      {/* <div className='sortButtonRow-top'>
-        <div className='sortButtonCell'>{props.name}</div>
-        <div className='sortButtonCell awesomeClass-top'>
-          <FontAwesomeIcon icon={faSortUp} onClick={clickUp} />
-        </div>
-      </div>
-      <div className='sortButtonRow-bottom'>
-        <div className='sortButtonCell'>
-          <select name='Type of data' onChange={type}>
-            <option value='text'>Text</option>
-            <option value='number'>Number</option>
-          </select>
-        </div>
-        <div className='sortButtonCell awesomeClass-bottom'>
-          <FontAwesomeIcon icon={faSortDown} onClick={clickDown} />
-        </div>
-      </div> */}
     </div>
 );}
 

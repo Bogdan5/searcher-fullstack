@@ -329,12 +329,23 @@ html {
   width: 20px;
 }
 
-.sortTop:hover polygon{
-  fill: blue;
-  stroke: blue;
-  stroke-width: 1;
-  cursor: pointer;
+.triangle{
+  fill:black;
+  stroke:black;
+  stroke-width:1;
+  &:hover{
+    fill: blue;
+    stroke: blue;
+    cursor: pointer;
+  }
 }
+
+// .sortTop:hover{
+//   fill: blue;
+//   // stroke: blue;
+//   // stroke-width: 1;
+//   cursor: pointer;
+// }
 
 // .sortButtonRow-top{
 //   // display: table-row;
