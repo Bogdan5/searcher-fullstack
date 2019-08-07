@@ -296,21 +296,28 @@ html {
   font-size: 14px;
 }
 
+/*---------------------------------------------SORTBUTTONS------------------------------------------------------*/
+
 .sortButton{
   // display: table;
-  border: 1px solid greenyellow;
+  // border: 1px solid greenyellow;
   width: 162px;
-  height: 55px;
+  height: 30px;
   // table-layout: fixed;
   &>div:first-child{
+    font-size: 16px;
     height: 20px;
     min-width: 55px;
     max-width: 100px;
     overflow: hidden;
-    background-color: red;
+    background-color:lighten($green, 60%);
+    border-radius: 2px;
+    padding: 2px 5px;
+    line-height: 20px;
   }
   &>div{
     display: inline-block;
+    height: 25px;
     // border: 1px solid orange;
   }
   &>div>svg{
@@ -327,6 +334,7 @@ html {
   vertical-align: top;
   height: 30px;
   width: 20px;
+  margin-left: 5px;
 }
 
 .triangle{
@@ -339,64 +347,6 @@ html {
     cursor: pointer;
   }
 }
-
-// .sortTop:hover{
-//   fill: blue;
-//   // stroke: blue;
-//   // stroke-width: 1;
-//   cursor: pointer;
-// }
-
-// .sortButtonRow-top{
-//   // display: table-row;
-//   width: 62px;
-//   height: 20px;
-//   &>*{
-//     display: table-cell;
-//     // border: 1px solid red;
-//   }
-//   &>div:first-child{
-//     background-color: red;
-//     vertical-align: middle;
-//   }
-// }
-
-// .sortButtonRow-bottom{
-//   // display: table-row;
-//   width: 62px;
-//   height: 25px;
-//   &>*{
-//     display: table-cell;
-//     // border: 1px solid red;
-//   }
-// }
-
-// .awesomeClass-top{
-//   // border: 1px solid green;
-//   // padding-top: 15px;
-//   box-sizing: border-box;
-//   position: relative;
-//   // border: 1px solid green;
-//   height: 20px;
-//   width: 12px;
-//   &>*{
-//     position: absolute;
-//     bottom: 0px;
-//   }
-// }
-
-// .awesomeClass-bottom{
-//   // padding-bottom: 15px;
-//   box-sizing: border-box;
-//   // line-height: 20px;
-//   height: 20px;
-//   width: 12px;
-//   position: relative;
-//   &>*{
-//     position: absolute;
-//     top: 0;
-//   }
-// }
 
 [class *= "awesomeClass"]>*:hover{
   cursor: pointer;

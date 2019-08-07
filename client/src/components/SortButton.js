@@ -21,13 +21,13 @@ const SortButton = props => {
 
   return (
     <div className='sortButton'>
-      <div >{props.name}</div>
+      <div>{props.name}</div>
       <div className='awesomeIcons'>
-        <svg height='10' width='10' className='sortTop' onClick={this.clickUp}>
-          <polygon className='triangle' points='5,0 0,8 10,8' />
+        <svg height='10' width='10' className='sortTop' onClick={clickUp}>
+          <polygon className='triangle' points='5,3 2,7 8,7' />
         </svg>
-        <svg height='10' width='10'onClick={this.clickDown}>
-          <polygon className='triangle' points='5,10 0,2 10,2' />
+        <svg height='10' width='10'onClick={clickDown}>
+          <polygon className='triangle' points='5,7 2,2 8,2' />
         </svg>
       </div>
     </div>
