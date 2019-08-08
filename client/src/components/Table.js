@@ -46,11 +46,13 @@ class Table extends Component {
       for (let i of listCards){
         let filteredColumns = [...i.field];
         if (i.field.length === 0) {
+          console.log('no column array selected');
           filteredColumns = Array.from(new Array(data.header.length), (x, i) => i);
         }
         for (let j = i.listOperations.length - 1; j>= 0; j--) {
           if (i.listOperations[j].active) {
             for (let k of filteredColumns){
+              // console.log('arr is', arr);
               if (i.listOperations[j].func(arr[k][1])) { 
                 return true;
                }
@@ -81,7 +83,7 @@ class Table extends Component {
         </thead>
         <tbody>
           {body.map(el => {
-            if (this.filterExecuted(el[1])){
+            if (el[1].length && this.filterExecuted(el[1])){
               return (
                 <tr key={el[0]} className='rowTable'>
                   {el[1].map(elem => (
