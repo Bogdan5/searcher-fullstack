@@ -3,12 +3,12 @@ import '../App.scss';
 import axios from 'axios';
 import {Link, Route, Redirect, matchPath, withRouter} from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import TrashIcon from './TrashIcon';
 
 import BackgroundPopWindow from './BackgroundPopWindow';
-import UploadWindow from './UploadWindow';
+// import UploadWindow from './UploadWindow';
 import ConfirmationWindow from './ConfirmationWindow';
 
 class Account extends Component {

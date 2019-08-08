@@ -89,7 +89,7 @@ class DataDisplay extends Component {
 
   // escapes the special characters to be able to translate string to RegExp
   regExpEscape(literal_string) {
-    return literal_string.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&');
+    return literal_string.replace(/[-[\]{}()*+!<=:?./\\^$|#\s,]/g, '\\$&');
   }
 
   // returns a function that returns true if the data checked matches a regex
@@ -195,7 +195,7 @@ class DataDisplay extends Component {
           copyListCards[currentCardIndex].listOperations = copyListOperations;
           copyListCards[currentCardIndex].listElements = copyListElements;
 
-          this.setState({ listCards: copyListCards, filtering: false });
+          this.setState({ listCards: copyListCards, filtering: false, keywordButtonClicked: '' });
         }
 
         break;

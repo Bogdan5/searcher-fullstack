@@ -1,15 +1,10 @@
 import React from 'react';
 import '../App.scss';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 const SortButton = props => {
-  library.add(faSortUp);
-  library.add(faSortDown);
-  const type = (e) => {
-    props.sorted(e.target.value);
-  }
+  // const type = (e) => {
+  //   props.sorted(e.target.value);
+  // }
 
   const clickUp = (e) => {
     props.sorter('up', props.columnNo);
