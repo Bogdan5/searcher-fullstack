@@ -55,7 +55,7 @@ class Table extends Component {
               // console.log('arr is', arr);
               if (i.listOperations[j].func(arr[k][1])) { 
                 return true;
-               }
+              }
             }
             break;
           }

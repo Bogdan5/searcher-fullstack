@@ -49,6 +49,7 @@ class DataDisplay extends Component {
       menuVisible: false, // true if the menu is visible when a conditional button is clicked
       mergerArray: [null, null, null], // the array composed of 2 conditional buttons and an operation
       filtering: false, // true if filtering is taking place
+      conditionalbuttonClicked: null,
     }
   }
 
@@ -63,7 +64,7 @@ class DataDisplay extends Component {
       .then(async (response) => {
         let newHeader = [];
         let newBody = [];
-        response.data.header.forEach(el => newHeader.push([uuid.v4(), el]));
+        response.data.header.forEach(el => newHeader.push([uuid.v4(), el.trim()]));
         response.data.body.forEach((el, index) => {
           let newRow = [];
           el.forEach(elem => newRow.push([uuid.v4(), elem]));
@@ -241,6 +242,7 @@ class DataDisplay extends Component {
 
   // handles clicks on conditional buttons; helps combine conditions
   conditionalClickHandler = async (conditionalButtonId, clickTop, clickLeft, card) => {
+    this.setState({ conditionalbuttonClicked: conditionalButtonId});
     const { mergerArray, cardSelected, menuVisible } = this.state;
     const appTop = this.appRef.current.offsetTop;
     const appLeft = this.appRef.current.offsetLeft;
@@ -285,6 +287,14 @@ class DataDisplay extends Component {
 
   // handles clicks on the menu - calls merger to merge conditional buttons
   menuClickHandler = (name) => {
+    const { listCards, cardSelected, conditionalbuttonClicked } = this.state;
+
+    if (name === 'DELETE'){
+      const index = this.buttonSearcher(conditionalbuttonClicked);
+      if (index > -1) {
+        let listOperationsCopy = 
+      }
+    }
     const { mergerArray } = this.state;
     this.setState({ menuVisible: false });
     if (mergerArray[0] !== null) {
