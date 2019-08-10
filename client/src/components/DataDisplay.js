@@ -292,7 +292,13 @@ class DataDisplay extends Component {
     if (name === 'DELETE'){
       const index = this.buttonSearcher(conditionalbuttonClicked);
       if (index > -1) {
-        let listOperationsCopy = 
+        const cardIndex = this.cardSearcher(cardSelected);
+        const cardCopy = Object.assign({}, listCards[cardIndex]);
+        const buttonIndex = this.buttonSearcher(conditionalbuttonClicked);
+        const listOperationsCopy = cardCopy.listOperations[buttonIndex];
+        let listOperationsNewCopy = listOperationsCopy.slice(0, buttonIndex)
+          .concat(listOperationsCopy.slice(buttonIndex + 1, listOperationsCopy.length - 1));
+        this.setState()
       }
     }
     const { mergerArray } = this.state;
