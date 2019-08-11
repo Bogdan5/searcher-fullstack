@@ -49,7 +49,7 @@ class DataDisplay extends Component {
       menuVisible: false, // true if the menu is visible when a conditional button is clicked
       mergerArray: [null, null, null], // the array composed of 2 conditional buttons and an operation
       filtering: false, // true if filtering is taking place
-      conditionalbuttonClicked: null,
+      conditionalButtonClicked: null,
     }
   }
 
@@ -242,7 +242,7 @@ class DataDisplay extends Component {
 
   // handles clicks on conditional buttons; helps combine conditions
   conditionalClickHandler = async (conditionalButtonId, clickTop, clickLeft, card) => {
-    this.setState({ conditionalbuttonClicked: conditionalButtonId});
+    this.setState({ conditionalButtonClicked: conditionalButtonId});
     const { mergerArray, cardSelected, menuVisible } = this.state;
     const appTop = this.appRef.current.offsetTop;
     const appLeft = this.appRef.current.offsetLeft;
@@ -287,18 +287,25 @@ class DataDisplay extends Component {
 
   // handles clicks on the menu - calls merger to merge conditional buttons
   menuClickHandler = (name) => {
-    const { listCards, cardSelected, conditionalbuttonClicked } = this.state;
+    const { listCards, cardSelected, conditionalButtonClicked } = this.state;
 
     if (name === 'DELETE'){
-      const index = this.buttonSearcher(conditionalbuttonClicked);
+      const index = this.buttonSearcher(conditionalButtonClicked);
       if (index > -1) {
         const cardIndex = this.cardSearcher(cardSelected);
-        const cardCopy = Object.assign({}, listCards[cardIndex]);
-        const buttonIndex = this.buttonSearcher(conditionalbuttonClicked);
-        const listOperationsCopy = cardCopy.listOperations[buttonIndex];
-        let listOperationsNewCopy = listOperationsCopy.slice(0, buttonIndex)
+        const buttonIndex = this.buttonSearcher(conditionalButtonClicked);
+        const copyCard = listCards[cardIndex];
+        const listOperationsCopy = copyCard.listOperations[buttonIndex];
+        const listOperationsNewCopy = listOperationsCopy.slice(0, buttonIndex)
           .concat(listOperationsCopy.slice(buttonIndex + 1, listOperationsCopy.length - 1));
-        this.setState()
+        const listElementsCopy = copyCard.listElements[buttonIndex];
+        const listElementsNewCopy = listElementsCopy.slice(0, buttonIndex)
+          .concat(listElementsCopy.slice(buttonIndex + 1, listElementsCopy.length - 1));
+        const newCard = Object.assign({}, copyCard, { listOperations: listOperationsNewCopy,
+          listElements: listElementsNewCopy});
+        let cardListCopy = listCards.slice(0, cardIndex).push(newCard);
+        cardListCopy.push(listCards.slice(cardIndex + 1, listCards.length));
+        this.setState({ listCards: cardListCopy });
       }
     }
     const { mergerArray } = this.state;
