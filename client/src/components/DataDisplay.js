@@ -286,25 +286,38 @@ class DataDisplay extends Component {
   }
 
   // handles clicks on the menu - calls merger to merge conditional buttons
-  menuClickHandler = (name) => {
+  menuClickHandler = async (name) => {
     const { listCards, cardSelected, conditionalButtonClicked } = this.state;
 
     if (name === 'DELETE'){
+      let cardListCopy;
       const index = this.buttonSearcher(conditionalButtonClicked);
       if (index > -1) {
         const cardIndex = this.cardSearcher(cardSelected);
+        console.log('cardIndex', cardIndex);
         const buttonIndex = this.buttonSearcher(conditionalButtonClicked);
+        console.log('buttonIndex', buttonIndex);
         const copyCard = listCards[cardIndex];
-        const listOperationsCopy = copyCard.listOperations[buttonIndex];
+        console.log('copyCard', copyCard);
+        const listOperationsCopy = copyCard.listOperations;
+        console.log('listOperationsCopy', listOperationsCopy);
         const listOperationsNewCopy = listOperationsCopy.slice(0, buttonIndex)
           .concat(listOperationsCopy.slice(buttonIndex + 1, listOperationsCopy.length - 1));
-        const listElementsCopy = copyCard.listElements[buttonIndex];
+        const listElementsCopy = copyCard.listElements;
         const listElementsNewCopy = listElementsCopy.slice(0, buttonIndex)
           .concat(listElementsCopy.slice(buttonIndex + 1, listElementsCopy.length - 1));
         const newCard = Object.assign({}, copyCard, { listOperations: listOperationsNewCopy,
           listElements: listElementsNewCopy});
-        let cardListCopy = listCards.slice(0, cardIndex).push(newCard);
-        cardListCopy.push(listCards.slice(cardIndex + 1, listCards.length));
+        await  console.log('newCard ', newCard);
+        await  console.log('listCards ', listCards);
+        await  console.log('listCards sliced ', listCards.slice(0, 0));
+        await  console.log('cardIndex again ', cardIndex);
+        cardListCopy = listCards.slice(0, cardIndex);
+        await console.log('cardListCopy 1 ', cardListCopy);
+        await cardListCopy.push(newCard);
+        await console.log('cardListCopy 2', cardListCopy);
+        let xyz = cardListCopy.concat(listCards.slice(cardIndex + 1, listCards.length -1));
+        await console.log('cardListCopy 3 ', xyz);
         this.setState({ listCards: cardListCopy });
       }
     }
