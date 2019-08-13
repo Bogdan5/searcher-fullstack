@@ -294,42 +294,32 @@ class DataDisplay extends Component {
       const index = this.buttonSearcher(conditionalButtonClicked);
       if (index > -1) {
         const cardIndex = this.cardSearcher(cardSelected);
-        console.log('cardIndex', cardIndex);
         const buttonIndex = this.buttonSearcher(conditionalButtonClicked);
-        console.log('buttonIndex', buttonIndex);
         const copyCard = listCards[cardIndex];
-        console.log('copyCard', copyCard);
         const listOperationsCopy = copyCard.listOperations;
-        console.log('listOperationsCopy', listOperationsCopy);
         const listOperationsNewCopy = listOperationsCopy.slice(0, buttonIndex)
-          .concat(listOperationsCopy.slice(buttonIndex + 1, listOperationsCopy.length - 1));
+          .concat(listOperationsCopy.slice(buttonIndex + 1, listOperationsCopy.length));
         const listElementsCopy = copyCard.listElements;
         const listElementsNewCopy = listElementsCopy.slice(0, buttonIndex)
-          .concat(listElementsCopy.slice(buttonIndex + 1, listElementsCopy.length - 1));
+          .concat(listElementsCopy.slice(buttonIndex + 1, listElementsCopy.length));
         const newCard = Object.assign({}, copyCard, { listOperations: listOperationsNewCopy,
           listElements: listElementsNewCopy});
-        await  console.log('newCard ', newCard);
-        await  console.log('listCards ', listCards);
-        await  console.log('listCards sliced ', listCards.slice(0, 0));
-        await  console.log('cardIndex again ', cardIndex);
         cardListCopy = listCards.slice(0, cardIndex);
-        await console.log('cardListCopy 1 ', cardListCopy);
         await cardListCopy.push(newCard);
-        await console.log('cardListCopy 2', cardListCopy);
         let xyz = cardListCopy.concat(listCards.slice(cardIndex + 1, listCards.length -1));
-        await console.log('cardListCopy 3 ', xyz);
-        this.setState({ listCards: cardListCopy });
+        this.setState({ listCards: xyz });
       }
-    }
-    const { mergerArray } = this.state;
-    this.setState({ menuVisible: false });
-    if (mergerArray[0] !== null) {
-      let mer = [...mergerArray];
-      mer[1] = name;
-      if (name === 'NOT') {
-        this.merger(mergerArray[0], 'NOT', null);
-      } else {
-        this.setState({ mergerArray: mer });
+    } else {
+      const { mergerArray } = this.state;
+      this.setState({ menuVisible: false });
+      if (mergerArray[0] !== null) {
+        let mer = [...mergerArray];
+        mer[1] = name;
+        if (name === 'NOT') {
+          this.merger(mergerArray[0], 'NOT', null);
+        } else {
+          this.setState({ mergerArray: mer });
+        }
       }
     }
   }
