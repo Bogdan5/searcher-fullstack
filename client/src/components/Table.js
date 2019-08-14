@@ -42,11 +42,12 @@ class Table extends Component {
   filterExecuted = (arr) => {
     const { listCards, filtering } = this.props;
     const { data } = this.state;
+    console.log('list Operations: ', listCards[0].listOperations);
     if (listCards[0].listOperations.length > 0 && filtering){
+      console.log('filtering is done');
       for (let i of listCards){
         let filteredColumns = [...i.field];
         if (i.field.length === 0) {
-          console.log('no column array selected');
           filteredColumns = Array.from(new Array(data.header.length), (x, i) => i);
         }
         for (let j = i.listOperations.length - 1; j>= 0; j--) {
@@ -83,6 +84,7 @@ class Table extends Component {
         </thead>
         <tbody>
           {body.map(el => {
+            // if (el[1].length) {console.log(this.filterExecuted(el[1]));}
             if (el[1].length && this.filterExecuted(el[1])){
               return (
                 <tr key={el[0]} className='rowTable'>
