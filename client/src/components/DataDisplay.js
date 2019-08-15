@@ -37,6 +37,7 @@ class DataDisplay extends Component {
         field: [], // on what columns of the data the list of operations apply
         listOperations: [], // what conditions aply to the data - helps sort
         listElements: [] // the list of conditional elements
+        immediateChildren: [],
       }],
       cardSelected: 0, // where conditional buttons go at one time
       currentCardIndex: 0, // on the array of cards what position is the current card
@@ -157,7 +158,8 @@ class DataDisplay extends Component {
             id: idCond,
             active: true,
             card: cardSelected,
-            whatIsIncluded: keyword
+            whatIsIncluded: keyword,
+            immediateChildren: [],
           };
           switch (keywordButtonClicked) {
             case 'INCLUDES':
@@ -324,6 +326,38 @@ class DataDisplay extends Component {
     }
   }
 
+  //finds all children for a top level conditional button
+  findAllChildren = (id) => {
+    const { listCards, cardSelected } = this.state;
+    const cardIndex = this.cardSearcher(cardSelected);
+    const buttonList = listCards[cardIndex];
+    const buttonIndex = this.buttonSearcher(id);
+    let childrenList = [];
+
+    const recursiveSearcher = (ident) => {
+      const buttonIndex = this.buttonSearcher(ident);
+      const childrenArray = buttonList[buttonIndex].immediateChildren;
+      if (childrenArray.length === 0) {
+        return [];
+      }
+      if (childrenArray.length > 0) {
+        childrenList.push(recursiveSearcher(childrenArray[0]));
+      }
+      if (childrenArray.length === 2) {
+        childrenList.push(recursiveSearcher(childrenArray[1]));
+      }      
+    }
+
+    recursiveSearcher(id);
+    return childrenList;
+
+    // if (buttonList[buttonIndex].immediateChildren.length === 0) {
+    //   return [];
+    // } else {
+    //   childrenList = childrenList.concat(buttonList[buttonIndex].immediateChildren);
+    // }
+  } 
+
   // returns the index in the list operations of the conditional button with id
   buttonSearcher = (id) => {
     const { listCards, cardSelected } = this.state;
@@ -390,6 +424,7 @@ class DataDisplay extends Component {
         key: newId,
         card: cardSelected,
         condObj: listCards[currentCardIndex].listOperations[len - 1],
+        immediateChildren: element2 ? [element1.id, element2.id] : [element1.id],
       };
       return (
         <ConditionButton {...newProps} fromConditional={this.conditionalClickHandler}>
