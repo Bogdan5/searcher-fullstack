@@ -36,7 +36,7 @@ class DataDisplay extends Component {
         cardId: 0, // id to identify each card
         field: [], // on what columns of the data the list of operations apply
         listOperations: [], // what conditions aply to the data - helps sort
-        listElements: [] // the list of conditional elements
+        listElements: [], // the list of conditional elements
         immediateChildren: [],
       }],
       cardSelected: 0, // where conditional buttons go at one time
@@ -295,21 +295,23 @@ class DataDisplay extends Component {
       let cardListCopy;
       const index = this.buttonSearcher(conditionalButtonClicked);
       if (index > -1) {
-        const cardIndex = this.cardSearcher(cardSelected);
-        const buttonIndex = this.buttonSearcher(conditionalButtonClicked);
-        const copyCard = listCards[cardIndex];
-        const listOperationsCopy = copyCard.listOperations;
-        const listOperationsNewCopy = listOperationsCopy.slice(0, buttonIndex)
-          .concat(listOperationsCopy.slice(buttonIndex + 1, listOperationsCopy.length));
-        const listElementsCopy = copyCard.listElements;
-        const listElementsNewCopy = listElementsCopy.slice(0, buttonIndex)
-          .concat(listElementsCopy.slice(buttonIndex + 1, listElementsCopy.length));
-        const newCard = Object.assign({}, copyCard, { listOperations: listOperationsNewCopy,
-          listElements: listElementsNewCopy});
-        cardListCopy = listCards.slice(0, cardIndex);
-        await cardListCopy.push(newCard);
-        let xyz = cardListCopy.concat(listCards.slice(cardIndex + 1, listCards.length -1));
-        this.setState({ listCards: xyz });
+        console.log('conditional button ', conditionalButtonClicked);
+        this.findAllChildren(conditionalButtonClicked);
+        // const cardIndex = this.cardSearcher(cardSelected);
+        // const buttonIndex = this.buttonSearcher(conditionalButtonClicked);
+        // const copyCard = listCards[cardIndex];
+        // const listOperationsCopy = copyCard.listOperations;
+        // const listOperationsNewCopy = listOperationsCopy.slice(0, buttonIndex)
+        //   .concat(listOperationsCopy.slice(buttonIndex + 1, listOperationsCopy.length));
+        // const listElementsCopy = copyCard.listElements;
+        // const listElementsNewCopy = listElementsCopy.slice(0, buttonIndex)
+        //   .concat(listElementsCopy.slice(buttonIndex + 1, listElementsCopy.length));
+        // const newCard = Object.assign({}, copyCard, { listOperations: listOperationsNewCopy,
+        //   listElements: listElementsNewCopy});
+        // cardListCopy = listCards.slice(0, cardIndex);
+        // await cardListCopy.push(newCard);
+        // let xyz = cardListCopy.concat(listCards.slice(cardIndex + 1, listCards.length -1));
+        // this.setState({ listCards: xyz });
       }
     } else {
       const { mergerArray } = this.state;
@@ -329,26 +331,39 @@ class DataDisplay extends Component {
   //finds all children for a top level conditional button
   findAllChildren = (id) => {
     const { listCards, cardSelected } = this.state;
+    console.log('list operations: ', listCards[0].listOperations);
     const cardIndex = this.cardSearcher(cardSelected);
-    const buttonList = listCards[cardIndex];
-    const buttonIndex = this.buttonSearcher(id);
-    let childrenList = [];
+    const buttonList = listCards[cardIndex].listOperations;
+    // const buttonIndex = this.buttonSearcher(id);
+    let childrenList = [id];
 
     const recursiveSearcher = (ident) => {
+      console.log('childrenList start',ident , childrenList);
       const buttonIndex = this.buttonSearcher(ident);
       const childrenArray = buttonList[buttonIndex].immediateChildren;
+      console.log('children array ', childrenArray);
+      // childrenList = childrenList.concat(childrenArray);
       if (childrenArray.length === 0) {
+        console.log('id 0', ident);
         return [];
       }
       if (childrenArray.length > 0) {
-        childrenList.push(recursiveSearcher(childrenArray[0]));
+        console.log('id 1', ident);
+        childrenList.push(childrenArray[0]);
+        recursiveSearcher(childrenArray[0]);
+        console.log('childrenList1 ', childrenList);
       }
       if (childrenArray.length === 2) {
-        childrenList.push(recursiveSearcher(childrenArray[1]));
-      }      
+        console.log('id 2', ident);
+        childrenList.push(childrenArray[1]);
+        recursiveSearcher(childrenArray[1]);
+        console.log('childrenList2 ', childrenList);
+      }
+      console.log('childrenList3 ', childrenList);
     }
 
     recursiveSearcher(id);
+    console.log('childrenList: ', childrenList);
     return childrenList;
 
     // if (buttonList[buttonIndex].immediateChildren.length === 0) {
@@ -392,7 +407,11 @@ class DataDisplay extends Component {
     const copyListElements = [...copyListCards[currentCardIndex].listElements];
 
     // adding a new operation to the list of operations
-    let newOperation = { id: newId, active: true };
+        let newOperation = {
+          id: newId,
+          active: true,
+          immediateChildren: arr[2] ? [arr[0], arr[2]] : [arr[0]],
+        };
     switch (arr[1]){
       case 'NOT':
         newOperation.func = this.negation(copyListOperations[index1].func);
@@ -424,7 +443,6 @@ class DataDisplay extends Component {
         key: newId,
         card: cardSelected,
         condObj: listCards[currentCardIndex].listOperations[len - 1],
-        immediateChildren: element2 ? [element1.id, element2.id] : [element1.id],
       };
       return (
         <ConditionButton {...newProps} fromConditional={this.conditionalClickHandler}>

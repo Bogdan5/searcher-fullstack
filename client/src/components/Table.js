@@ -42,7 +42,7 @@ class Table extends Component {
   filterExecuted = (arr) => {
     const { listCards, filtering } = this.props;
     const { data } = this.state;
-    console.log('list Operations: ', listCards[0].listOperations);
+    // console.log('list Operations: ', listCards[0].listOperations);
     if (listCards[0].listOperations.length > 0 && filtering){
       console.log('filtering is done');
       for (let i of listCards){
