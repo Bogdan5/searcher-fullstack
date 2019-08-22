@@ -295,23 +295,22 @@ class DataDisplay extends Component {
       let cardListCopy;
       const index = this.buttonSearcher(conditionalButtonClicked);
       if (index > -1) {
-        console.log('conditional button ', conditionalButtonClicked);
-        this.findAllChildren(conditionalButtonClicked);
-        // const cardIndex = this.cardSearcher(cardSelected);
+        const inactiveChildren = this.findAllChildren(conditionalButtonClicked);
+        const cardIndex = this.cardSearcher(cardSelected);
         // const buttonIndex = this.buttonSearcher(conditionalButtonClicked);
-        // const copyCard = listCards[cardIndex];
-        // const listOperationsCopy = copyCard.listOperations;
-        // const listOperationsNewCopy = listOperationsCopy.slice(0, buttonIndex)
-        //   .concat(listOperationsCopy.slice(buttonIndex + 1, listOperationsCopy.length));
-        // const listElementsCopy = copyCard.listElements;
-        // const listElementsNewCopy = listElementsCopy.slice(0, buttonIndex)
-        //   .concat(listElementsCopy.slice(buttonIndex + 1, listElementsCopy.length));
-        // const newCard = Object.assign({}, copyCard, { listOperations: listOperationsNewCopy,
-        //   listElements: listElementsNewCopy});
-        // cardListCopy = listCards.slice(0, cardIndex);
-        // await cardListCopy.push(newCard);
-        // let xyz = cardListCopy.concat(listCards.slice(cardIndex + 1, listCards.length -1));
-        // this.setState({ listCards: xyz });
+        const listOperationsCopy = listCards[cardIndex].listOperations;
+        let newOperations = [];
+        listOperationsCopy.forEach(el => {
+          if (inactiveChildren.includes(el.id)){
+            newOperations.push(Object.assign({}, el, { active: false }));
+          } else {
+            newOperations.push(el);
+          }
+        });
+        const newCard = Object.assign({}, listCards[cardIndex], { listOperations: newOperations });
+        let copyAllCards = [...listCards];
+        copyAllCards[cardIndex] = newCard;
+        this.setState({ listCards: copyAllCards });
       }
     } else {
       const { mergerArray } = this.state;
@@ -338,39 +337,24 @@ class DataDisplay extends Component {
     let childrenList = [id];
 
     const recursiveSearcher = (ident) => {
-      console.log('childrenList start',ident , childrenList);
       const buttonIndex = this.buttonSearcher(ident);
       const childrenArray = buttonList[buttonIndex].immediateChildren;
-      console.log('children array ', childrenArray);
       // childrenList = childrenList.concat(childrenArray);
       if (childrenArray.length === 0) {
-        console.log('id 0', ident);
         return [];
       }
       if (childrenArray.length > 0) {
-        console.log('id 1', ident);
         childrenList.push(childrenArray[0]);
         recursiveSearcher(childrenArray[0]);
-        console.log('childrenList1 ', childrenList);
       }
       if (childrenArray.length === 2) {
-        console.log('id 2', ident);
         childrenList.push(childrenArray[1]);
         recursiveSearcher(childrenArray[1]);
-        console.log('childrenList2 ', childrenList);
       }
-      console.log('childrenList3 ', childrenList);
     }
 
     recursiveSearcher(id);
-    console.log('childrenList: ', childrenList);
     return childrenList;
-
-    // if (buttonList[buttonIndex].immediateChildren.length === 0) {
-    //   return [];
-    // } else {
-    //   childrenList = childrenList.concat(buttonList[buttonIndex].immediateChildren);
-    // }
   } 
 
   // returns the index in the list operations of the conditional button with id
