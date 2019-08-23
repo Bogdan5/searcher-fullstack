@@ -535,12 +535,7 @@ class DataDisplay extends Component {
       <div className='dataDisplay'>
         {/* -------------------------------main application----------------------------------------------- */}
         <div className='keyboards' ref={this.appRef}>
-          { /* includes description and operator buttons */ }
-          {/* <Keyboard leftSection='Boolean operators' classProp=''>
-            <ButtonWithHandler name='AND' />
-            <ButtonWithHandler name='OR' />
-            <ButtonWithHandler name='NOT' />
-          </Keyboard> */}
+
           {/* the card that constructs conditional buttons */}
           <Keyboard
             leftSection='Search keyword' classProp=' keyboardSearchKeyword'

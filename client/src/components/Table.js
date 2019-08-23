@@ -3,6 +3,7 @@ import '../App.scss';
 // import { library } from '@fortawesome/fontawesome-svg-core';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SortButton from './SortButton';
+import { threadId } from 'worker_threads';
 
 class Table extends Component {
   constructor(props){
@@ -43,7 +44,7 @@ class Table extends Component {
     const { listCards, filtering } = this.props;
     const { data } = this.state;
     // console.log('list Operations: ', listCards[0].listOperations);
-    if (listCards[0].listOperations.length > 0 && filtering){
+    if (filtering && this.containsActive(listCards)){
       console.log('filtering is done');
       for (let i of listCards){
         let filteredColumns = [...i.field];
@@ -67,6 +68,9 @@ class Table extends Component {
       return true;
     }
   }
+
+  containsActive = (cards) => cards.reduce((elem, accum) => 
+    elem.reduce((el, acc) => el.active || acc, false) || accum, false);
 
   render(){
     const {header, body} = this.state.data;
