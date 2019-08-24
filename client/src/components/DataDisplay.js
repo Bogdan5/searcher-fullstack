@@ -51,6 +51,7 @@ class DataDisplay extends Component {
       mergerArray: [null, null, null], // the array composed of 2 conditional buttons and an operation
       filtering: false, // true if filtering is taking place
       conditionalButtonClicked: null,
+      conditionalButtonChanges: 0,
     }
   }
 
@@ -68,7 +69,7 @@ class DataDisplay extends Component {
         response.data.header.forEach(el => newHeader.push([uuid.v4(), el.trim()]));
         response.data.body.forEach((el, index) => {
           let newRow = [];
-          el.forEach(elem => newRow.push([uuid.v4(), elem]));
+          el.forEach(elem => newRow.push([uuid.v4(), elem.trim()]));
           newBody.push([uuid.v4(), newRow, index]);
         });
         const newData = {
@@ -198,7 +199,8 @@ class DataDisplay extends Component {
           copyListCards[currentCardIndex].listOperations = copyListOperations;
           copyListCards[currentCardIndex].listElements = copyListElements;
 
-          this.setState({ listCards: copyListCards, filtering: false, keywordButtonClicked: '' });
+          this.setState({ listCards: copyListCards, filtering: false, keywordButtonClicked: '',
+            conditionalButtonChanges: this.state.conditionalButtonChanges + 1 });
         }
 
         break;
@@ -310,7 +312,8 @@ class DataDisplay extends Component {
         const newCard = Object.assign({}, listCards[cardIndex], { listOperations: newOperations });
         let copyAllCards = [...listCards];
         copyAllCards[cardIndex] = newCard;
-        this.setState({ listCards: copyAllCards });
+        this.setState({ listCards: copyAllCards,
+          conditionalButtonChanges: this.state.conditionalButtonChanges + 1 });
       }
     } else {
       const { mergerArray } = this.state;
@@ -416,7 +419,8 @@ class DataDisplay extends Component {
     if (arr[2]) { copyListOperations[index2].active = false }
 
     copyListCards[currentCardIndex].listOperations = copyListOperations;
-    await this.setState({listCards: copyListCards});
+    await this.setState({listCards: copyListCards,
+      conditionalButtonChanges: this.state.conditionalButtonChanges + 1});
 
     let len = this.state.listCards[currentCardIndex].listOperations.length;
 
@@ -459,6 +463,7 @@ class DataDisplay extends Component {
           cardId: listCards.length,
           listOperations: [],
           listElements: [],
+          field: []
         }),
         currentCardIndex: listCards.length,
       });
@@ -514,7 +519,7 @@ class DataDisplay extends Component {
 
   render() {
     const {data, inputVisibility, active, listCards, cardSelected, menuVisible,
-      menuTop, menuLeft, filtering,
+      menuTop, menuLeft, filtering, conditionalButtonChanges
       } = this.state;
 
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
@@ -626,7 +631,7 @@ class DataDisplay extends Component {
         <h3 className='displayTitle'>{data.description}</h3>
         <Table data={data} fromSortButton={this.fromSortButton}
           listCards={listCards} sorter={this.sorter}
-          filtering={filtering}
+          filtering={filtering} conditionalButtonChanges={conditionalButtonChanges}
         />
 
         {/* <Route render={() => (
