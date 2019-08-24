@@ -47,20 +47,21 @@ class Table extends Component {
     const { listCards, filtering } = this.props;
     const { data, containsActive1 } = this.state;
     if (filtering && containsActive1){
-      console.log('arr ', arr);
-      console.log('filtering is done');
       for (let i of listCards){
         let filteredColumns = [...i.field];
         let result = false;
         if (i.field.length === 0) {
           filteredColumns = Array.from(new Array(data.header.length), (x, i) => i);
+          operations:
           for (let j = i.listOperations.length - 1; j>= 0; j--) {
             if (i.listOperations[j].active) {
               for (let k of filteredColumns){
-                if (i.listOperations[j].func(arr[k][1])) { 
-                  break;
+                if (i.listOperations[j].func(arr[k][1])) {
+                  console.log('condition fulfilled ', arr[k][1]);
+                  break operations;
                 }
               }
+              console.log('condition not fulfilled ');
               return false;
             }
           }
@@ -68,8 +69,8 @@ class Table extends Component {
           for (let j = i.listOperations.length - 1; j>= 0; j--) {
             if (i.listOperations[j].active) {
               for (let k of filteredColumns){
-                if (i.listOperations[j].func(arr[k][1])) { 
-                  return true;
+                if (!i.listOperations[j].func(arr[k][1])) { 
+                  return false;
                 }
               }
               break;
@@ -78,10 +79,9 @@ class Table extends Component {
         }
         
       }
-      return false;
-    } else {
-      return true;
-    }
+      // return false;
+    } 
+    return true;
   }
 
   containsActive = (cards) => cards.reduce((accum, elem) => 
