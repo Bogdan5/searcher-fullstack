@@ -35,7 +35,6 @@ class Account extends Component {
     library.add(faTrashAlt);
     const { userID } = this.state;    
     if (userID) {
-      console.log('data: ', this.state.data);
       this.getData();
     } else {
       this.props.history.push('/api/users/signin');      

@@ -24,9 +24,11 @@ class Table extends Component {
   }
 
   sorter = (direction, columnNo) => {
+    console.log('data ', this.props.data);
     console.log('column no: ', direction, columnNo);
     console.log('data is: ', this.state.data);
     let sortedArray = this.state.data.body.sort((a,b) => {
+      console.log(a[1][columnNo]);
       let x, y;
       if (direction === 'up'){
         x = a[1][columnNo][1];

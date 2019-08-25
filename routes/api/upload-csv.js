@@ -33,7 +33,9 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
     // open uploaded file
     csv.fromPath(req.file.path)
       .on("data", function (data) {
-        fileRows.push(data); // push each row
+        if (data.length) {
+          fileRows.push(data); // push each row
+        }
       })
       .on("end", function () {
         let header = [];

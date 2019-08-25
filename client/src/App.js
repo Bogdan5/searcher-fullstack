@@ -216,8 +216,10 @@ class App extends Component {
             <NavLink to='/api/users/signup' >Sign up</NavLink>)} />         
           <Route path='/' render={() => {
             if (authenticated) {
-              return <NavLink to={`/api/account/${userID}`} >{username}</NavLink>
+              console.log('is authenticated');
+              return <NavLink to={`/api/account/${userID}`} >{`user ${username}`}</NavLink>
             } else {
+              console.log('not authenitcated');
               return null;
             }
           }} />
