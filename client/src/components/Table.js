@@ -10,6 +10,7 @@ class Table extends Component {
     this.state = {
       data: this.props.data,
       containsActive1: false,
+      typeArray: Array(props.data.header.length).fill('str'),
     }
   }
 
@@ -43,6 +44,10 @@ class Table extends Component {
     });
     let newData = Object.assign({}, this.state.data, { body: sortedArray });
     this.setState({ data: newData });
+  }
+
+  typeSelector = (e) => {
+    this.setState({ })
   }
 
   filterExecuted = (arr) => {
@@ -98,7 +103,9 @@ class Table extends Component {
             {header.map((el, index) => (
               <th key={el[0]} className='headerSortButtons'>
                 <SortButton key={el[0]} name={el[1]}
-                sorter={this.sorter} columnNo={index} />
+                sorter={this.sorter} columnNo={index}
+                type={this.typeSelector}
+                />
               </th>
             ))}
           </tr>

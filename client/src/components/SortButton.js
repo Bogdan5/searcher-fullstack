@@ -14,6 +14,10 @@ const SortButton = props => {
     props.sorter('down', props.columnNo);
   }
 
+  const typeHandler = (e) => {
+    props.type(e.target.value, props.columnNo);
+  }
+
   return (
     <div className='sortButton'>
       <div>{props.name}</div>
@@ -25,6 +29,11 @@ const SortButton = props => {
           <polygon className='triangle' points='5,7 2,2 8,2' />
         </svg>
       </div>
+      <select onChange={this.typeHandler}>
+        <option value='str'>String</option>
+        <option value='num'>Number</option>
+        <option value='bool'>Boolean</option>
+      </select>
     </div>
 );}
 
