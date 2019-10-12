@@ -3,6 +3,7 @@ import '../App.scss';
 // import { library } from '@fortawesome/fontawesome-svg-core';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SortButton from './SortButton';
+import axios from 'axios';
 
 class Table extends Component {
   constructor(props){
@@ -10,7 +11,6 @@ class Table extends Component {
     this.state = {
       data: this.props.data,
       containsActive1: false,
-      typeArray: Array(props.data.header.length).fill('str'),
     }
   }
 
@@ -46,8 +46,37 @@ class Table extends Component {
     this.setState({ data: newData });
   }
 
-  typeSelector = (e) => {
-    this.setState({ })
+  typeSelector = (value, columnNo) => {
+    const { body } = this.state.data;
+    const { fileID } = this.props;
+    const newData = Array.from(body, row => Array.from(row, (x, i) => {
+      if (i === columnNo) {
+        return Array.from(x, (y, index) => {
+          if (index === 1) {
+            switch (value) {
+              case 'str':
+                return y + '';
+              case 'num':
+                return parseInt(y);
+              case 'bool':
+                return (y === 'true');
+              default:
+            }
+          }
+          return y;
+        })
+      }
+      return x;
+    }));
+    this.setState({ data: newData });
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    const conf = {
+      headers: { 'Authorization': bearer },
+      data: newData,
+    };
+    axios.update(`/api/datadisplay/${fileID}`, conf)
+      .then((response) => {})
+      .catch((err) => {});
   }
 
   filterExecuted = (arr) => {
@@ -56,7 +85,6 @@ class Table extends Component {
     if (filtering && containsActive1){
       for (let i of listCards){
         let filteredColumns = [...i.field];
-        let result = false;
         if (i.field.length === 0) {
           filteredColumns = Array.from(new Array(data.header.length), (x, i) => i);
           operations:
