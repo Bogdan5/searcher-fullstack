@@ -628,7 +628,6 @@ class DataDisplay extends Component {
           </DropDownMenu>
         </div>
 
-        <h3 className='displayTitle'>{data.description}</h3>
         <Table data={data} fromSortButton={this.fromSortButton}
           listCards={listCards} sorter={this.sorter}
           filtering={filtering} conditionalButtonChanges={conditionalButtonChanges}

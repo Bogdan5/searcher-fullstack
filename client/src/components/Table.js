@@ -48,7 +48,6 @@ class Table extends Component {
 
   typeSelector = (value, columnNo) => {
     const { body } = this.state.data;
-    const { fileID } = this.props;
     const newData = Array.from(body, row => Array.from(row, (x, i) => {
       if (i === columnNo) {
         return Array.from(x, (y, index) => {
@@ -69,14 +68,7 @@ class Table extends Component {
       return x;
     }));
     this.setState({ data: newData });
-    const bearer = 'Bearer ' + localStorage.getItem('token');
-    const conf = {
-      headers: { 'Authorization': bearer },
-      data: newData,
-    };
-    axios.update(`/api/datadisplay/${fileID}`, conf)
-      .then((response) => {})
-      .catch((err) => {});
+
   }
 
   filterExecuted = (arr) => {
@@ -122,38 +114,62 @@ class Table extends Component {
   containsActive = (cards) => cards.reduce((accum, elem) => 
     elem.listOperations.reduce((acc, el) => el.active || acc, false) || accum, false);
 
+  saveChanges = (e) => {
+    const { fileID } = this.props;
+    const { data } = this.state;
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    const conf = {
+      headers: { 'Authorization': bearer },
+      data,
+    };
+    axios.update(`/api/datadisplay/${fileID}`, conf)
+      .then((response) => {})
+      .catch((err) => {});
+  }
+
   render(){
-    const {header, body} = this.state.data;
+    const {header, body, description } = this.state.data;
     return (
-      <table className='dataTable'>
-        <thead>
-          <tr>
-            {header.map((el, index) => (
-              <th key={el[0]} className='headerSortButtons'>
-                <SortButton key={el[0]} name={el[1]}
-                sorter={this.sorter} columnNo={index}
-                type={this.typeSelector}
-                />
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {body.map(el => {
-            // if (el[1].length) {console.log(this.filterExecuted(el[1]));}
-            if (el[1].length && this.filterExecuted(el[1])){
-              return (
-                <tr key={el[0]} className='rowTable'>
-                  {el[1].map(elem => (
-                    <td key={elem[0]} className='cellTable'>{elem[1]}</td>
-                  ))}
-                </tr>
-              );
-            }
-            return null;
-          })}
-        </tbody>
-      </table>
+      <div>
+        <div>
+          <span>{description}</span>
+          <button
+            type="button"
+            className="tableSaveButton"
+            onClick={this.saveChanges}
+          >Save changes</button>
+        </div>
+        <h3 className='displayTitle'>{description}</h3>
+        <table className='dataTable'>
+          <thead>
+            <tr>
+              {header.map((el, index) => (
+                <th key={el[0]} className='headerSortButtons'>
+                  <SortButton key={el[0]} name={el[1]}
+                  sorter={this.sorter} columnNo={index}
+                  type={this.typeSelector}
+                  />
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {body.map(el => {
+              // if (el[1].length) {console.log(this.filterExecuted(el[1]));}
+              if (el[1].length && this.filterExecuted(el[1])){
+                return (
+                  <tr key={el[0]} className='rowTable'>
+                    {el[1].map(elem => (
+                      <td key={elem[0]} className='cellTable'>{elem[1]}</td>
+                    ))}
+                  </tr>
+                );
+              }
+              return null;
+            })}
+          </tbody>
+        </table>
+      </div>
 
     );
   }
