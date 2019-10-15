@@ -81,6 +81,7 @@ class DataDisplay extends Component {
         // console.log('new Data is: ', this.state.data);
       })
       .catch((err) => {
+        console.log('Error ', err)
         if(err.response.status === 401) {
           console.log(`Error: ${err}`)
           this.props.history.push({pathname: '/api/users/signin',

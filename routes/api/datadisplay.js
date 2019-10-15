@@ -17,7 +17,7 @@ router.get('/:fileID', authenticate.verifyUser, (req, res, next) => {
     .catch(err => console.log('Error: ', err));
 });
 
-router.update('/:fileID', authenticate.verifyUser, (req, res, next) =>{
+router.put('/:fileID', authenticate.verifyUser, (req, res, next) =>{
   console.log('Update req ', req);
   // File.findOneAndUpdate({ _id: req.params.fileID }, { $set: {data: newData} });
 });

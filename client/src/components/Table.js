@@ -28,8 +28,9 @@ class Table extends Component {
     console.log('data ', this.props.data);
     console.log('column no: ', direction, columnNo);
     console.log('data is: ', this.state.data);
+    let i = 1;
     let sortedArray = this.state.data.body.sort((a,b) => {
-      console.log(a[1][columnNo]);
+      console.log(i = i + 1, a[1][columnNo]);
       let x, y;
       if (direction === 'up'){
         x = a[1][columnNo][1];
@@ -47,26 +48,36 @@ class Table extends Component {
   }
 
   typeSelector = (value, columnNo) => {
-    const { body } = this.state.data;
-    const newData = Array.from(body, row => Array.from(row, (x, i) => {
-      if (i === columnNo) {
+    const { data } = this.state;
+    const { body } = data;
+    console.log('Data ', data);
+    const newBody = Array.from(body, row => Array.from(row, (x, i) => {
+      if (i === 1) {
         return Array.from(x, (y, index) => {
-          if (index === 1) {
-            switch (value) {
-              case 'str':
-                return y + '';
-              case 'num':
-                return parseInt(y);
-              case 'bool':
-                return (y === 'true');
-              default:
-            }
+          if (index === columnNo) {
+            return Array.from(y, (z, ix) => {
+              if (ix === 1) {
+                switch (value) {
+                  case 'str':
+                    return z + '';
+                  case 'num':
+                    console.log('num ', parseInt(z));
+                    return parseInt(z);
+                  case 'bool':
+                    return (z === 'true');
+                  default:
+                }
+              }
+              return z;
+            })
           }
           return y;
         })
       }
       return x;
     }));
+    const newData = Object.assign({}, data, {body: newBody});
+    console.log('newData ', newData);
     this.setState({ data: newData });
 
   }
@@ -122,7 +133,7 @@ class Table extends Component {
       headers: { 'Authorization': bearer },
       data,
     };
-    axios.update(`/api/datadisplay/${fileID}`, conf)
+    axios.put(`/api/datadisplay/${fileID}`, conf)
       .then((response) => {})
       .catch((err) => {});
   }

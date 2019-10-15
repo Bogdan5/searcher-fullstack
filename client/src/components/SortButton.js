@@ -29,7 +29,7 @@ const SortButton = props => {
           <polygon className='triangle' points='5,7 2,2 8,2' />
         </svg>
       </div>
-      <select onChange={this.typeHandler}>
+      <select onChange={typeHandler}>
         <option value='str'>String</option>
         <option value='num'>Number</option>
         <option value='bool'>Boolean</option>
