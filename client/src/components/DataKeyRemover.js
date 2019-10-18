@@ -1,0 +1,1 @@
+export default (body) => Array.from(body, x => Array.from(x[1], y => y[1]));

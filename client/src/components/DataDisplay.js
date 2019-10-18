@@ -15,6 +15,7 @@ import Keyboard from './Keyboard';
 import MenuOption from './MenuOption';
 import SelectButton from './SelectButton';
 import Table from './Table';
+import DataKeyAdder from './DataKeyAdder';
 
 class DataDisplay extends Component {
   constructor (props) {
@@ -63,21 +64,9 @@ class DataDisplay extends Component {
     };
     // retrieves data from csv files uploaded in the database
     axios.get(`/api/datadisplay/${fileID}`, conf)
-      .then(async (response) => {
-        let newHeader = [];
-        let newBody = [];
-        response.data.header.forEach(el => newHeader.push([uuid.v4(), el.trim()]));
-        response.data.body.forEach((el, index) => {
-          let newRow = [];
-          el.forEach(elem => newRow.push([uuid.v4(), elem.trim()]));
-          newBody.push([uuid.v4(), newRow, index]);
-        });
-        const newData = {
-          header: newHeader,
-          body: newBody,
-          description: response.data.description,
-        };
-        await this.setState({ data: newData });
+      .then((response) => {
+        console.log('data with keyAdder ',  DataKeyAdder(response.data));
+        this.setState({ data: DataKeyAdder(response.data) });
         // console.log('new Data is: ', this.state.data);
       })
       .catch((err) => {

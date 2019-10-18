@@ -34,7 +34,8 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
     csv.fromPath(req.file.path)
       .on("data", function (data) {
         if (data.length) {
-          fileRows.push(data); // push each row
+          console.log('data ', data);
+          fileRows.push(Array.from(data, x => (typeof x === 'string') ? x.trim() : x)); // push each row
         }
       })
       .on("end", function () {

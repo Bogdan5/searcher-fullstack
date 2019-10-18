@@ -4,6 +4,8 @@ import '../App.scss';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SortButton from './SortButton';
 import axios from 'axios';
+import DataKeyAdder from './DataKeyAdder';
+import DataKeyRemover from './DataKeyRemover';
 
 class Table extends Component {
   constructor(props){
@@ -61,7 +63,7 @@ class Table extends Component {
                   case 'str':
                     return z + '';
                   case 'num':
-                    console.log('num ', parseInt(z));
+                    console.log('num ', parseFloat(z));
                     return parseInt(z);
                   case 'bool':
                     return (z === 'true');
@@ -131,11 +133,38 @@ class Table extends Component {
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer },
-      data,
     };
-    axios.put(`/api/datadisplay/${fileID}`, conf)
-      .then((response) => {})
-      .catch((err) => {});
+    console.log('Data before put ', data);
+    axios.put(`/api/datadisplay/${fileID}`, DataKeyRemover(data.body), conf)
+      .then((response) => {
+        console.log('Put successful', response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  resetChanges = () => {
+    const { fileID } = this.props;
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    const conf = {
+      headers: { 'Authorization': bearer }
+    };
+    // retrieves data from csv files uploaded in the database
+    axios.get(`/api/datadisplay/${fileID}`, conf)
+      .then((response) => {
+        console.log('data with keyAdder ',  DataKeyAdder(response.data));
+        this.setState({ data: DataKeyAdder(response.data) });
+      })
+      .catch((err) => {
+        console.log('Error ', err)
+        if(err.response.status === 401) {
+          console.log(`Error: ${err}`)
+          this.props.history.push({pathname: '/api/users/signin',
+            appState: {prevPath: this.props.location.pathname}});
+          // this.setState({ windowVisible: true, goToSignIn: true, prevPath: `/api/datadisplay/${id}` });
+        }
+      });
   }
 
   render(){
@@ -149,6 +178,13 @@ class Table extends Component {
             className="tableSaveButton"
             onClick={this.saveChanges}
           >Save changes</button>
+          <button
+            type="button"
+            className="tableSaveButton"
+            onClick={this.resetChanges}
+          >
+            Reset type changes
+          </button>
         </div>
         <h3 className='displayTitle'>{description}</h3>
         <table className='dataTable'>
