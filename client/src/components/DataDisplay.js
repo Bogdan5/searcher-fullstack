@@ -30,7 +30,8 @@ class DataDisplay extends Component {
       data: {
         header: [], // header of the csv data file
         body: [], // data of the csv data file
-        description: '' // string describing each file
+        description: '', // string describing each file
+        columnTypes: [],
       },
       fileID: match.params.id,
       listCards: [{ // list of all the conditions cards that include conditional buttons
@@ -65,7 +66,6 @@ class DataDisplay extends Component {
     // retrieves data from csv files uploaded in the database
     axios.get(`/api/datadisplay/${fileID}`, conf)
       .then((response) => {
-        console.log('data with keyAdder ',  DataKeyAdder(response.data));
         this.setState({ data: DataKeyAdder(response.data) });
         // console.log('new Data is: ', this.state.data);
       })
@@ -323,7 +323,6 @@ class DataDisplay extends Component {
   //finds all children for a top level conditional button
   findAllChildren = (id) => {
     const { listCards, cardSelected } = this.state;
-    console.log('list operations: ', listCards[0].listOperations);
     const cardIndex = this.cardSearcher(cardSelected);
     const buttonList = listCards[cardIndex].listOperations;
     // const buttonIndex = this.buttonSearcher(id);

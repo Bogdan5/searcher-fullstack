@@ -2,9 +2,7 @@ import React from 'react';
 import '../App.scss';
 
 const SortButton = props => {
-  // const type = (e) => {
-  //   props.sorted(e.target.value);
-  // }
+  const { type } = props;
 
   const clickUp = (e) => {
     props.sorter('up', props.columnNo);
@@ -15,8 +13,13 @@ const SortButton = props => {
   }
 
   const typeHandler = (e) => {
-    props.type(e.target.value, props.columnNo);
+    if (e.target.value !== type) {
+      console.log('Type changed');
+      props.typeHandlerTable(e.target.value, props.columnNo);
+    }
   }
+
+  console.log(props.columnNo, props.type);
 
   return (
     <div className='sortButton'>
@@ -29,10 +32,10 @@ const SortButton = props => {
           <polygon className='triangle' points='5,7 2,2 8,2' />
         </svg>
       </div>
-      <select onChange={typeHandler}>
-        <option value='str'>String</option>
-        <option value='num'>Number</option>
-        <option value='bool'>Boolean</option>
+      <select onChange={typeHandler} value={props.type}>
+        <option value='string'>String</option>
+        <option value='number'>Number</option>
+        <option value='boolean'>Boolean</option>
       </select>
     </div>
 );}

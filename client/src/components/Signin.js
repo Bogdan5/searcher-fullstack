@@ -33,13 +33,10 @@ class SignIn extends Component {
       username: this.state.username,
       password: this.state.password
     };
-    console.log('history: ', this.props);
     axios.post('/api/users/signin', user)
       .then((res) => {
-        console.log('res from post signin', res);
         // const {username, userID} = res.data;
         if (res.data.success) {
-          console.log('if true; prevPath: ', this.props);
           this.props.isAuthenticated(true, res.data.userID);
           localStorage.setItem('token', res.data.token);
           if (this.props.location.appState) {
@@ -48,7 +45,6 @@ class SignIn extends Component {
             this.props.history.push('/');
           }
         } else {
-          console.log('if false');
           var error = new Error('Error ' + res.status + ': ' + res.statusText);
           error.res = res;
           throw error;

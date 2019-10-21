@@ -7,6 +7,10 @@ const File = new Schema({
     type: Array,
     default: []
   },
+  columnTypes: {
+    type: Array,
+    default: []
+  },
   body: {
     type: Array,
     default: []

@@ -27,12 +27,7 @@ class Table extends Component {
   }
 
   sorter = (direction, columnNo) => {
-    console.log('data ', this.props.data);
-    console.log('column no: ', direction, columnNo);
-    console.log('data is: ', this.state.data);
-    let i = 1;
     let sortedArray = this.state.data.body.sort((a,b) => {
-      console.log(i = i + 1, a[1][columnNo]);
       let x, y;
       if (direction === 'up'){
         x = a[1][columnNo][1];
@@ -52,7 +47,7 @@ class Table extends Component {
   typeSelector = (value, columnNo) => {
     const { data } = this.state;
     const { body } = data;
-    console.log('Data ', data);
+    const { columnTypes } = data;
     const newBody = Array.from(body, row => Array.from(row, (x, i) => {
       if (i === 1) {
         return Array.from(x, (y, index) => {
@@ -60,12 +55,11 @@ class Table extends Component {
             return Array.from(y, (z, ix) => {
               if (ix === 1) {
                 switch (value) {
-                  case 'str':
+                  case 'string':
                     return z + '';
-                  case 'num':
-                    console.log('num ', parseFloat(z));
+                  case 'number':
                     return parseInt(z);
-                  case 'bool':
+                  case 'boolean':
                     return (z === 'true');
                   default:
                 }
@@ -78,16 +72,16 @@ class Table extends Component {
       }
       return x;
     }));
-    const newData = Object.assign({}, data, {body: newBody});
-    console.log('newData ', newData);
+    const newColumnTypes = Array.from(columnTypes, (x, i) => (i === columnNo) ? value : x);
+    const newData = Object.assign({}, data, {body: newBody, columnTypes: newColumnTypes });
     this.setState({ data: newData });
-
   }
 
   filterExecuted = (arr) => {
     const { listCards, filtering } = this.props;
     const { data, containsActive1 } = this.state;
     if (filtering && containsActive1){
+      console.log('filt ', filtering);
       for (let i of listCards){
         let filteredColumns = [...i.field];
         if (i.field.length === 0) {
@@ -97,11 +91,9 @@ class Table extends Component {
             if (i.listOperations[j].active) {
               for (let k of filteredColumns){
                 if (i.listOperations[j].func(arr[k][1])) {
-                  console.log('condition fulfilled ', arr[k][1]);
                   break operations;
                 }
               }
-              console.log('condition not fulfilled ');
               return false;
             }
           }
@@ -134,10 +126,12 @@ class Table extends Component {
     const conf = {
       headers: { 'Authorization': bearer },
     };
-    console.log('Data before put ', data);
-    axios.put(`/api/datadisplay/${fileID}`, DataKeyRemover(data.body), conf)
+    const newData = {
+      body: DataKeyRemover(data.body),
+      columnTypes: data.columnTypes,
+    }
+    axios.put(`/api/datadisplay/${fileID}`, newData, conf)
       .then((response) => {
-        console.log('Put successful', response);
       })
       .catch((err) => {
         console.log(err);
@@ -168,7 +162,7 @@ class Table extends Component {
   }
 
   render(){
-    const {header, body, description } = this.state.data;
+    const {header, body, description, columnTypes } = this.state.data;
     return (
       <div>
         <div>
@@ -194,7 +188,7 @@ class Table extends Component {
                 <th key={el[0]} className='headerSortButtons'>
                   <SortButton key={el[0]} name={el[1]}
                   sorter={this.sorter} columnNo={index}
-                  type={this.typeSelector}
+                  typeHandlerTable={this.typeSelector} type={columnTypes[index]}
                   />
                 </th>
               ))}
@@ -202,7 +196,6 @@ class Table extends Component {
           </thead>
           <tbody>
             {body.map(el => {
-              // if (el[1].length) {console.log(this.filterExecuted(el[1]));}
               if (el[1].length && this.filterExecuted(el[1])){
                 return (
                   <tr key={el[0]} className='rowTable'>

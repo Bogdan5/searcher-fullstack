@@ -18,8 +18,8 @@ router.get('/:fileID', authenticate.verifyUser, (req, res, next) => {
 });
 
 router.put('/:fileID', authenticate.verifyUser, (req, res, next) =>{
-  console.log('Update req ', req.body);
-  File.findOneAndUpdate({ _id: req.params.fileID }, { $set: {body: req.body} }, { upsert: true })
+  File.findOneAndUpdate({ _id: req.params.fileID },
+    { $set: {body: req.body.body, columnTypes: req.body.columnTypes} }, { upsert: true, useFindAndModify: false })
     .then((file) => {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');

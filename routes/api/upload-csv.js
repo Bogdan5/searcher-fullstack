@@ -34,7 +34,6 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
     csv.fromPath(req.file.path)
       .on("data", function (data) {
         if (data.length) {
-          console.log('data ', data);
           fileRows.push(Array.from(data, x => (typeof x === 'string') ? x.trim() : x)); // push each row
         }
       })
@@ -53,6 +52,7 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
         }
         File.create({
           header,
+          columnTypes: Array.from(Array(header.length), x => 'string'),
           body: fileRows,
           description: req.body.description,
           author: mongoose.Types.ObjectId(req.user._id)

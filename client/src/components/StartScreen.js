@@ -5,7 +5,6 @@ import {NavLink, Link} from 'react-router-dom';
 const StartScreen = (props) => {
   // console.log('start screen rendered, userID: ', props.userID);
   const {optChosen, authenticated, userID} = props;
-  console.log('start screen authenticated: ', authenticated, ' userID: ', userID);
 
   const handler1 = (e) => {
     optChosen('uploadAnon');

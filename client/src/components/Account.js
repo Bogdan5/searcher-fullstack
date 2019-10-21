@@ -42,7 +42,6 @@ class Account extends Component {
   }
 
   getData = () => {
-    console.log('getting data');
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer },
