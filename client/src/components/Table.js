@@ -81,7 +81,7 @@ class Table extends Component {
     const { listCards, filtering } = this.props;
     const { data, containsActive1 } = this.state;
     if (filtering && containsActive1){
-      console.log('filt ', filtering);
+      console.log('array cols ', filtering);
       for (let i of listCards){
         let filteredColumns = [...i.field];
         if (i.field.length === 0) {

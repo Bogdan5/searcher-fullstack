@@ -23,6 +23,7 @@ class DataDisplay extends Component {
     const match = matchPath(this.props.location.pathname,{
       path: '/api/datadisplay/:id'
     });
+    const firstCard = uuid.v4();
     this.textInput = React.createRef(); // ref used to autofocus the keyword input
     this.appRef = React.createRef(); // ref used to measure the position of the App div
     this.state = {
@@ -35,13 +36,13 @@ class DataDisplay extends Component {
       },
       fileID: match.params.id,
       listCards: [{ // list of all the conditions cards that include conditional buttons
-        cardId: 0, // id to identify each card
+        cardId: firstCard, // id to identify each card
         field: [], // on what columns of the data the list of operations apply
         listOperations: [], // what conditions aply to the data - helps sort
         listElements: [], // the list of conditional elements
         immediateChildren: [],
       }],
-      cardSelected: 0, // where conditional buttons go at one time
+      cardSelected: firstCard, // where conditional buttons go at one time
       currentCardIndex: 0, // on the array of cards what position is the current card
       keyword: '', // content of the keyword input text field
       inputVisibility: 'visible', // in the second Keyboard, whether the position input is visible
@@ -132,7 +133,6 @@ class DataDisplay extends Component {
       keyword, keywordButtonClicked, cardSelected,
       position, listCards, currentCardIndex
     } = this.state;
-    
     let chldList = [];
     let lst = [];
     switch (name) {
@@ -141,7 +141,6 @@ class DataDisplay extends Component {
         // const currentCardIndex = this.cardSearcher(cardSelected);
         const copyListOperations = [...copyListCards[currentCardIndex].listOperations];
         const copyListElements = [...copyListCards[currentCardIndex].listElements];
-
         let idCond = uuid.v4();
 
         if (keywordButtonClicked && keyword) {
@@ -449,7 +448,7 @@ class DataDisplay extends Component {
     if (type === '+') {
       this.setState({
         listCards: listCards.concat({
-          cardId: listCards.length,
+          cardId: uuid.v4(),
           listOperations: [],
           listElements: [],
           field: []
@@ -494,7 +493,7 @@ class DataDisplay extends Component {
 
   clear = () => {
     this.setState({ listCards: [{
-      cardId: 0,
+      cardId: uuid.v4(),
       field: [],
       listOperations: [],
       listElements: [],
@@ -534,7 +533,7 @@ class DataDisplay extends Component {
           <Keyboard
             leftSection='Search keyword' classProp=' keyboardSearchKeyword'
             icon='' typeContent=''
-            id={0} cardSelected={0}
+            id={'0'} cardSelected={'0'}
           >
             <div className='centerKeyboard'>
               <ButtonGroup>
@@ -589,9 +588,9 @@ class DataDisplay extends Component {
             );
             return (
               <Keyboard
-                key={el.cardId} leftSection={typeContent}
+                id={el.cardId} leftSection={typeContent}
                 classProp='' rightSection={iconsElements}
-                cardSelected={cardSelected} id={el.id}
+                cardSelected={cardSelected} key={el.cardId}
               >
                 <ConditionButtonFormatter fromFormatter={this.fromFormat}>
                   {el.listElements.map((elem, indx) => {

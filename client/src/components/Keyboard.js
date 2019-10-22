@@ -9,7 +9,7 @@ const Keyboard = (props) => {
   const { children } = props;
   const isSelected = (id || id === 0) && (cardSelected === id) ? ' selectedKeyboard' : '';
   return (
-    <div className={`keyboardGeneric${classProp}`}>
+    <div className={`keyboardGeneric${classProp}`} key={id}>
       <div className={`leftSection${isSelected}`}>{leftSection}</div>
       <div className={`keyboardRight${isSelected}`}>{children}</div>
       <section>{rightSection}</section>

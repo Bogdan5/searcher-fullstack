@@ -19,8 +19,6 @@ const SortButton = props => {
     }
   }
 
-  console.log(props.columnNo, props.type);
-
   return (
     <div className='sortButton'>
       <div>{props.name}</div>
