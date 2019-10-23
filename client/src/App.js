@@ -15,6 +15,7 @@ import Upload from './components/Upload';
 import AccountWithRouter from './components/Account';
 // initial options
 import StartScreen from './components/StartScreen';
+import Download from './components/Download';
 
 import './App.scss';
 
@@ -235,6 +236,7 @@ class App extends Component {
             
             <Route path='/api/upload-csv' component={Upload} />
             <Route path={`/api/datadisplay/:fileID`} component={DataDisplay} /> 
+            {/* <Route path={'/api/download/:fileID/download'} component={Download} /> */}
           </Switch>
         </div>
       </div>

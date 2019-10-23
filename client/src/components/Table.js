@@ -161,6 +161,19 @@ class Table extends Component {
       });
   }
 
+  downloadFile = () => {
+    const { fileID } = this.props;
+    const { data } = this.state;
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    const conf = {
+      headers: { 'Authorization': bearer }
+    };
+    console.log('fieldID ', fileID);
+    axios.post(`/api/download/`, data, conf)
+      .then((response) => console.log(response.body))
+      .catch((err) => console.log(err));
+  }
+
   render(){
     const {header, body, description, columnTypes } = this.state.data;
     return (
@@ -178,6 +191,12 @@ class Table extends Component {
             onClick={this.resetChanges}
           >
             Reset type changes
+          </button>
+          <button
+            type="button"
+            onClick={this.downloadFile}
+          >
+            Download file
           </button>
         </div>
         <h3 className='displayTitle'>{description}</h3>
