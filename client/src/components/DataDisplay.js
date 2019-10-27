@@ -508,7 +508,8 @@ class DataDisplay extends Component {
   render() {
     const {data, inputVisibility, active, listCards, cardSelected, menuVisible,
       menuTop, menuLeft, filtering, conditionalButtonChanges, fileID,
-      } = this.state;
+      } = this.state;  
+    const { username } = this.props;
 
     // enhancing DumbButtons to ButtonWithHandler through ComponentEnhancer
     const propertiesObj = { // properties object passed to ComponentEnhancer
@@ -619,7 +620,7 @@ class DataDisplay extends Component {
         <Table data={data} fromSortButton={this.fromSortButton}
           listCards={listCards} sorter={this.sorter}
           filtering={filtering} conditionalButtonChanges={conditionalButtonChanges}
-          fileID={fileID}
+          fileID={fileID} username={username}
         />
 
         {/* <Route render={() => (

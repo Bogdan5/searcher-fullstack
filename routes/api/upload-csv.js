@@ -39,6 +39,7 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
       })
       .on("end", function () {
         let header = [];
+        console.log('path file uploaded in temp ', req.file.path);
         fs.unlinkSync(req.file.path);   // remove temp file
         //process "fileRows" and respond
         if (req.body.firstRowHeader) {

@@ -162,14 +162,14 @@ class Table extends Component {
   }
 
   downloadFile = () => {
-    const { fileID } = this.props;
+    const { fileID, username } = this.props;
     const { data } = this.state;
     const bearer = 'Bearer ' + localStorage.getItem('token');
     const conf = {
       headers: { 'Authorization': bearer }
     };
     console.log('fieldID ', fileID);
-    axios.post(`/api/download/`, data, conf)
+    axios.post(`/api/download/${username}`, data, conf)
       .then((response) => console.log(response.body))
       .catch((err) => console.log(err));
   }

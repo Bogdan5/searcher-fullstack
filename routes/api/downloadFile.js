@@ -4,11 +4,14 @@ const fs = require('fs');
 
 const authenticate = require('../../authenticate');
 
-router.post('/', authenticate.verifyUser, (req, res) => {
+router.post('/:userID', authenticate.verifyUser, (req, res) => {
   console.log('download file begin', req.body);
-  fs.writeFile(`file_${req.params.fileID}.txt`, req.body, (err) => {
-    console.log(err);
-  });
+
+  let file = fs.createWriteStream(`/tmp/downloads/file_${req.params.fileID}.txt`);
+  file.on('error', function(err) { /* error handling */ });
+  req.body.forEach(function(v) { file.write(v.join(', ') + '\n'); });
+  file.end();
+
 });
 
 module.exports = router;

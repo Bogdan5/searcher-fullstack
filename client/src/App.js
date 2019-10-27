@@ -235,7 +235,7 @@ class App extends Component {
                 isAuthenticated={this.isAuthenticated} />)} />
             
             <Route path='/api/upload-csv' component={Upload} />
-            <Route path={`/api/datadisplay/:fileID`} component={DataDisplay} /> 
+            <Route path={`/api/datadisplay/:fileID`} render={(props) => <DataDisplay {...props} username={userID}/>} /> 
             {/* <Route path={'/api/download/:fileID/download'} component={Download} /> */}
           </Switch>
         </div>
