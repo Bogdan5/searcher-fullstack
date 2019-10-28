@@ -14,6 +14,7 @@ class Table extends Component {
     this.state = {
       data: this.props.data,
       containsActive1: false,
+      filtering: props.filtering,
     }
   }
 
@@ -24,6 +25,9 @@ class Table extends Component {
     }
     if(prevProps.conditionalButtonChanges !== this.props.conditionalButtonChanges){
       this.setState({ containsActive1: this.containsActive(this.props.listCards)})
+    }
+    if (prevProps.filtering !== this.props.filtering) {
+      this.setState({ filtering: this.props.filtering});
     }
   }
 
@@ -79,8 +83,9 @@ class Table extends Component {
   }
 
   filterExecuted = (arr) => {
-    const { listCards, filtering } = this.props;
-    const { data, containsActive1 } = this.state;
+    // console.log('arr ', arr);
+    const { listCards } = this.props;
+    const { data, containsActive1, filtering } = this.state;
     if (filtering && containsActive1){
       for (let i of listCards){
         let filteredColumns = [...i.field];
@@ -90,6 +95,7 @@ class Table extends Component {
           for (let j = i.listOperations.length - 1; j>= 0; j--) {
             if (i.listOperations[j].active) {
               for (let k of filteredColumns){
+                // console.log(arr[k]);
                 if (i.listOperations[j].func(arr[k][1])) {
                   break operations;
                 }
@@ -147,7 +153,6 @@ class Table extends Component {
     // retrieves data from csv files uploaded in the database
     axios.get(`/api/datadisplay/${fileID}`, conf)
       .then((response) => {
-        console.log('data with keyAdder ',  DataKeyAdder(response.data));
         this.setState({ data: DataKeyAdder(response.data) });
       })
       .catch((err) => {
@@ -159,28 +164,18 @@ class Table extends Component {
           // this.setState({ windowVisible: true, goToSignIn: true, prevPath: `/api/datadisplay/${id}` });
         }
       });
+      this.setState({ filtering: false });
   }
 
-  downloadFile = () => {
-    // const { fileID, username } = this.props;
+  downloadFile = async () => {
     const { data } = this.state;
-    // const bearer = 'Bearer ' + localStorage.getItem('token');
-    // const conf = {
-    //   headers: { 'Authorization': bearer }
-    // };
-    console.log('filtering ', this.props.filtering);
+    await this.setState({ filtering: true });
     const newHeaders = Array.from(data.header, x => x[1]);
-    // const newData = { header: newHeaders, body: DataKeyRemover(data.body) };
-    // axios.post(`/api/download/${username}`, newData, conf)
-    //   .then((response) => console.log(response))
-    //   .catch((err) => console.log(err));
     let dataString = newHeaders.join(',') + '\n';
-    DataKeyRemover(data.body).forEach((el) => {
-      console.log('length ', el.length);
-      console.log('filter ', this.filterExecuted(el));
-      if (el.length && this.filterExecuted(el)) {
-        console.log(dataString);
-        dataString = dataString + el.join(',') + '\n';
+    data.body.forEach((el) => {
+      if (el[1].length && this.filterExecuted(el[1])) {
+        el[1].forEach((x, i) => dataString = dataString + x[1] + ((i === el[1].length - 1) ? '' : ','));
+        dataString = dataString + '\n';
       }
     });
     const blob = new Blob([dataString], {type: "text/plain;charset=utf-8"});

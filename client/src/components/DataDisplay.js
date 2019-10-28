@@ -90,6 +90,7 @@ class DataDisplay extends Component {
   include (whatIsIncluded, position){
     const reg = new RegExp(this.regExpEscape(whatIsIncluded));
     return function(data){
+      console.log('data ', data);
       const matcher = data.match(reg);
       if (matcher && (position || position === 0)) {
         return data.match(reg).index === position;
