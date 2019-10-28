@@ -67,8 +67,8 @@ class DataDisplay extends Component {
     // retrieves data from csv files uploaded in the database
     axios.get(`/api/datadisplay/${fileID}`, conf)
       .then((response) => {
+        console.log('new Data is: ', response.data);
         this.setState({ data: DataKeyAdder(response.data) });
-        // console.log('new Data is: ', this.state.data);
       })
       .catch((err) => {
         console.log('Error ', err)

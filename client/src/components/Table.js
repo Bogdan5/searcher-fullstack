@@ -6,6 +6,7 @@ import SortButton from './SortButton';
 import axios from 'axios';
 import DataKeyAdder from './DataKeyAdder';
 import DataKeyRemover from './DataKeyRemover';
+var FileSaver = require('file-saver');
 
 class Table extends Component {
   constructor(props){
@@ -81,7 +82,6 @@ class Table extends Component {
     const { listCards, filtering } = this.props;
     const { data, containsActive1 } = this.state;
     if (filtering && containsActive1){
-      console.log('array cols ', filtering);
       for (let i of listCards){
         let filteredColumns = [...i.field];
         if (i.field.length === 0) {
@@ -162,16 +162,29 @@ class Table extends Component {
   }
 
   downloadFile = () => {
-    const { fileID, username } = this.props;
+    // const { fileID, username } = this.props;
     const { data } = this.state;
-    const bearer = 'Bearer ' + localStorage.getItem('token');
-    const conf = {
-      headers: { 'Authorization': bearer }
-    };
-    console.log('fieldID ', fileID);
-    axios.post(`/api/download/${username}`, data, conf)
-      .then((response) => console.log(response.body))
-      .catch((err) => console.log(err));
+    // const bearer = 'Bearer ' + localStorage.getItem('token');
+    // const conf = {
+    //   headers: { 'Authorization': bearer }
+    // };
+    console.log('filtering ', this.props.filtering);
+    const newHeaders = Array.from(data.header, x => x[1]);
+    // const newData = { header: newHeaders, body: DataKeyRemover(data.body) };
+    // axios.post(`/api/download/${username}`, newData, conf)
+    //   .then((response) => console.log(response))
+    //   .catch((err) => console.log(err));
+    let dataString = newHeaders.join(',') + '\n';
+    DataKeyRemover(data.body).forEach((el) => {
+      console.log('length ', el.length);
+      console.log('filter ', this.filterExecuted(el));
+      if (el.length && this.filterExecuted(el)) {
+        console.log(dataString);
+        dataString = dataString + el.join(',') + '\n';
+      }
+    });
+    const blob = new Blob([dataString], {type: "text/plain;charset=utf-8"});
+    FileSaver.saveAs(blob, `download_${data.description}.txt`);
   }
 
   render(){
