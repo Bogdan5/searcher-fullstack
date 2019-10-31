@@ -533,7 +533,7 @@ class DataDisplay extends Component {
 
           {/* the card that constructs conditional buttons */}
           <Keyboard
-            leftSection='Search keyword' classProp=' keyboardSearchKeyword'
+            leftSection='Search text keyword' classProp=' keyboardSearchKeyword'
             icon='' typeContent=''
             id={'0'} cardSelected={'0'}
           >
@@ -557,6 +557,27 @@ class DataDisplay extends Component {
             </div>
             <ButtonWithHandler name='SUBMIT' visibility={inputVisibility} />
             <ButtonWithHandler name='CANCEL' />
+          </Keyboard>
+          <Keyboard
+            leftSection='Search text keyword' classProp=' keyboardSearchKeyword'
+            icon='' typeContent=''
+            id={'0'} cardSelected={'0'}
+          >
+            <div className='centerKeyboard'>
+              <ButtonGroup>
+                <ButtonWithHandler name='>' />
+                <ButtonWithHandler name='<' />
+                <ButtonWithHandler name='>=' />
+                <ButtonWithHandler name='=<' />
+                <ButtonWithHandler name='=' />
+                <input // by default, any match would satisfy condition, regardless of position
+                  type='text' className={`positionInput ${inputVisibility}`}
+                  onChange={this.positionHandler}
+                />
+                <ButtonWithHandler name='SUBMIT' visibility={inputVisibility} />
+                <ButtonWithHandler name='CANCEL' />
+              </ButtonGroup>
+            </div>
           </Keyboard>
 
           {/* an array of cards with the result of Keyword input - includes the
