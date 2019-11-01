@@ -107,6 +107,18 @@ class DataDisplay extends Component {
     }
   }
 
+  greaterThan = (whatIsIncluded) => {
+    return (data) => (data > whatIsIncluded);
+  }
+
+  smallerThan = (whatIsIncluded) => {
+    return (data) => (data < whatIsIncluded);
+  }
+
+  equals = (whatIsIncluded) => {
+    return (data) => (data === whatIsIncluded);
+  }
+
   // boolean merger of two operations with AND
   conjunction(fn1, fn2){
     return function(data){
@@ -166,6 +178,27 @@ class DataDisplay extends Component {
               lst = ['Starts with ', keyword];
               conditionObj.func = this.include(conditionObj.whatIsIncluded, 0);
               break;
+            case '>':
+              lst = ['Greater than ', keyword];
+              conditionObj.func = this.greaterThan(conditionObj.whatIsIncluded);
+              break;
+            case '<':
+              lst = ['Smaller than ', keyword];
+              conditionObj.func = this.smallerThan(conditionObj.whatIsIncluded);
+              break;
+            case '>=':
+              lst = ['Greater than or equal to ', keyword];
+              conditionObj.func = this.greaterThan(conditionObj.whatIsIncluded) || this.equals(conditionObj.whatIsIncluded);
+              break;
+            case '=<':
+              lst = ['Smaller than or equal to ', keyword];
+              conditionObj.func = this.smallerThan(conditionObj.whatIsIncluded) || this.equals(conditionObj.whatIsIncluded);
+              break;
+            case '=':
+              lst = ['Equal to ', keyword];
+              conditionObj.func = this.equals(conditionObj.whatIsIncluded);
+              break;
+            
             default:
           }
           chldList = lst.map((el, index) => <span key={uuid.v4()}>{`${el}`}</span>);
@@ -196,7 +229,6 @@ class DataDisplay extends Component {
         break;
       case 'INCLUDES':
         this.setState({ keywordButtonClicked: name, inputVisibility: 'visible' });
-
         break;
       case 'ENDS WITH':
         this.setState({ keywordButtonClicked: name });
@@ -206,6 +238,21 @@ class DataDisplay extends Component {
         break;
       case 'CANCEL':
         this.setState({ currentOperation: [] });
+        break;
+      case '>':
+        this.setState({ keywordButtonClicked: name });        
+        break;
+      case '<':
+        this.setState({ keywordButtonClicked: name });        
+        break;
+      case '>=':
+        this.setState({ keywordButtonClicked: name });        
+        break;
+      case '=<':
+        this.setState({ keywordButtonClicked: name });        
+        break;
+      case '=':
+        this.setState({ keywordButtonClicked: name });        
         break;
       case 'Sign up':
         this.setState({ windowKind: 'Sign up'});
@@ -559,7 +606,7 @@ class DataDisplay extends Component {
             <ButtonWithHandler name='CANCEL' />
           </Keyboard>
           <Keyboard
-            leftSection='Search text keyword' classProp=' keyboardSearchKeyword'
+            leftSection='Search number' classProp=' keyboardSearchKeyword'
             icon='' typeContent=''
             id={'0'} cardSelected={'0'}
           >
@@ -570,8 +617,8 @@ class DataDisplay extends Component {
                 <ButtonWithHandler name='>=' />
                 <ButtonWithHandler name='=<' />
                 <ButtonWithHandler name='=' />
-                <input // by default, any match would satisfy condition, regardless of position
-                  type='text' className={`positionInput ${inputVisibility}`}
+                <input // number of reference
+                  type='text' className='numberInputVisibility'
                   onChange={this.positionHandler}
                 />
                 <ButtonWithHandler name='SUBMIT' visibility={inputVisibility} />

@@ -59,14 +59,14 @@ html {
 
 // the buttons used in the Keyboard component
 .dumbButtonClass{
-  padding: 5px 7px;
+  padding: 5px 20px;
   font-size: 12px;
   border: none;
   border-radius: 4px;
   font-family: inherit;
   margin-right: 10px;
   height: 30px;
-  min-width: 60px;
+  // min-width: 60px;
 }
 
 // text input when in focus in the Keyboard component
@@ -189,14 +189,18 @@ html {
 
 // groups of buttons in Keyboards
 .buttonGroup{
-  // border: 1px solid blue;
+  border: 1px solid blue;
   @include row-flex();
   justify-content: space-evenly;
   &>button {
-    min-width: 120px;
+    // min-width: 120px;
     display: inline-block;
     margin: 5px 0;
   }
+}
+
+.numberInputVisibility {
+  margin-top: 8px;
 }
 
 // the Keyboard that displays results of the search
