@@ -45,6 +45,7 @@ class DataDisplay extends Component {
       cardSelected: firstCard, // where conditional buttons go at one time
       currentCardIndex: 0, // on the array of cards what position is the current card
       keyword: '', // content of the keyword input text field
+      number: null,
       inputVisibility: 'visible', // in the second Keyboard, whether the position input is visible
       keywordButtonClicked: '', // name of button clicked in the keyword(2nd) Keyboard
       active: [], // array of buttons active
@@ -107,17 +108,11 @@ class DataDisplay extends Component {
     }
   }
 
-  greaterThan = (whatIsIncluded) => {
-    return (data) => (data > whatIsIncluded);
-  }
+  greaterThan = (whatIsIncluded) => (data) => (data > whatIsIncluded);
 
-  smallerThan = (whatIsIncluded) => {
-    return (data) => (data < whatIsIncluded);
-  }
+  smallerThan = (whatIsIncluded) => (data) => (data < whatIsIncluded);
 
-  equals = (whatIsIncluded) => {
-    return (data) => (data === whatIsIncluded);
-  }
+  equals = (whatIsIncluded) => (data) => (data === whatIsIncluded);
 
   // boolean merger of two operations with AND
   conjunction(fn1, fn2){
@@ -141,7 +136,7 @@ class DataDisplay extends Component {
   }
 
   // builds conditional elements and operations from clicking the buttons in the conditional constructor card
-  fromButton = async (name) => {
+  fromButton = async (name, typeSubmit = null) => {
     const {
       keyword, keywordButtonClicked, cardSelected,
       position, listCards, currentCardIndex
@@ -275,6 +270,10 @@ class DataDisplay extends Component {
   textHandler = (e) => {
     this.setState({ keyword: e.target.value });
   };
+
+  numberHandler = (e) => {
+    this.setState({ number: e.target.value });
+  }
 
   // sets the position where the keyword is located
   positionHandler = (e) => {
@@ -592,7 +591,7 @@ class DataDisplay extends Component {
               </ButtonGroup>
               <div className='centerBottomKeyboard'>
                 <input // the keyword used to search
-                  type='text' onChange={this.textHandler}
+                  type='string' onChange={this.textHandler}
                   placeholder='Type keyword' ref={this.textInput}
                 />
                 <div className={inputVisibility}><div>in position</div></div>
@@ -602,7 +601,7 @@ class DataDisplay extends Component {
                 />
               </div>
             </div>
-            <ButtonWithHandler name='SUBMIT' visibility={inputVisibility} />
+            <ButtonWithHandler name='SUBMIT' typeSubmit='string' />
             <ButtonWithHandler name='CANCEL' />
           </Keyboard>
           <Keyboard
@@ -618,10 +617,10 @@ class DataDisplay extends Component {
                 <ButtonWithHandler name='=<' />
                 <ButtonWithHandler name='=' />
                 <input // number of reference
-                  type='text' className='numberInputVisibility'
-                  onChange={this.positionHandler}
+                  type='number' className='numberInputVisibility'
+                  onChange={this.numberHandler}
                 />
-                <ButtonWithHandler name='SUBMIT' visibility={inputVisibility} />
+                <ButtonWithHandler name='SUBMIT' typeSubmit='number' />
                 <ButtonWithHandler name='CANCEL' />
               </ButtonGroup>
             </div>

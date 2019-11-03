@@ -4,10 +4,10 @@ import '../App.scss';
 
 // basic button pressed to construct queries
 const DumbButton = (props) => {
-  const { name } = props;
+  const { name, typeSubmit } = props;
 
   // the fromButton prop is added in App.js with the ComponentEnhancer HOC
-  const clickHandler = () => { props.fromButton(name); };
+  const clickHandler = () => { props.fromButton(name, typeSubmit); };
 
   return (
     <button
