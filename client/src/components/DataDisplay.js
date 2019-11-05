@@ -112,7 +112,9 @@ class DataDisplay extends Component {
 
   smallerThan = (whatIsIncluded) => (data) => (data < whatIsIncluded);
 
-  equals = (whatIsIncluded) => (data) => (data === whatIsIncluded);
+  equals = (whatIsIncluded) => (data) => {
+      console.log('data is ', data, typeof data, data === whatIsIncluded);
+      return data === whatIsIncluded};
 
   // boolean merger of two operations with AND
   conjunction(fn1, fn2){
@@ -139,8 +141,18 @@ class DataDisplay extends Component {
   fromButton = async (name, typeSubmit = null) => {
     const {
       keyword, keywordButtonClicked, cardSelected,
-      position, listCards, currentCardIndex
+      position, listCards, currentCardIndex, number
     } = this.state;
+    let keyDimension;
+    if (typeSubmit === 'string') {
+      keyDimension = keyword;
+    } else if (typeSubmit === 'number') {
+      keyDimension = parseFloat(number);
+      if (Number.isNaN(keyDimension)) {
+        // do a message where the input is located that it is not an acceptable input
+        return;
+      }
+    }
     let chldList = [];
     let lst = [];
     switch (name) {
@@ -151,46 +163,46 @@ class DataDisplay extends Component {
         const copyListElements = [...copyListCards[currentCardIndex].listElements];
         let idCond = uuid.v4();
 
-        if (keywordButtonClicked && keyword) {
+        if (keywordButtonClicked && keyDimension) {
           let conditionObj = {
             id: idCond,
             active: true,
             card: cardSelected,
-            whatIsIncluded: keyword,
+            whatIsIncluded: keyDimension,
             immediateChildren: [],
           };
           switch (keywordButtonClicked) {
             case 'INCLUDES':
-              lst = ['Includes ', keyword, ' at position ', position];
+              lst = ['Includes ', keyDimension, ' at position ', position];
               conditionObj.position = position || 0;
               conditionObj.func = this.include(conditionObj.whatIsIncluded, conditionObj.position);
               break;
             case 'ENDS WITH':
-              lst = ['Ends with ', keyword];
+              lst = ['Ends with ', keyDimension];
               conditionObj.func = this.endsWith(conditionObj.whatIsIncluded);
               break;
             case 'STARTS WITH':
-              lst = ['Starts with ', keyword];
+              lst = ['Starts with ', keyDimension];
               conditionObj.func = this.include(conditionObj.whatIsIncluded, 0);
               break;
             case '>':
-              lst = ['Greater than ', keyword];
+              lst = ['Greater than ', keyDimension];
               conditionObj.func = this.greaterThan(conditionObj.whatIsIncluded);
               break;
             case '<':
-              lst = ['Smaller than ', keyword];
+              lst = ['Smaller than ', keyDimension];
               conditionObj.func = this.smallerThan(conditionObj.whatIsIncluded);
               break;
             case '>=':
-              lst = ['Greater than or equal to ', keyword];
+              lst = ['Greater than or equal to ', keyDimension];
               conditionObj.func = this.greaterThan(conditionObj.whatIsIncluded) || this.equals(conditionObj.whatIsIncluded);
               break;
             case '=<':
-              lst = ['Smaller than or equal to ', keyword];
+              lst = ['Smaller than or equal to ', keyDimension];
               conditionObj.func = this.smallerThan(conditionObj.whatIsIncluded) || this.equals(conditionObj.whatIsIncluded);
               break;
             case '=':
-              lst = ['Equal to ', keyword];
+              lst = ['Equal to ', keyDimension];
               conditionObj.func = this.equals(conditionObj.whatIsIncluded);
               break;
             
