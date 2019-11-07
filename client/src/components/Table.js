@@ -95,8 +95,10 @@ class Table extends Component {
           for (let j = i.listOperations.length - 1; j>= 0; j--) {
             if (i.listOperations[j].active) {
               for (let k of filteredColumns){
-                // console.log(arr[k]);
-                if (i.listOperations[j].func(arr[k][1])) {
+                console.log('data ', arr[k][1]);
+                console.log('type operation ', i.listOperations[j]);
+                console.log('columnType ', data.columnTypes[k]);
+                if ((i.listOperations[j].typeOperation === data.columnTypes[k]) && i.listOperations[j].func(arr[k][1])) {
                   break operations;
                 }
               }
@@ -107,7 +109,7 @@ class Table extends Component {
           for (let j = i.listOperations.length - 1; j>= 0; j--) {
             if (i.listOperations[j].active) {
               for (let k of filteredColumns){
-                if (!i.listOperations[j].func(arr[k][1])) { 
+                if ((i.listOperations[j].typeOperation === data.columnTypes[k]) && !i.listOperations[j].func(arr[k][1])) { 
                   return false;
                 }
               }

@@ -93,6 +93,8 @@ html {
 .keyboardGeneric{
   @include row-flex;
   font-size: 15px;
+  max-height: 500px;
+  transition: max-height 0.15s ease-in;
   // background-color: $green;
   &>div{
     @include round-border($green);
@@ -147,6 +149,12 @@ html {
   }
 }
 
+.keyboardInvisible {
+  max-height: 0;
+  transition: max-height 0.25s ease-out;
+  overflow: hidden;
+}
+
 // Keyboard that is selected
 .selectedKeyboard{
   background-color: rgba(182, 181, 181, 0.671);
@@ -162,13 +170,20 @@ html {
 }
 
 
-.keyboardSearchKeyword{
-  & input{
-    height: 20px;
-    background-color: rgb(229, 182, 238);
-    border:1px solid $dark-purple;
-    border-radius: 2px;
-  }
+// .keyboardSearchKeyword{
+//   & input{
+//     height: 20px;
+//     background-color: rgb(229, 182, 238);
+//     border:1px solid $dark-purple;
+//     border-radius: 2px;
+//   }
+// }
+
+.keyboardTextInput {
+  height: 20px;
+  background-color: rgb(229, 182, 238);
+  border:1px solid $dark-purple;
+  border-radius: 2px;
 }
 
 // + and - icons on the right side of Keyboards

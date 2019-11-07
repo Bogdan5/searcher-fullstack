@@ -53,7 +53,7 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
         }
         File.create({
           header,
-          columnTypes: Array.from(Array(header.length), x => 'string'),
+          columnTypes: Array.from(Array(header.length), x => 'text'),
           body: fileRows,
           description: req.body.description,
           author: mongoose.Types.ObjectId(req.user._id)

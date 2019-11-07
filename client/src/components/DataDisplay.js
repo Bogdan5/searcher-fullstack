@@ -48,6 +48,7 @@ class DataDisplay extends Component {
       number: null,
       inputVisibility: 'visible', // in the second Keyboard, whether the position input is visible
       keywordButtonClicked: '', // name of button clicked in the keyword(2nd) Keyboard
+      numberButtonClicked: '',
       active: [], // array of buttons active
       position: 0,
       idConditional: 0,
@@ -56,6 +57,7 @@ class DataDisplay extends Component {
       filtering: false, // true if filtering is taking place
       conditionalButtonClicked: null,
       conditionalButtonChanges: 0,
+      keyboardVisibilityToggle: '',
     }
   }
 
@@ -92,9 +94,11 @@ class DataDisplay extends Component {
     const reg = new RegExp(this.regExpEscape(whatIsIncluded));
     return function(data){
       console.log('data ', data);
-      const matcher = data.match(reg);
-      if (matcher && (position || position === 0)) {
-        return data.match(reg).index === position;
+      if (typeof data === 'string') {
+        const matcher = data.match(reg);
+        if (matcher && (position || position === 0)) {
+          return data.match(reg).index === position;
+        }
       }
       return false;
     }
@@ -139,12 +143,15 @@ class DataDisplay extends Component {
 
   // builds conditional elements and operations from clicking the buttons in the conditional constructor card
   fromButton = async (name, typeSubmit = null) => {
+    console.log('inputs in fromButton ', name, typeSubmit);
     const {
       keyword, keywordButtonClicked, cardSelected,
-      position, listCards, currentCardIndex, number
+      position, listCards, currentCardIndex, number, numberButtonClicked
     } = this.state;
     let keyDimension;
-    if (typeSubmit === 'string') {
+    let buttonClicked;
+    if (typeSubmit === 'text') {
+      console.log('text ');
       keyDimension = keyword;
     } else if (typeSubmit === 'number') {
       keyDimension = parseFloat(number);
@@ -163,14 +170,16 @@ class DataDisplay extends Component {
         const copyListElements = [...copyListCards[currentCardIndex].listElements];
         let idCond = uuid.v4();
 
-        if (keywordButtonClicked && keyDimension) {
-          let conditionObj = {
-            id: idCond,
-            active: true,
-            card: cardSelected,
-            whatIsIncluded: keyDimension,
-            immediateChildren: [],
-          };
+        let conditionObj = {
+          id: idCond,
+          active: true,
+          card: cardSelected,
+          whatIsIncluded: keyDimension,
+          immediateChildren: [],
+          typeOperation: typeSubmit,
+        };
+
+        if (typeSubmit === 'text' && keywordButtonClicked) {
           switch (keywordButtonClicked) {
             case 'INCLUDES':
               lst = ['Includes ', keyDimension, ' at position ', position];
@@ -182,9 +191,14 @@ class DataDisplay extends Component {
               conditionObj.func = this.endsWith(conditionObj.whatIsIncluded);
               break;
             case 'STARTS WITH':
+              console.log('start with');
               lst = ['Starts with ', keyDimension];
               conditionObj.func = this.include(conditionObj.whatIsIncluded, 0);
               break;
+            default:
+          }
+        } else if (typeSubmit === 'number' && numberButtonClicked) {
+          switch (numberButtonClicked) {
             case '>':
               lst = ['Greater than ', keyDimension];
               conditionObj.func = this.greaterThan(conditionObj.whatIsIncluded);
@@ -205,9 +219,55 @@ class DataDisplay extends Component {
               lst = ['Equal to ', keyDimension];
               conditionObj.func = this.equals(conditionObj.whatIsIncluded);
               break;
-            
             default:
           }
+        }
+
+        // if (keywordButtonClicked && keyDimension) {
+          // let conditionObj = {
+          //   id: idCond,
+          //   active: true,
+          //   card: cardSelected,
+          //   whatIsIncluded: keyDimension,
+          //   immediateChildren: [],
+          // };
+          // switch (keywordButtonClicked) {
+          //   case 'INCLUDES':
+          //     lst = ['Includes ', keyDimension, ' at position ', position];
+          //     conditionObj.position = position || 0;
+          //     conditionObj.func = this.include(conditionObj.whatIsIncluded, conditionObj.position);
+          //     break;
+          //   case 'ENDS WITH':
+          //     lst = ['Ends with ', keyDimension];
+          //     conditionObj.func = this.endsWith(conditionObj.whatIsIncluded);
+          //     break;
+          //   case 'STARTS WITH':
+          //     lst = ['Starts with ', keyDimension];
+          //     conditionObj.func = this.include(conditionObj.whatIsIncluded, 0);
+          //     break;
+          //   case '>':
+          //     lst = ['Greater than ', keyDimension];
+          //     conditionObj.func = this.greaterThan(conditionObj.whatIsIncluded);
+          //     break;
+          //   case '<':
+          //     lst = ['Smaller than ', keyDimension];
+          //     conditionObj.func = this.smallerThan(conditionObj.whatIsIncluded);
+          //     break;
+          //   case '>=':
+          //     lst = ['Greater than or equal to ', keyDimension];
+          //     conditionObj.func = this.greaterThan(conditionObj.whatIsIncluded) || this.equals(conditionObj.whatIsIncluded);
+          //     break;
+          //   case '=<':
+          //     lst = ['Smaller than or equal to ', keyDimension];
+          //     conditionObj.func = this.smallerThan(conditionObj.whatIsIncluded) || this.equals(conditionObj.whatIsIncluded);
+          //     break;
+          //   case '=':
+          //     lst = ['Equal to ', keyDimension];
+          //     conditionObj.func = this.equals(conditionObj.whatIsIncluded);
+          //     break;
+            
+          //   default:
+          // }
           chldList = lst.map((el, index) => <span key={uuid.v4()}>{`${el}`}</span>);
           copyListOperations.push(conditionObj);
           copyListCards[currentCardIndex].listOperations = copyListOperations;
@@ -231,7 +291,6 @@ class DataDisplay extends Component {
 
           this.setState({ listCards: copyListCards, filtering: false, keywordButtonClicked: '',
             conditionalButtonChanges: this.state.conditionalButtonChanges + 1 });
-        }
 
         break;
       case 'INCLUDES':
@@ -247,19 +306,19 @@ class DataDisplay extends Component {
         this.setState({ currentOperation: [] });
         break;
       case '>':
-        this.setState({ keywordButtonClicked: name });        
+        this.setState({ numberButtonClicked: name });        
         break;
       case '<':
-        this.setState({ keywordButtonClicked: name });        
+        this.setState({ numberButtonClicked: name });        
         break;
       case '>=':
-        this.setState({ keywordButtonClicked: name });        
+        this.setState({ numberButtonClicked: name });        
         break;
       case '=<':
-        this.setState({ keywordButtonClicked: name });        
+        this.setState({ numberButtonClicked: name });        
         break;
       case '=':
-        this.setState({ keywordButtonClicked: name });        
+        this.setState({ numberButtonClicked: name });        
         break;
       case 'Sign up':
         this.setState({ windowKind: 'Sign up'});
@@ -547,7 +606,7 @@ class DataDisplay extends Component {
   }
 
   executeFilter = () => {
-    this.setState({ filtering: true });
+    this.setState({ filtering: true, keyboardVisibilityToggle: ' keyboardInvisible' });
   }
 
   clear = () => {
@@ -561,12 +620,13 @@ class DataDisplay extends Component {
       mergerArray: [null, null, null],
       filtering: false,
       currentCardIndex: 0,
-    }]});
+    }],
+    keyboardVisibilityToggle: '',});
   }
 
   render() {
     const {data, inputVisibility, active, listCards, cardSelected, menuVisible,
-      menuTop, menuLeft, filtering, conditionalButtonChanges, fileID,
+      menuTop, menuLeft, filtering, conditionalButtonChanges, fileID, keyboardVisibilityToggle,
       } = this.state;  
     const { username } = this.props;
 
@@ -591,7 +651,7 @@ class DataDisplay extends Component {
 
           {/* the card that constructs conditional buttons */}
           <Keyboard
-            leftSection='Search text keyword' classProp=' keyboardSearchKeyword'
+            leftSection='Search text keyword' classProp={keyboardVisibilityToggle}
             icon='' typeContent=''
             id={'0'} cardSelected={'0'}
           >
@@ -603,8 +663,9 @@ class DataDisplay extends Component {
               </ButtonGroup>
               <div className='centerBottomKeyboard'>
                 <input // the keyword used to search
-                  type='string' onChange={this.textHandler}
+                  type='text' onChange={this.textHandler}
                   placeholder='Type keyword' ref={this.textInput}
+                  className='keyboardTextInput'
                 />
                 <div className={inputVisibility}><div>in position</div></div>
                 <input // by default, any match would satisfy condition, regardless of position
@@ -613,7 +674,7 @@ class DataDisplay extends Component {
                 />
               </div>
             </div>
-            <ButtonWithHandler name='SUBMIT' typeSubmit='string' />
+            <ButtonWithHandler name='SUBMIT' typeSubmit='text' />
             <ButtonWithHandler name='CANCEL' />
           </Keyboard>
           <Keyboard
