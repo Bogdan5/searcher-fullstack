@@ -624,6 +624,10 @@ class DataDisplay extends Component {
     keyboardVisibilityToggle: '',});
   }
 
+  viewFilters = () => {
+    this.setState({ keyboardVisibilityToggle: '' });
+  }
+
   render() {
     const {data, inputVisibility, active, listCards, cardSelected, menuVisible,
       menuTop, menuLeft, filtering, conditionalButtonChanges, fileID, keyboardVisibilityToggle,
@@ -655,8 +659,23 @@ class DataDisplay extends Component {
             icon='' typeContent=''
             id={'0'} cardSelected={'0'}
           >
-            <div className='centerKeyboard'>
-              <ButtonGroup>
+            {/* <div > */}
+              <ButtonWithHandler name='INCLUDES' />
+              <ButtonWithHandler name='STARTS WITH' />
+              <ButtonWithHandler name='ENDS WITH' />
+              <input // the keyword used to search
+                  type='text' onChange={this.textHandler}
+                  placeholder='Type keyword' ref={this.textInput}
+                  className='keyboardTextInput'
+                />
+                <div className={inputVisibility}><div>in position</div></div>
+                <input // by default, any match would satisfy condition, regardless of position
+                  type='text' className={`positionInput ${inputVisibility}`}
+                  onChange={this.positionHandler}
+                />
+              <ButtonWithHandler name='SUBMIT' typeSubmit='text' />
+              <ButtonWithHandler name='CANCEL' />
+              {/* <ButtonGroup>
                 <ButtonWithHandler name='INCLUDES' />
                 <ButtonWithHandler name='STARTS WITH' />
                 <ButtonWithHandler name='ENDS WITH' />
@@ -672,17 +691,28 @@ class DataDisplay extends Component {
                   type='text' className={`positionInput ${inputVisibility}`}
                   onChange={this.positionHandler}
                 />
-              </div>
-            </div>
-            <ButtonWithHandler name='SUBMIT' typeSubmit='text' />
-            <ButtonWithHandler name='CANCEL' />
+              </div> */}
+            {/* </div> */}
+            {/* <ButtonWithHandler name='SUBMIT' typeSubmit='text' />
+            <ButtonWithHandler name='CANCEL' /> */}
           </Keyboard>
           <Keyboard
-            leftSection='Search number' classProp=' keyboardSearchKeyword'
+            leftSection='Search number' classProp={keyboardVisibilityToggle}
             icon='' typeContent=''
             id={'0'} cardSelected={'0'}
           >
-            <div className='centerKeyboard'>
+            <ButtonWithHandler name='>' />
+            <ButtonWithHandler name='<' />
+            <ButtonWithHandler name='>=' />
+            <ButtonWithHandler name='=<' />
+            <ButtonWithHandler name='=' />
+            <input // number of reference
+              type='number' className='numberInputVisibility'
+              onChange={this.numberHandler} placeholder='Type number'
+            />
+            <ButtonWithHandler name='SUBMIT' typeSubmit='number' />
+            <ButtonWithHandler name='CANCEL' />
+            {/* <div className='centerKeyboard'>
               <ButtonGroup>
                 <ButtonWithHandler name='>' />
                 <ButtonWithHandler name='<' />
@@ -696,7 +726,7 @@ class DataDisplay extends Component {
                 <ButtonWithHandler name='SUBMIT' typeSubmit='number' />
                 <ButtonWithHandler name='CANCEL' />
               </ButtonGroup>
-            </div>
+            </div> */}
           </Keyboard>
 
           {/* an array of cards with the result of Keyword input - includes the
@@ -723,7 +753,6 @@ class DataDisplay extends Component {
             const typeContent = (
               <div>
                 <SelectButton card={el.cardId} fromSelect={this.selectCard}>Select</SelectButton>
-                <br />
                 <input type='text' placeholder='Input column numbers' onChange={this.columnSelector}></input>
                 <button type='button' onClick={this.columnSelectorSubmit}>Submit</button>
               </div>
@@ -731,7 +760,7 @@ class DataDisplay extends Component {
             return (
               <Keyboard
                 id={el.cardId} leftSection={typeContent}
-                classProp='' rightSection={iconsElements}
+                classProp={keyboardVisibilityToggle} rightSection={iconsElements}
                 cardSelected={cardSelected} key={el.cardId}
               >
                 <ConditionButtonFormatter fromFormatter={this.fromFormat}>
@@ -746,6 +775,7 @@ class DataDisplay extends Component {
           <div>
             <button onClick={this.executeFilter}>Filter</button>
             <button onClick={this.clear} >Clear</button>
+            <button onClick={this.viewFilters}>View filters</button>
           </div>
           <DropDownMenu
             menuVisible={menuVisible} mouseOutMenu={this.menuHide}
