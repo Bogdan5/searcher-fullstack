@@ -8,8 +8,9 @@ const Keyboard = (props) => {
   const { classProp, leftSection, rightSection, cardSelected, id } = props;
   const { children } = props;
   const isSelected = (id || id === 0) && (cardSelected === id) ? ' selectedKeyboard' : '';
+  const print = () => console.log('card id ', id, 'card selected ', cardSelected);
   return (
-    <div className={`keyboardGeneric${classProp}`} key={id}>
+    <div className={`keyboardGeneric${classProp}`} key={id} onClick={print}>
       <div className={`leftSection${isSelected}`}>{leftSection}</div>
       <div className={`keyboardRight${isSelected}`}>{children}</div>
       <section>{rightSection}</section>

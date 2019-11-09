@@ -657,7 +657,7 @@ class DataDisplay extends Component {
           <Keyboard
             leftSection='Search text keyword' classProp={keyboardVisibilityToggle}
             icon='' typeContent=''
-            id={'0'} cardSelected={'0'}
+            id={'f1'} cardSelected={'0'}
           >
             {/* <div > */}
               <ButtonWithHandler name='INCLUDES' />
@@ -699,7 +699,7 @@ class DataDisplay extends Component {
           <Keyboard
             leftSection='Search number' classProp={keyboardVisibilityToggle}
             icon='' typeContent=''
-            id={'0'} cardSelected={'0'}
+            id={'f2'} cardSelected={'0'}
           >
             <ButtonWithHandler name='>' />
             <ButtonWithHandler name='<' />

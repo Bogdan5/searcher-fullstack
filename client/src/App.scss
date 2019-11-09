@@ -21,7 +21,7 @@ $greyed-out: rgb(196, 188, 198);
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  align-items: center;
+  // align-items: center;
 }
 
 @mixin center-both-ways{
@@ -88,6 +88,7 @@ html {
   @include row-flex;
   font-size: 15px;
   max-height: 500px;
+  // background-color: lighten($green, 25%);
   transition: max-height 0.15s ease-in;
   // background-color: $green;
   &>div{
@@ -95,8 +96,16 @@ html {
     padding: 5px 10px;
     &:first-child{
       width: 15%;
-      @include vertical-spaced;
-      background-color: lighten($green, 15%);
+      // background-color: lighten($green, 20%);
+      &>div{
+        @include vertical-spaced;
+        min-height: 120px;
+      }
+      & button {
+        height: 30px;
+        border-radius: 5px;
+        border-width: 0;
+      }
     }
     &:nth-child(2){
       width: 80%;
@@ -132,6 +141,7 @@ html {
     width: 40%;
     height: 25px;
     margin-left: 15%;
+    background-color: rgba(182, 181, 181, 0.671);
   }
   &>div{
     text-align: center;
@@ -157,19 +167,26 @@ html {
   overflow: hidden;
 }
 
-// Keyboard that is selected
-.selectedKeyboard{
-  background-color: rgba(182, 181, 181, 0.671);
+// the left part of the Keybpard
+.leftSection{
+  // @include vertical-spaced;
+  background-color: lighten($green, 20%);
+  // &>div{
+  //   @include center-both-ways();
+  // }
 }
 
-// the left part of the Keybpard
-// .leftSection{
-//   @include vertical-spaced;
-//   background-color: lighten($green, 15%);
-//   // &>div{
-//   //   @include center-both-ways();
-//   // }
-// }
+.keyboardRight{
+  background-color: lighten($green, 20%);
+  &>* {
+    margin-left: 10px;
+  }
+}
+
+// Keyboard that is selected
+.selectedKeyboard{
+  background-color: lighten($green, 10%);
+}
 
 .keyboardTextInput {
   // height: 20px;
@@ -618,13 +635,6 @@ table{
 
 .displayTitle{
   margin-left: 20vw;
-}
-
-.keyboardRight{
-  background-color: lighten($green, 20%);
-  &>* {
-    margin-left: 10px;
-  }
 }
 
 .dataTable{
