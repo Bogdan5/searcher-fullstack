@@ -66,7 +66,7 @@ html {
 // text input when in focus in the Keyboard component
 .active{
   color: white;
-  background-color: $dark-purple;
+  // background-color: $dark-purple;
   cursor: pointer;
 }
 
@@ -410,12 +410,13 @@ html {
 // }
 
 // background of the pop window
-.backgroundPopWindow{
+.uploadWindow{
   // background-color:rgba(240, 240, 234, 0.7);
   background-color:yellow;
   margin: 0 auto;
-  height: 80vh;
-  width: 80vw;
+  padding: 3vw 3vh;
+  // height: 80vh;
+  width: 50vw;
   padding: 3vh;
   box-sizing: border-box;
   &>h3{
@@ -473,6 +474,9 @@ html {
   justify-content: space-around;
   align-items: center;
   background-color: $green;
+  & a{
+    text-decoration: none;
+  }
 }
 
 .dataDisplay{
@@ -480,9 +484,16 @@ html {
   // background-color: lighten($green, 20%);
 }
 
+.startScreen{
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .navLinkButton{
   display: block;
-  height: 8vh;
+  height: 10vh;
   width: 350px;
   font-size: 20px;
   border: 1px solid black;
@@ -490,13 +501,14 @@ html {
   border-radius: 7px;
   background-color: $green;
   text-align: center;
-  line-height: 50px;
+  line-height: 10vh;
   margin: 1vh auto;
   text-decoration: none;
   box-shadow: 3px 5px 5px rgba(184,182,207,1);
   &:active{
     box-shadow: 1px 3px 5px rgba(184,182,207,1);
   }
+
 }
 
 .signOptions{

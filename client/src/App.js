@@ -208,16 +208,17 @@ class App extends Component {
       <div className='bodyContainer'>
 {/* -------------------------------------navbar---------------------------------------------------- */}
         <NavBar>
-          <NavLink to='/'>Home</NavLink>
-          <NavLink to='/api/upload-csv' >Upload file without signing in</NavLink>
-          <NavLink to={authenticated ? '/api/upload-csv' : '/api/users/signOptions'}>Upload file</NavLink>
+          <NavLink to='/' exact={true} activeClassName={'active'}>Home</NavLink>
+          <NavLink to='/api/upload-csv'  activeClassName={'active'}>Upload file without signing in</NavLink>
+          <NavLink  activeClassName={'active'}
+            to={authenticated ? '/api/upload-csv' : '/api/users/signOptions'}>Upload file</NavLink>
           <Route render={() => (authenticated ? null :
-            <NavLink to='/api/users/signin' >Sign in</NavLink>) } />
+            <NavLink to='/api/users/signin'  activeClassName={'active'}>Sign in</NavLink>) } />
           <Route render={() => (authenticated ? null :
-            <NavLink to='/api/users/signup' >Sign up</NavLink>)} />         
+            <NavLink to='/api/users/signup'  activeClassName={'active'}>Sign up</NavLink>)} />         
           <Route path='/' render={() => {
             if (authenticated) {
-              return <NavLink to={`/api/account/${userID}`} >{`user ${username}`}</NavLink>
+              return <NavLink to={`/api/account/${userID}`}  activeClassName={'active'}>{`user ${username}`}</NavLink>
             } else {
               return null;
             }
@@ -225,7 +226,8 @@ class App extends Component {
         </NavBar>
         <div className='App' ref={this.appRef}>
           <Switch>
-            <Route path={`/api/account/:userID`} render={(props) => <AccountWithRouter {...props}
+            <Route path={`/api/account/:userID`}
+              render={(props) => <AccountWithRouter {...props}
                   userID={userID} getFile={this.getFile} authenticated={authenticated}/>} />
 
             <Route exact path='/' render={(props) => <StartScreen {...props} authenticated={authenticated}

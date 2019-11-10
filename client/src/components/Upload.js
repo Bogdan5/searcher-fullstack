@@ -93,12 +93,13 @@ class Upload extends Component {
       <form action='/api/upload-csv' encType='multipart/form-data' method='POST'
           noValidate onSubmit={this.uploadCSV}> 
         <input type='file' name='myFile' onChange={this.onChange} />
-        <br/>
+        <p />
         <input type="checkbox" id='firstRowHeader' onChange={this.radioClicked} />
-        <label htmlFor='firstRowHeader'>The first row is the header</label>
-        <br/>
-        <label htmlFor='description'>File description</label>
+        <label htmlFor='firstRowHeader' style={{ fontSize: '14px' }}>&nbsp;The first row is the header</label>
+        <p />
+        <label htmlFor='description' style={{ fontSize: '14px' }}>File description&emsp;</label>
         <input type='text' name='description' onChange={this.descriptionHandler} placeholder='File description' />
+        <hr/>
         <input type='submit' value='Upload a file'/>          
       </form>
     );
@@ -109,11 +110,14 @@ class Upload extends Component {
       </div>
     )
     return (
-      <BackgroundPopWindow>
-        <UploadWindow>
-          {uploadSuccesful ? success: uploadForm}
-        </UploadWindow>
-      </BackgroundPopWindow>
+      // <BackgroundPopWindow>
+      //   <UploadWindow>
+      <div className="uploadWindow">
+        {uploadSuccesful ? success: uploadForm}
+      </div>
+          
+      //   </UploadWindow>
+      // </BackgroundPopWindow>
     );
   }
 }
