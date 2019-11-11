@@ -83,7 +83,14 @@ class Upload extends Component {
         //   })
         //   .catch((err) => console.log(`Error: ${err}`));
       })
-      .catch((error) => {console.log('Error: ', error)});
+      .catch((err) => {
+        console.log('Error: ', err)
+        if(err.response.status === 401) {
+          console.log(`Error: ${err}`)
+          this.props.history.push({pathname: '/api/users/signin',
+          appState: {prevPath: this.props.location.pathname}});
+        }
+      });
 
   } 
 
@@ -110,14 +117,11 @@ class Upload extends Component {
       </div>
     )
     return (
-      // <BackgroundPopWindow>
-      //   <UploadWindow>
-      <div className="uploadWindow">
-        {uploadSuccesful ? success: uploadForm}
+      <div className="uploadContainer">
+        <div className="uploadWindow">
+          {uploadSuccesful ? success: uploadForm}
+        </div>
       </div>
-          
-      //   </UploadWindow>
-      // </BackgroundPopWindow>
     );
   }
 }

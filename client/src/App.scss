@@ -406,17 +406,21 @@ html {
   // border: 1px solid yellow;
 }
 
-// .sorterClass{
-// }
+.uploadContainer{
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
 // background of the pop window
 .uploadWindow{
   // background-color:rgba(240, 240, 234, 0.7);
-  background-color:yellow;
+  background-color:lighten($green, 60%);
   margin: 0 auto;
-  padding: 3vw 3vh;
-  // height: 80vh;
-  width: 50vw;
+  padding: 12vw 12vh;
+  border-radius: 7px;
+  width: 40vw;
   padding: 3vh;
   box-sizing: border-box;
   &>h3{

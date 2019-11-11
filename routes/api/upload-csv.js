@@ -62,7 +62,10 @@ router.post('/', authenticate.verifyUser, upload.single('file'),
             return res.sendStatus(404).end('Error' + err);
           } else {
             res.statusCode = 200;
-            res.setHeader('Content-Type', 'application/json');
+            res.setHeader({
+              'Content-Type': 'application/json', 
+              "Access-Control-Allow-Origin": "*"
+            });
             res.json(file);
           }
         });
