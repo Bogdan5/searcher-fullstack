@@ -8,7 +8,7 @@ import DataDisplay from './components/DataDisplay';
 // navigation bar
 import NavBar from './components/NavBar';
 // sign in form
-import SignInWithRouter from './components/SignIn.js';
+import AuthenticateWithRouter from './components/Authenticate.js';
 // upload file form
 import Upload from './components/Upload';
 // shows the uploaded files by an user
@@ -211,11 +211,11 @@ class App extends Component {
           <NavLink to='/' exact={true} activeClassName={'active'}>Home</NavLink>
           <NavLink to='/api/upload-csv'  activeClassName={'active'}>Upload file without signing in</NavLink>
           <NavLink  activeClassName={'active'}
-            to={authenticated ? '/api/upload-csv' : '/api/users/signOptions'}>Upload file</NavLink>
+            to={'/api/upload-csv'}>Upload file</NavLink>
           <Route render={() => (authenticated ? null :
-            <NavLink to='/api/users/signin'  activeClassName={'active'}>Sign in</NavLink>) } />
+            <NavLink to='/api/users/authenticate'  activeClassName={'active'}>Sign in</NavLink>) } />
           <Route render={() => (authenticated ? null :
-            <NavLink to='/api/users/signup'  activeClassName={'active'}>Sign up</NavLink>)} />         
+            <NavLink to='/api/users/authenticate'  activeClassName={'active'}>Sign up</NavLink>)} />         
           <Route path='/' render={() => {
             if (authenticated) {
               return <NavLink to={`/api/account/${userID}`}  activeClassName={'active'}>{`user ${username}`}</NavLink>
@@ -233,10 +233,11 @@ class App extends Component {
             <Route exact path='/' render={(props) => <StartScreen {...props} authenticated={authenticated}
               userID={userID} /> } />
 
-            <Route path='/api/users/signin' render={() => (<SignInWithRouter prevPath={prevPath} authenticated={authenticated}
+            <Route path='/api/users/authenticate' render={() =>
+              (<AuthenticateWithRouter prevPath={prevPath} authenticated={authenticated}
                 isAuthenticated={this.isAuthenticated} />)} />
             
-            <Route path='/api/upload-csv' component={Upload} />
+            <Route path='/api/upload-csv' render={() => (<Upload />)} />
             <Route path={`/api/datadisplay/:fileID`} render={(props) => <DataDisplay {...props} username={userID}/>} /> 
             {/* <Route path={'/api/download/:fileID/download'} component={Download} /> */}
           </Switch>

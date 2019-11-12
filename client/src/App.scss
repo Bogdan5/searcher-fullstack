@@ -31,6 +31,11 @@ $greyed-out: rgb(196, 188, 198);
   align-items: center;
 }
 
+@mixin horizontal-top{
+  display: flex;
+  align-items: flex-start;
+}
+
 body{
   font-family: Roboto Condensed, sans-serif;
   background-color: whitesmoke;
@@ -656,5 +661,22 @@ table{
 .dataTable{
   &>tbody>tr:hover{
     background-color: lighten($green, 40%);
+  }
+}
+
+.authenticate{
+  height: 80vh;
+  @include center-both-ways();
+}
+
+.authenticateContainer{
+  @include horizontal-top();
+  justify-content: center;
+  width: 50%;
+  border: 1px solid;
+  >div{
+    padding: 10px 10px;
+    border: 1px solid red;
+    width: 50%;
   }
 }

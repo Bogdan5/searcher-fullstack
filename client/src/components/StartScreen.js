@@ -27,17 +27,17 @@ const StartScreen = (props) => {
       <NavLink to='/api/upload-csv' className='navLinkButton' onClick={handler2}>
         Upload in your account
       </NavLink> :
-      <NavLink to='/api/users/signin' className='navLinkButton'>
+      <NavLink to='/api/users/authenticate' className='navLinkButton'>
         Sign in
       </NavLink>
       }
       {authenticated ?
       // <button type='button' onClick={handler3} className='navLinkButton'>View account</button>
-      <Link to={{ pathname: userID ? `/api/account/${userID}` : '/api/users/signin'}}
+      <Link to={{ pathname: userID ? `/api/account/${userID}` : '/api/users/authenticate'}}
         className='navLinkButton'>
         View account
       </Link>
-      : <Link to='/api/users/signup' className='navLinkButton'>
+      : <Link to='/api/users/authenticate' className='navLinkButton'>
         Register
       </Link>}
     </div>
