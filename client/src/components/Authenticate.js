@@ -10,7 +10,7 @@ class Authenticate extends Component {
       usernameLogin: '',
       passwordLogin: '',
       usernameRegister: '',
-      email: '',
+      emailRegister: '',
       passwordRegister: '',
       passwordRegister2: '',
       errors: {},
@@ -34,8 +34,8 @@ class Authenticate extends Component {
   onSignIn = (e) => {
     e.preventDefault();
     const user = {
-      username: this.state.username,
-      password: this.state.password
+      username: this.state.usernameLogin,
+      password: this.state.passwordLogin
     };
     axios.post('/api/users/signin', user)
       .then((res) => {
@@ -60,26 +60,34 @@ class Authenticate extends Component {
       });
   }
 
-  onSignUp(e) {
+  onSignUp = (e) => {
     e.preventDefault();
     const newUser = {
-      username: this.state.username,
-      email: this.state.email,
-      password: this.state.password,
-      password2: this.state.password2
+      username: this.state.usernameRegister,
+      email: this.state.emailRegister,
+      password: this.state.passwordRegister,
+      password2: this.state.passwordRegister2
     }
     axios.post('/api/users/signup', newUser)
     .then((res) => {
-      if (res.data.success) {
-        this.props.registered();
-        localStorage.setItem('token', res.data.token);
+        console.log('1', res.data);
+        if (res.data.success) {
+          this.props.isAuthenticated(true, res.data.userID);
+          localStorage.setItem('token', res.data.token);
+          if (this.props.location.appState) {
+            this.props.history.push(this.props.location.appState.prevPath);
+          } else {
+            this.props.history.push('/');
+          }
       } else {
+        console.log('3');
         var error = new Error('Error ' + res.status + ': ' + res.statusText);
         error.res = res;
         throw error;
       }
     })
     .catch(err => {
+      console.log('Error is ', err);
       this.setState({ errors: err.response.data });
     });
   }
@@ -90,7 +98,7 @@ class Authenticate extends Component {
         <div className="authenticateContainer">
           <div>
             <form onSubmit={this.onSignIn}>
-              <label htmlFor="username" >Username</label>
+              <label htmlFor="usernameLogin" >Username</label>
               <br/>
               <input
                 type='text' placeholder='Username'
@@ -98,7 +106,7 @@ class Authenticate extends Component {
                 onChange={this.handleInputChange}
               />
               <br/>
-              <label htmlFor="password" >Password</label>
+              <label htmlFor="passwordLogin" >Password</label>
               <br/>
               <input
                 type='password' placeholder='Password'
@@ -111,35 +119,35 @@ class Authenticate extends Component {
           </div>
           <div>
             <form noValidate onSubmit={this.onSignUp}>
-              <label htmlFor="username" >Name</label>
+              <label htmlFor="usernameRegister" >Name</label>
               <br/>
               <input
                 type='text' placeholder='Name'
-                name='username' value={this.state.nameUser}
+                name='usernameRegister' value={this.state.nameUser}
                 onChange={this.handleInputChange}
               />         
               <br/>
-              <label htmlFor="email" >Email</label>
+              <label htmlFor="emailRegister" >Email</label>
               <br/>
               <input
                 type='text' placeholder='Email address'
-                name='email' value={this.state.email}
+                name='emailRegister' value={this.state.email}
                 onChange={this.handleInputChange}
               />
               <br/>
-              <label htmlFor="password" >Password</label>
+              <label htmlFor="passwordRegister" >Password</label>
               <br/>
               <input
                 type='password' placeholder='Password'
-                name='password' value={this.state.password}
+                name='passwordRegister' value={this.state.password}
                 onChange={this.handleInputChange}
               />
               <br/>
-              <label htmlFor="password2" >Confirm password</label>
+              <label htmlFor="passwordRegister2" >Confirm password</label>
               <br/>
               <input
                 type='password' placeholder='Password'
-                name='password2' value={this.state.password2}
+                name='passwordRegister2' value={this.state.password2}
                 onChange={this.handleInputChange}
               />
               <br/>

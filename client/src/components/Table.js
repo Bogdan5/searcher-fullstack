@@ -63,7 +63,7 @@ class Table extends Component {
                   case 'string':
                     return z + '';
                   case 'number':
-                    return parseInt(z);
+                    return parseFloat(z);
                   case 'boolean':
                     return (z === 'true');
                   default:

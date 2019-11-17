@@ -15,7 +15,7 @@ import Upload from './components/Upload';
 import AccountWithRouter from './components/Account';
 // initial options
 import StartScreen from './components/StartScreen';
-import Download from './components/Download';
+// import Download from './components/Download';
 
 import './App.scss';
 
