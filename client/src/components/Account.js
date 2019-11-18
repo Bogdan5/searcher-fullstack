@@ -14,9 +14,10 @@ import ConfirmationWindow from './ConfirmationWindow';
 class Account extends Component {
   constructor(props){
     super(props);
-    const match = matchPath(this.props.location.pathname,{
+    const match = matchPath(this.props.location.pathname, {
       path: '/api/account/:id'
     });
+    console.log('params ', match);
     this.state = {
       data: [{
         _id: '',
@@ -37,7 +38,7 @@ class Account extends Component {
     if (userID) {
       this.getData();
     } else {
-      this.props.history.push('/api/users/signin');      
+      this.props.history.push('/api/users/authenticate');      
     }
   }
 
@@ -54,7 +55,7 @@ class Account extends Component {
       .catch((err) => {
         if(err.response.status === 401) {
           console.log('401 called; props.location.pathname: ', this.props.location.pathname);
-          this.props.history.push({pathname: '/api/users/signin',
+          this.props.history.push({pathname: '/api/users/authenticate',
             appState: {prevPath: this.props.location.pathname}});
           // this.setState({ windowVisible: true, goToSignIn: true, pr});
         }

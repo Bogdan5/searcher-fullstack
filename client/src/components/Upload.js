@@ -87,7 +87,7 @@ class Upload extends Component {
         console.log('Error: ', err)
         if(err.response.status === 401) {
           console.log(`Error: ${err}`)
-          this.props.history.push({pathname: '/api/users/signin',
+          this.props.history.push({pathname: '/api/users/authenticate',
           appState: {prevPath: this.props.location.pathname}});
         }
       });

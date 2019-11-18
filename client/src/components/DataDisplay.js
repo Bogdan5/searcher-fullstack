@@ -16,6 +16,10 @@ import MenuOption from './MenuOption';
 import SelectButton from './SelectButton';
 import Table from './Table';
 import DataKeyAdder from './DataKeyAdder';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faAngleDoubleDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 class DataDisplay extends Component {
   constructor (props) {
@@ -77,7 +81,7 @@ class DataDisplay extends Component {
         console.log('Error ', err)
         if(err.response.status === 401) {
           console.log(`Error: ${err}`)
-          this.props.history.push({pathname: '/api/users/signin',
+          this.props.history.push({pathname: '/api/users/authenticate',
             appState: {prevPath: this.props.location.pathname}});
           // this.setState({ windowVisible: true, goToSignIn: true, prevPath: `/api/datadisplay/${id}` });
         }
@@ -659,42 +663,21 @@ class DataDisplay extends Component {
             icon='' typeContent=''
             id={'f1'} cardSelected={'0'}
           >
-            {/* <div > */}
-              <ButtonWithHandler name='INCLUDES' />
-              <ButtonWithHandler name='STARTS WITH' />
-              <ButtonWithHandler name='ENDS WITH' />
-              <input // the keyword used to search
-                  type='text' onChange={this.textHandler}
-                  placeholder='Type keyword' ref={this.textInput}
-                  className='keyboardTextInput'
-                />
-                <div className={inputVisibility}><div>in position</div></div>
-                <input // by default, any match would satisfy condition, regardless of position
-                  type='text' className={`positionInput ${inputVisibility}`}
-                  onChange={this.positionHandler}
-                />
-              <ButtonWithHandler name='SUBMIT' typeSubmit='text' />
-              <ButtonWithHandler name='CANCEL' />
-              {/* <ButtonGroup>
-                <ButtonWithHandler name='INCLUDES' />
-                <ButtonWithHandler name='STARTS WITH' />
-                <ButtonWithHandler name='ENDS WITH' />
-              </ButtonGroup>
-              <div className='centerBottomKeyboard'>
-                <input // the keyword used to search
-                  type='text' onChange={this.textHandler}
-                  placeholder='Type keyword' ref={this.textInput}
-                  className='keyboardTextInput'
-                />
-                <div className={inputVisibility}><div>in position</div></div>
-                <input // by default, any match would satisfy condition, regardless of position
-                  type='text' className={`positionInput ${inputVisibility}`}
-                  onChange={this.positionHandler}
-                />
-              </div> */}
-            {/* </div> */}
-            {/* <ButtonWithHandler name='SUBMIT' typeSubmit='text' />
-            <ButtonWithHandler name='CANCEL' /> */}
+            <ButtonWithHandler name='INCLUDES' />
+            <ButtonWithHandler name='STARTS WITH' />
+            <ButtonWithHandler name='ENDS WITH' />
+            <input // the keyword used to search
+                type='text' onChange={this.textHandler}
+                placeholder='Type keyword' ref={this.textInput}
+                className='keyboardTextInput'
+              />
+              <div className={inputVisibility}><div>in position</div></div>
+              <input // by default, any match would satisfy condition, regardless of position
+                type='text' className={`positionInput ${inputVisibility}`}
+                onChange={this.positionHandler}
+              />
+            <ButtonWithHandler name='SUBMIT' typeSubmit='text' />
+            <ButtonWithHandler name='CANCEL' />
           </Keyboard>
           <Keyboard
             leftSection='Search number' classProp={keyboardVisibilityToggle}
@@ -712,21 +695,6 @@ class DataDisplay extends Component {
             />
             <ButtonWithHandler name='SUBMIT' typeSubmit='number' />
             <ButtonWithHandler name='CANCEL' />
-            {/* <div className='centerKeyboard'>
-              <ButtonGroup>
-                <ButtonWithHandler name='>' />
-                <ButtonWithHandler name='<' />
-                <ButtonWithHandler name='>=' />
-                <ButtonWithHandler name='=<' />
-                <ButtonWithHandler name='=' />
-                <input // number of reference
-                  type='number' className='numberInputVisibility'
-                  onChange={this.numberHandler}
-                />
-                <ButtonWithHandler name='SUBMIT' typeSubmit='number' />
-                <ButtonWithHandler name='CANCEL' />
-              </ButtonGroup>
-            </div> */}
           </Keyboard>
 
           {/* an array of cards with the result of Keyword input - includes the
@@ -772,10 +740,21 @@ class DataDisplay extends Component {
               </Keyboard>
             );
           })}
-          <div>
-            <button onClick={this.executeFilter}>Filter</button>
-            <button onClick={this.clear} >Clear</button>
-            <button onClick={this.viewFilters}>View filters</button>
+          <div className="dataDisplayButtons dataDisplayButtonsTabbed">
+            <div className="dataDisplayLeftTabbedButtons">
+              <button onClick={this.executeFilter}>
+
+                  Filter
+              </button>
+              <button onClick={this.clear}>
+                Clear
+              </button>
+            </div>
+            <div>
+              <button onClick={this.viewFilters}>
+                View filters
+              </button>
+            </div>
           </div>
           <DropDownMenu
             menuVisible={menuVisible} mouseOutMenu={this.menuHide}
@@ -793,10 +772,6 @@ class DataDisplay extends Component {
           filtering={filtering} conditionalButtonChanges={conditionalButtonChanges}
           fileID={fileID} username={username}
         />
-
-        {/* <Route render={() => (
-          (prevPath !== '/upload-csv') ? <Table data={data}/> : <Redirect to='/' />
-        )} /> */}
       </div>
     );
   }

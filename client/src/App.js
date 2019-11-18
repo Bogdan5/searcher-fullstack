@@ -15,7 +15,6 @@ import Upload from './components/Upload';
 import AccountWithRouter from './components/Account';
 // initial options
 import StartScreen from './components/StartScreen';
-// import Download from './components/Download';
 
 import './App.scss';
 
@@ -61,8 +60,8 @@ class App extends Component {
     };
     // tests if the user is signed in - if not, redirects to sign in
     axios.get('/test', conf)
-      .then(async (res) => {
-        await this.setState({ authenticated: true, username: res.data.username, userID: res.data._id });
+      .then((res) => {
+        this.setState({ authenticated: true, username: res.data.username, userID: res.data._id });
         })
       .catch(err => {
         console.log('Error:', err.response.status);
@@ -203,7 +202,7 @@ class App extends Component {
 
   render() {
     const { authenticated, userID, username, prevPath } = this.state;
-
+    console.log('username ', username);
     return (
       <div className='bodyContainer'>
 {/* -------------------------------------navbar---------------------------------------------------- */}
@@ -218,7 +217,8 @@ class App extends Component {
             <NavLink to='/api/users/authenticate'  activeClassName={'active'}>Sign up</NavLink>)} />         
           <Route path='/' render={() => {
             if (authenticated) {
-              return <NavLink to={`/api/account/${userID}`}  activeClassName={'active'}>{`user ${username}`}</NavLink>
+              return <NavLink to={authenticated ? `/api/account/${userID}` : '/users/authenticate'}
+                activeClassName={'active'}>{`user ${username}`}</NavLink>
             } else {
               return null;
             }

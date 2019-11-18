@@ -161,7 +161,7 @@ class Table extends Component {
         console.log('Error ', err)
         if(err.response.status === 401) {
           console.log(`Error: ${err}`)
-          this.props.history.push({pathname: '/api/users/signin',
+          this.props.history.push({pathname: '/api/users/authenticate',
             appState: {prevPath: this.props.location.pathname}});
           // this.setState({ windowVisible: true, goToSignIn: true, prevPath: `/api/datadisplay/${id}` });
         }
@@ -192,12 +192,12 @@ class Table extends Component {
           <span>{description}</span>
           <button
             type="button"
-            className="tableSaveButton"
+            className=""
             onClick={this.saveChanges}
           >Save changes</button>
           <button
             type="button"
-            className="tableSaveButton"
+            className=""
             onClick={this.resetChanges}
           >
             Reset type changes
@@ -205,6 +205,7 @@ class Table extends Component {
           <button
             type="button"
             onClick={this.downloadFile}
+            className=""
           >
             Download file
           </button>
