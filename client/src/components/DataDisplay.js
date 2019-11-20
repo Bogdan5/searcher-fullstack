@@ -18,6 +18,7 @@ import Table from './Table';
 import DataKeyAdder from './DataKeyAdder';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faAngleDoubleDown } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDoubleUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
@@ -27,6 +28,8 @@ class DataDisplay extends Component {
     const match = matchPath(this.props.location.pathname,{
       path: '/api/datadisplay/:id'
     });
+    library.add(faAngleDoubleDown);
+    library.add(faAngleDoubleUp);
     const firstCard = uuid.v4();
     this.textInput = React.createRef(); // ref used to autofocus the keyword input
     this.appRef = React.createRef(); // ref used to measure the position of the App div
@@ -632,6 +635,16 @@ class DataDisplay extends Component {
     this.setState({ keyboardVisibilityToggle: '' });
   }
 
+  toggleFilters = () => {
+    if (this.state.keyboardVisibilityToggle === '') {
+      console.log('make invisible ')
+      this.setState({ keyboardVisibilityToggle: ' keyboardInvisible' })
+    } else if (this.state.keyboardVisibilityToggle === ' keyboardInvisible') {
+      console.log('make visible')
+      this.viewFilters();
+    }
+  }
+
   render() {
     const {data, inputVisibility, active, listCards, cardSelected, menuVisible,
       menuTop, menuLeft, filtering, conditionalButtonChanges, fileID, keyboardVisibilityToggle,
@@ -742,17 +755,17 @@ class DataDisplay extends Component {
           })}
           <div className="dataDisplayButtons dataDisplayButtonsTabbed">
             <div className="dataDisplayLeftTabbedButtons">
-              <button onClick={this.executeFilter}>
-
-                  Filter
-              </button>
+              <button onClick={this.executeFilter}>Filter</button>
               <button onClick={this.clear}>
                 Clear
               </button>
             </div>
             <div>
-              <button onClick={this.viewFilters}>
-                View filters
+              <button onClick={this.toggleFilters}>
+                <FontAwesomeIcon
+                    icon={ keyboardVisibilityToggle === " keyboardInvisible" ? faAngleDoubleDown : faAngleDoubleUp }
+                />
+                &nbsp;{keyboardVisibilityToggle===" keyboardInvisible" ? "View" : "Hide"}&nbsp;filters
               </button>
             </div>
           </div>

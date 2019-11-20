@@ -187,9 +187,10 @@ class Table extends Component {
   render(){
     const {header, body, description, columnTypes } = this.state.data;
     return (
-      <div>
-        <div>
-          <span>{description}</span>
+      <div className="tableContainer">
+        <h4>{description}</h4>
+        <div className="tableButtons">
+          {/* <span>{description}</span> */}
           <button
             type="button"
             className=""
@@ -210,7 +211,7 @@ class Table extends Component {
             Download file
           </button>
         </div>
-        <h3 className='displayTitle'>{description}</h3>
+        {/* <h3 className='displayTitle'>{description}</h3> */}
         <table className='dataTable'>
           <thead>
             <tr>

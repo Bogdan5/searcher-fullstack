@@ -696,7 +696,10 @@ table{
     padding: 2px 10px;
     background-color: lighten($green, 25%);
   }
-  
+}
+
+button{
+  outline: 0;
 }
 
 .dataDisplayButtonsTabbed{
@@ -709,3 +712,23 @@ table{
 // .dataDisplayLeftTabbedButtons{
 //   width: 
 // }
+
+.tableContainer{
+  // padding: 20px 10px 10px 0;
+  & h4{
+    text-align: center;
+    padding-bottom: 0;
+  }
+}
+
+.tableButtons{
+  padding-left: 100px;
+  &>button{
+    height: 30px;
+    padding: 2px 10px;
+    background-color: lighten($green, 25%);
+    border-radius: 5px 5px 0 0;
+    border-width: 1px 1px 1px 0;
+    margin-left: 1px;
+  }
+}
